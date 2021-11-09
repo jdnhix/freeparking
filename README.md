@@ -26,4 +26,6 @@ export PATH="$PATH:`pwd`/flutter/bin"
 flutter doctor
 ```
 
-
+## How to code in Flutter
+- The Flutter website has pretty good documentation explaining things.
+- If you're familiar with react native, there's a [good guide](https://flutter.dev/docs/get-started/flutter-for/react-native-devs) explaining the similarities.
