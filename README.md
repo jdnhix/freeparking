@@ -25,7 +25,16 @@ export PATH="$PATH:`pwd`/flutter/bin"
 ```
 flutter doctor
 ```
+### Running the App
+- To run the application:
+```
+cd freeparking_app
+flutter run
+```
+- This will run the app on the browser. Running the app on thee android/iOS emulators are a bit more involved.
+
 
 ## How to code in Flutter
 - The Flutter website has pretty good documentation explaining things.
 - If you're familiar with react native, there's a [good guide](https://flutter.dev/docs/get-started/flutter-for/react-native-devs) explaining the similarities.
+- We're likely going to use iOS style widgets. Take a second to check them out [here](https://flutter.dev/docs/development/ui/widgets/cupertino).
