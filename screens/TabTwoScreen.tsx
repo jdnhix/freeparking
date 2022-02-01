@@ -1,14 +1,25 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from "react-native";
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import EditScreenInfo from "../components/EditScreenInfo";
+import { Entypo } from "@expo/vector-icons";
+import { Text, View } from "../components/Themed";
 
 export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.tsx" />
+      <Pressable
+        onPress={() => console.log("Burger menu pressed")}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}
+      >
+        <Entypo
+          name="camera"
+          size={60}
+          color="black"
+          style={{ marginBottom: 30 }}
+        />
+      </Pressable>
     </View>
   );
 }
@@ -16,16 +27,7 @@ export default function TabTwoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
 });
