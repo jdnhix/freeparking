@@ -3,8 +3,11 @@ import { StyleSheet, Pressable } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Entypo } from "@expo/vector-icons";
 import { Text, View } from "../components/Themed";
+import useColorScheme from '../hooks/useColorScheme';
 
 export default function TabTwoScreen() {
+  const colorScheme = useColorScheme()
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -16,7 +19,7 @@ export default function TabTwoScreen() {
         <Entypo
           name="camera"
           size={60}
-          color="black"
+          color={colorScheme === 'dark' ? "white" : "black"}
           style={{ marginBottom: 30 }}
         />
       </Pressable>

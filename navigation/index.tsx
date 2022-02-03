@@ -94,21 +94,22 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="login" size={24} color={color} />
           ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          // TODO leaving here for now for example, delete later
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={() => navigation.navigate("Modal")}
+          //     style={({ pressed }) => ({
+          //       opacity: pressed ? 0.5 : 1,
+          //     })}
+          //   >
+          //     <FontAwesome
+          //       name="info-circle"
+          //       size={25}
+          //       color={Colors[colorScheme].text}
+          //       style={{ marginRight: 15 }}
+          //     />
+          //   </Pressable>
+          // ),
         })}
       />
       <BottomTab.Screen
