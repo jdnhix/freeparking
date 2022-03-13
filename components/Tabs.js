@@ -1,8 +1,8 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeScreen from './HomeScreen'
-import SettingsScreen from './SettingsScreen'
-import SavedScreen from './SavedScreen'
+import HomeScreen from '../screens/HomeScreen'
+import SettingsScreen from '../screens/SettingsScreen'
+import SavedScreen from '../screens/SavedScreen'
 
 
 
