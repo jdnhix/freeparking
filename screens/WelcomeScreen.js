@@ -27,9 +27,7 @@ export default function WelcomeScreen() {
                 </View>
 
                 <View style={styles.buttonView}>
-                    <CustomButton title='Continue' func = {testFunction} 
-                        
-                    />
+                    <CustomButton title='Continue' callback = {testFunction}/>
                 </View>
                 
             </View>
