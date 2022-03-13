@@ -60,10 +60,10 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Login'>
                 onChangeText={onChangeText}
                 placeholder='Email'
                 value={text}
-                autoFocus={true}
+                keyboardType='email-address'
               /> 
 
-            {!isKeyboardVisible && (
+            {/* {!isKeyboardVisible && ( */} 
               <Pressable 
                 style={styles.inputButton}
                 onPressOut={() =>{
@@ -71,7 +71,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Login'>
                 }}>
                 <Text style={{fontSize: 17}}>Find Parking</Text>
               </Pressable>
-            )}
+            {/* )} */}
             </View>
  
 
