@@ -4,10 +4,11 @@ import CustomButton from "../components/Button"
 
 
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({navigation}) {
 
     const testFunction = () => {
         console.log("this works!");
+        navigation.navigate('Tabs')
     };
 
     return (
