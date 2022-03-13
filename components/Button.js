@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, SafeAreaView, Pressable, TouchableOpacity } fro
 export default function Button(props) {
     return (
         <SafeAreaView>
-            <TouchableOpacity activeOpacity={.8} style={styles.button} onPressOut={props.callback}>
+            <TouchableOpacity activeOpacity={.8} style={[styles.button, { height: props.height ? props.height : styles.button.height }]} onPressOut={props.callback}>
                 <Text style={styles.text}>{props.title}</Text>
             </TouchableOpacity>
         </SafeAreaView>
