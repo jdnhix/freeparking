@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import CustomButton from "../components/Button"
 
 
-export default function LoginScreen () {
+export default function LoginScreen ({navigation}) {
 
     const [text, onChangeText] = React.useState("");
     const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
@@ -29,49 +29,48 @@ export default function LoginScreen () {
      }, []);
 
 
-
     return(
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={300}
             style={{flex: 1}}
         >
-            <SafeAreaView style={styles.center}>
-                    <Image
-                        style={styles.logo}
-                        source={require('../assets/logo.png')}
-                    />
-                    <Text style={styles.text}>Please enter your username and password to proceed</Text>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaView style={styles.center}>
+                        <Image
+                            style={styles.logo}
+                            source={require('../assets/logo.png')}
+                        />
+                        <Text style={styles.text}>Please enter your username and password to proceed</Text>
 
-                    <TextInput
-                        style={[styles.input, {top: "45%"}]}
-                        onChangeText={onChangeText}
-                        placeholder='Email'
-                        value={text}
-                        keyboardType='email-address'
-                    /> 
-                    <TextInput
-                        style={[styles.input, {top: "47%"}]}
-                        onChangeText={onChangeText}
-                        placeholder='Password'
-                        value={text}
-                        keyboardType='default'
-                    /> 
+                        <TextInput
+                            style={[styles.input, {top: "45%"}]}
+                            onChangeText={onChangeText}
+                            placeholder='Email'
+                            value={text}
+                            keyboardType='email-address'
+                        /> 
+                        <TextInput
+                            style={[styles.input, {top: "47%"}]}
+                            onChangeText={onChangeText}
+                            placeholder='Password'
+                            value={text}
+                            keyboardType='default'
+                        /> 
 
-                    {!isKeyboardVisible && ( 
-                        <View style= {{top: '60%'}}>
-                            <View >
-                                <CustomButton title='Login' height={50}/>    
-                            </View>
-                            <View style={{top: '10%'}}>
-                                <CustomButton title='Signup' height= {50} />    
-                            </View>
-                        </View>  
-                    )}
-
-
-                    
-            </SafeAreaView>
+                        {!isKeyboardVisible && ( 
+                            <View style= {{top: '60%'}}>
+                                <View >
+                                    <CustomButton title='Login' callback={() => {navigation.navigate('Tabs')}} height={50}/>    
+                                </View>
+                                <View style={{top: '5%'}}>
+                                    <CustomButton title='Signup' height= {50} />    
+                                </View>
+                            </View>  
+                        )}
+                        
+                </SafeAreaView>
+            </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );
 

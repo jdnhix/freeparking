@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 
 export default function Button(props) {
     return (
