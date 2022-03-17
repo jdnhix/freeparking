@@ -7,6 +7,7 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
+import { COLORS } from "../components/Colors";
 
 export default function Button(props) {
   return (
@@ -24,7 +25,7 @@ export default function Button(props) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#385456",
+    backgroundColor: COLORS.green_theme,
     width: 275,
     height: 64,
     borderRadius: 25,

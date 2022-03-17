@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -16,6 +17,10 @@ import {
 } from "react-native-popup-menu";
 
 function Spots(props) {
+  // whether or not the favourite star is checked
+  const [fav, setFav] = useState(false);
+  const [favName, setFavName] = useState("staro");
+
   const dummyFunc = () => {
     console.log("Dummy works");
   };
@@ -28,6 +33,12 @@ function Spots(props) {
     console.log("Remove!");
   };
 
+  const flipFav = () =>
+    fav
+      ? (setFav(false), setFavName("staro"))
+      : (setFav(true), setFavName("star"));
+
+  // Styles for the dropdown menu
   const menuStyles = {
     optionsContainer: {
       width: 100,
@@ -51,18 +62,29 @@ function Spots(props) {
           flexDirection: "row",
         },
       ]}
+      uc
     >
-      <View
+      {/* Star button structured this way to increase touchable area */}
+      <TouchableOpacity
         style={{
-          flex: 1,
+          flex: 2,
           alignItems: "center",
           justifyContent: "center",
         }}
+        activeOpacity={0.8}
+        onPressOut={flipFav}
       >
-        <AntDesign name="staro" size={20} color={COLORS.red_theme} />
-      </View>
+        <View>
+          <AntDesign name={favName} size={30} color={COLORS.red_theme} />
+        </View>
+      </TouchableOpacity>
+
       <View
-        style={{ flex: 4, alignItems: "flex-start", justifyContent: "center" }}
+        style={{
+          flex: 5,
+          alignItems: "flex-start",
+          justifyContent: "center",
+        }}
       >
         <Text style={styles.spotTitle}>{props.title}</Text>
         <Text style={styles.spotLoc}>{props.loc}</Text>
@@ -88,7 +110,7 @@ function Spots(props) {
           <MenuTrigger>
             <Ionicons
               name="md-ellipsis-vertical"
-              size={20}
+              size={30}
               color={COLORS.red_theme}
             />
           </MenuTrigger>
