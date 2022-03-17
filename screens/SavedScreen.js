@@ -17,6 +17,12 @@ import {
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
 
+// TODO:
+//  1. Add a spot button and add a spot functionality
+//  2. Remove a spot functionality
+//  3. Spots scrollable when full. Not scrollable when not full.
+//  4. All/Favourite tabs.
+
 // Component for each saved spot
 function Spots(props) {
   // whether or not the favourite star is checked
@@ -24,7 +30,7 @@ function Spots(props) {
   // "star" for filled star icon; "staro" for star outline
   const [favName, setFavName] = useState("staro");
 
-  // TODO: when route icon is clicked. Go to Apple/Google maps
+  // when route icon is clicked. Go to Apple/Google maps
   const toRoute = createOpenLink({ query: props.loc });
 
   // when "edit" in dropdown menu is selected
