@@ -15,20 +15,24 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { createOpenLink } from "react-native-open-maps";
 
+// Component for each saved spot
 function Spots(props) {
   // whether or not the favourite star is checked
   const [fav, setFav] = useState(false);
+  // "star" for filled star icon; "staro" for star outline
   const [favName, setFavName] = useState("staro");
 
-  const dummyFunc = () => {
-    console.log("Dummy works");
-  };
+  // TODO: when route icon is clicked. Go to Apple/Google maps
+  const toRoute = createOpenLink({ query: props.loc });
 
+  // when "edit" in dropdown menu is selected
   const editSpot = () => {
     console.log("Edit!");
   };
 
+  // when "remove" in dropdown menu is selected
   const removeSpot = () => {
     console.log("Remove!");
   };
@@ -67,7 +71,7 @@ function Spots(props) {
       {/* Star button structured this way to increase touchable area */}
       <TouchableOpacity
         style={{
-          flex: 2,
+          flex: 1,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -81,9 +85,10 @@ function Spots(props) {
 
       <View
         style={{
-          flex: 5,
+          flex: 4,
           alignItems: "flex-start",
           justifyContent: "center",
+          marginLeft: 10,
         }}
       >
         <Text style={styles.spotTitle}>{props.title}</Text>
@@ -94,7 +99,7 @@ function Spots(props) {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.button}
-          onPressOut={dummyFunc}
+          onPressOut={toRoute}
         >
           <Text style={styles.btnText}>Route</Text>
         </TouchableOpacity>
