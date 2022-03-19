@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import {
   Menu,
@@ -16,6 +16,7 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
+import { TouchableHighlight } from "react-native-web";
 
 // TODO:
 //  1. Add a spot button and add a spot functionality
@@ -67,7 +68,7 @@ function Spots(props) {
   return (
     <View
       style={[
-        styles.container,
+        styles.spotContainer,
         {
           flexDirection: "row",
         },
@@ -135,38 +136,108 @@ function Spots(props) {
   );
 }
 
-export default function SavedScreen() {
+export default function SavedScreen({ navigation }) {
+  const toAddSpot = () => {
+    navigation.navigate("EditSpot");
+  };
+
+  const toMenu = () => {
+    console.log("Menu");
+  };
+
+  const toSearch = () => {
+    console.log("Search");
+  };
+
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          flexDirection: "column",
-        },
-      ]}
-    >
-      {/* <ScrollView>
+    <View style={{ flex: 1 }}>
+      <View style={styles.topBar}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPressOut={toMenu}
+          style={{
+            flex: 1,
+            alignItems: "flex-start",
+            justifyContent: "center",
+            marginLeft: "4%",
+          }}
+        >
+          <View>
+            <Ionicons name="ios-menu" size={40} color={COLORS.green_theme} />
+          </View>
+        </TouchableOpacity>
+        <View
+          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text style={styles.pageTitle}>Saved Spots</Text>
+        </View>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPressOut={toSearch}
+          style={{
+            flex: 1,
+            alignItems: "flex-end",
+            justifyContent: "center",
+            marginRight: "5%",
+          }}
+        >
+          <View>
+            <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View
+        style={[
+          styles.container,
+          {
+            flexDirection: "column",
+          },
+        ]}
+      >
+        {/* <ScrollView>
       </ScrollView> */}
-      <Spots
-        style={styles.spot}
-        title="Vanderbilt"
-        loc="2301 Vanderbilt Place"
-        time="M-F: 6PM - 6AM, S-U: All Day"
-      />
-      <Spots
-        style={styles.spot}
-        title="Vanderbilt"
-        loc="2301 Vanderbilt Place"
-        time="M-F: 6PM - 6AM, S-U: All Day"
-      />
+        <Spots
+          style={styles.spot}
+          title="Vanderbilt"
+          loc="2301 Vanderbilt Place"
+          time="M-F: 6PM - 6AM, S-U: All Day"
+        />
+        <Spots
+          style={styles.spot}
+          title="Vanderbilt"
+          loc="2301 Vanderbilt Place"
+          time="M-F: 6PM - 6AM, S-U: All Day"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.addBtn} onPressOut={toAddSpot}>
+        <Text style={styles.addBtnTxt}>Add Spot</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    paddingTop: 35,
+    paddingTop: 0,
+  },
+  // Entire Spot component styling
+  spotContainer: {
+    paddingTop: 10,
+    paddingBottom: 15,
+  },
+  // Top bar containing menu and search icon
+  topBar: {
+    height: 50,
+    marginTop: "13%",
+    flexDirection: "row",
+  },
+  // "Saved Spots" text styling
+  pageTitle: {
+    fontSize: 25,
+    color: COLORS.green_theme,
+    fontWeight: "500",
   },
   // "Route" button styling
   button: {
@@ -199,5 +270,23 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15,
     color: COLORS.green_theme,
+  },
+  // Add spot button
+  addBtn: {
+    backgroundColor: COLORS.green_theme,
+    position: "absolute",
+    width: 170,
+    height: 50,
+    bottom: "4%",
+    left: "30%",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+  },
+  // Add spot button text
+  addBtnTxt: {
+    fontSize: 20,
+    color: "white",
   },
 });

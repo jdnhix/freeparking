@@ -6,6 +6,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./components/Tabs";
 import WelcomeScreen from "./screens/WelcomeScreen";
+import Saved from "./screens/SavedScreen";
+import EditSpot from "./screens/EditSpotScreen";
 import { MenuProvider } from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
@@ -22,6 +24,8 @@ export default function App() {
           >
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="Tabs" component={Tabs} />
+            <Stack.Screen name="Saved" component={Saved} />
+            <Stack.Screen name="EditSpot" component={EditSpot} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar />
