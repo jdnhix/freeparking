@@ -19,7 +19,7 @@ import { useForm, Controller } from "react-hook-form";
 // 4. (Edit functionality in saved spot page)
 // 5. Time availability design
 
-export default function EditSpotScreen({ navigation }) {
+export default function EditSpotScreen({ route, navigation }) {
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -36,11 +36,18 @@ export default function EditSpotScreen({ navigation }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
-      address: "",
+      title: "",
+      loc: "",
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log("gogo");
+
+    navigation.navigate("Tabs", {
+      screen: "Saved",
+      params: { newSpot: { title: data.title, loc: data.loc } },
+    });
+  };
 
   return (
     // Make keyboard disappear when clicked in blank spot
@@ -95,7 +102,7 @@ export default function EditSpotScreen({ navigation }) {
                 placeholder="Spot Name"
               />
             )}
-            name="name"
+            name="title"
           />
 
           <Controller
@@ -113,14 +120,14 @@ export default function EditSpotScreen({ navigation }) {
                 placeholder="Spot Address"
               />
             )}
-            name="address"
+            name="loc"
           />
-          {((errors.name && errors.name.type === "required") ||
-            (errors.address && errors.address.type === "required")) && (
+          {((errors.title && errors.title.type === "required") ||
+            (errors.loc && errors.loc.type === "required")) && (
             <Text style={styles.errorMsg}>Both fields are required.</Text>
           )}
-          {((errors.name && errors.name.type === "pattern") ||
-            (errors.address && errors.address.type === "pattern")) && (
+          {((errors.title && errors.title.type === "pattern") ||
+            (errors.loc && errors.loc.type === "pattern")) && (
             <Text style={styles.errorMsg}>
               Format error: alphanumeric and comma only.
             </Text>

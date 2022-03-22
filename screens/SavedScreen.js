@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -16,7 +16,6 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
-import { TouchableHighlight } from "react-native-web";
 
 // TODO:
 //  1. Add a spot button and add a spot functionality
@@ -25,7 +24,7 @@ import { TouchableHighlight } from "react-native-web";
 //  4. All/Favourite tabs.
 
 // Component for each saved spot
-function Spots(props) {
+function Spot(props) {
   // whether or not the favourite star is checked
   const [fav, setFav] = useState(false);
   // "star" for filled star icon; "staro" for star outline
@@ -136,7 +135,40 @@ function Spots(props) {
   );
 }
 
-export default function SavedScreen({ navigation }) {
+export default function SavedScreen({ navigation, route }) {
+  useEffect(() => {
+    if (route.params?.newSpot) {
+      addSpot(route.params.newSpot);
+      console.log(route);
+    }
+  }, [route.params?.newSpot]);
+
+  const [spotArr, setSpotArr] = useState([
+    {
+      title: "Vanderbilt",
+      loc: "2301 Vanderbilt Place",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+    },
+    {
+      title: "Vandy",
+      loc: "2301 Vanderbilt Place",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+    },
+  ]);
+
+  // Action to add spot
+  const addSpot = (newSpot) => {
+    setSpotArr([
+      ...spotArr,
+      {
+        title: newSpot.title,
+        loc: newSpot.loc,
+        time: "M-F: 6PM - 6AM, S-U: All Day",
+      },
+    ]);
+  };
+
+  // navigate to EditSpotScreen
   const toAddSpot = () => {
     navigation.navigate("EditSpot");
   };
@@ -197,18 +229,15 @@ export default function SavedScreen({ navigation }) {
       >
         {/* <ScrollView>
       </ScrollView> */}
-        <Spots
-          style={styles.spot}
-          title="Vanderbilt"
-          loc="2301 Vanderbilt Place"
-          time="M-F: 6PM - 6AM, S-U: All Day"
-        />
-        <Spots
-          style={styles.spot}
-          title="Vanderbilt"
-          loc="2301 Vanderbilt Place"
-          time="M-F: 6PM - 6AM, S-U: All Day"
-        />
+        {spotArr.map((spot, i) => (
+          <Spot
+            key={i}
+            style={styles.spot}
+            title={spot.title}
+            loc={spot.loc}
+            time={spot.time}
+          ></Spot>
+        ))}
       </View>
 
       <TouchableOpacity style={styles.addBtn} onPressOut={toAddSpot}>
