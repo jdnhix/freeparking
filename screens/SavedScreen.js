@@ -18,8 +18,6 @@ import {
 import { createOpenLink } from "react-native-open-maps";
 
 // TODO:
-//  1. Add a spot button and add a spot functionality
-//  2. Remove a spot functionality
 //  3. Spots scrollable when full. Not scrollable when not full.
 //  4. All/Favourite tabs.
 
@@ -40,7 +38,8 @@ function Spot(props) {
 
   // when "remove" in dropdown menu is selected
   const removeSpot = () => {
-    console.log("Remove!");
+    const rmFunc = props.rmFunc;
+    rmFunc(props.rmIdx);
   };
 
   const flipFav = () =>
@@ -72,7 +71,6 @@ function Spot(props) {
           flexDirection: "row",
         },
       ]}
-      uc
     >
       {/* Star button structured this way to increase touchable area */}
       <TouchableOpacity
@@ -139,7 +137,6 @@ export default function SavedScreen({ navigation, route }) {
   useEffect(() => {
     if (route.params?.newSpot) {
       addSpot(route.params.newSpot);
-      console.log(route);
     }
   }, [route.params?.newSpot]);
 
@@ -166,6 +163,10 @@ export default function SavedScreen({ navigation, route }) {
         time: "M-F: 6PM - 6AM, S-U: All Day",
       },
     ]);
+  };
+
+  const removeSpot = (idx) => {
+    setSpotArr(spotArr.filter((spot, index) => index !== idx));
   };
 
   // navigate to EditSpotScreen
@@ -232,6 +233,8 @@ export default function SavedScreen({ navigation, route }) {
         {spotArr.map((spot, i) => (
           <Spot
             key={i}
+            rmIdx={i}
+            rmFunc={removeSpot}
             style={styles.spot}
             title={spot.title}
             loc={spot.loc}

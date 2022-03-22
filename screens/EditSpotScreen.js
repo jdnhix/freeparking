@@ -14,8 +14,6 @@ import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 
 // TODO:
-// 2. How to add the spot to saved spot page
-// 3. (Remove functionality in saved spot page)
 // 4. (Edit functionality in saved spot page)
 // 5. Time availability design
 
@@ -23,7 +21,9 @@ export default function EditSpotScreen({ route, navigation }) {
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
-    navigation.navigate("Tabs");
+    navigation.navigate("Tabs", {
+      screen: "Saved",
+    });
   };
 
   const toCamera = () => {
@@ -41,8 +41,6 @@ export default function EditSpotScreen({ route, navigation }) {
     },
   });
   const onSubmit = (data) => {
-    console.log("gogo");
-
     navigation.navigate("Tabs", {
       screen: "Saved",
       params: { newSpot: { title: data.title, loc: data.loc } },
@@ -91,7 +89,8 @@ export default function EditSpotScreen({ route, navigation }) {
             control={control}
             rules={{
               required: true,
-              pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+              // pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+              pattern: /[a-zA-Z0-9,. ]/,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
@@ -109,7 +108,8 @@ export default function EditSpotScreen({ route, navigation }) {
             control={control}
             rules={{
               required: true,
-              pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+              // pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
+              pattern: /[a-zA-Z0-9,. ]/,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
