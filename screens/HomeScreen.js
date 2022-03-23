@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
+import MapModal from '../components/MapModal';
 
 const { height, width } = Dimensions.get( 'window' );
 const LATITUDE = 36.174465; // Nashville, TN
@@ -54,8 +55,11 @@ export default function HomeScreen() {
                         onPress={ () => {console.log(`marker ${spot.name} pressed`)}}
                     />
                 ))}
-
-            </MapView>
+            </MapView> 
+            <View style={{zIndex: 10, position: 'absolute'}}>
+                <MapModal/>
+            </View>
+            
          </View>
     );
 }
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     map: {
         width: width,
         height: height,
+        zIndex: -1
     }
 
 });
