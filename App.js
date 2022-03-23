@@ -1,4 +1,3 @@
-
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
@@ -9,6 +8,7 @@ import Tabs from "./components/Tabs";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import Saved from "./screens/SavedScreen";
 import EditSpot from "./screens/EditSpotScreen";
+import LoginScreen from "./screens/LoginScreen";
 import { MenuProvider } from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +24,7 @@ export default function App() {
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Tabs" component={Tabs} />
             <Stack.Screen name="Saved" component={Saved} />
             <Stack.Screen name="EditSpot" component={EditSpot} />
@@ -32,6 +33,5 @@ export default function App() {
         <StatusBar />
       </SafeAreaProvider>
     </MenuProvider>
-
   );
 }
