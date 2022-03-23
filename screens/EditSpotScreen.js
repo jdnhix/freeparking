@@ -14,20 +14,9 @@ import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 
 // TODO:
-// 4. (Edit functionality in saved spot page)
 // 5. Time availability design
 
 export default function EditSpotScreen({ route, navigation }) {
-  const [edit, setEdit] = useState(false);
-
-  useEffect(() => {
-    console.log("From Edit!");
-    if (route.params?.origSpot) {
-      console.log(route.params.origSpot);
-      setEdit(true);
-    }
-  }, [route.params?.origSpot]);
-
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -46,12 +35,12 @@ export default function EditSpotScreen({ route, navigation }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: route.params.origSpot.title,
-      loc: route.params.origSpot.loc,
+      title: route.params?.origSpot ? route.params.origSpot.title : "",
+      loc: route.params?.origSpot ? route.params.origSpot.loc : "",
     },
   });
   const onSubmit = (data) => {
-    if (edit) {
+    if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
         screen: "Saved",
         params: {
