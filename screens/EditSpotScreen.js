@@ -14,7 +14,7 @@ import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 
 // TODO:
-// 5. Time availability design
+// 1. Time availability design (checkout modal)
 
 export default function EditSpotScreen({ route, navigation }) {
   // Go back to the saved spots page.

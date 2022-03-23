@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
@@ -18,8 +19,8 @@ import {
 import { createOpenLink } from "react-native-open-maps";
 
 // TODO:
-//  3. Spots scrollable when full. Not scrollable when not full.
-//  4. All/Favourite tabs.
+//  2. All/favourite/sort in the meny icon (another pop-up?)
+//  3. Search screen
 
 // Component for each saved spot
 function Spot(props) {
@@ -140,6 +141,9 @@ function Spot(props) {
 }
 
 export default function SavedScreen({ navigation, route }) {
+  const screenHeight = Dimensions.get("window").height;
+  const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
+
   // route.params.newSpot is an Object received from EditSpotScreen containing
   // information for a new Spot to be added. So far it contains title: "a title"
   // and loc: "location". Will need to add time in some format later
@@ -176,6 +180,9 @@ export default function SavedScreen({ navigation, route }) {
       time: "M-F: 6PM - 6AM, S-U: All Day",
     },
   ]);
+
+  // Make the spots scrollable or not
+  const [scroll, setScroll] = useState(false);
 
   const toMenu = () => {
     console.log("Menu");
@@ -273,28 +280,41 @@ export default function SavedScreen({ navigation, route }) {
         </TouchableOpacity>
       </View>
 
-      <View
-        style={[
-          styles.container,
-          {
-            flexDirection: "column",
-          },
-        ]}
-      >
-        {/* <ScrollView>
-      </ScrollView> */}
-        {spotArr.map((spot, i) => (
-          <Spot
-            key={i}
-            rmIdx={i}
-            rmFunc={removeSpot}
-            editFunc={toEditSpot}
-            style={styles.spot}
-            title={spot.title}
-            loc={spot.loc}
-            time={spot.time}
-          ></Spot>
-        ))}
+      <View style={{ flex: 1 }}>
+        <View
+          style={[
+            styles.container,
+            {
+              flexDirection: "column",
+            },
+          ]}
+          onLayout={(event) => {
+            const { x, y, width, height } = event.nativeEvent.layout;
+            if (height / screenHeight > scrollThreshold) {
+              setScroll(true);
+            } else {
+              setScroll(false);
+            }
+          }}
+        >
+          <ScrollView
+            scrollEnabled={scroll}
+            contentContainerStyle={styles.scrollSec}
+          >
+            {spotArr.map((spot, i) => (
+              <Spot
+                key={i}
+                rmIdx={i}
+                rmFunc={removeSpot}
+                editFunc={toEditSpot}
+                style={styles.spot}
+                title={spot.title}
+                loc={spot.loc}
+                time={spot.time}
+              ></Spot>
+            ))}
+          </ScrollView>
+        </View>
       </View>
 
       <TouchableOpacity style={styles.addBtn} onPressOut={toAddSpot}>
@@ -311,7 +331,7 @@ const styles = StyleSheet.create({
   // Entire Spot component styling
   spotContainer: {
     paddingTop: 10,
-    paddingBottom: 15,
+    paddingBottom: 10,
   },
   // Top bar containing menu and search icon
   topBar: {
@@ -356,6 +376,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15,
     color: COLORS.green_theme,
+  },
+  // Scroll section style
+  scrollSec: {
+    paddingBottom: "20%",
   },
   // Add spot button
   addBtn: {
