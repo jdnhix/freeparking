@@ -32,8 +32,14 @@ function Spot(props) {
   const toRoute = createOpenLink({ query: props.loc });
 
   // when "edit" in dropdown menu is selected
+  // TODO: need to account for time
   const editSpot = () => {
-    console.log("Edit!");
+    const editFunc = props.editFunc;
+    editFunc({
+      idx: props.rmIdx,
+      title: props.title,
+      loc: props.loc,
+    });
   };
 
   // when "remove" in dropdown menu is selected
@@ -134,11 +140,29 @@ function Spot(props) {
 }
 
 export default function SavedScreen({ navigation, route }) {
+  // route.params.newSpot is an Object received from EditSpotScreen containing
+  // information for a new Spot to be added. So far it contains title: "a title"
+  // and loc: "location". Will need to add time in some format later
+
+  // route.params.origSpot is an Object sent to EditSpotScreen containing
+  // information for an existing Spot.
+
+  // route.params.editSpot is an Object received from EditSpotScreen containing
+  // updated information for an existing Spot.
+
+  // Handle received newSpot information
   useEffect(() => {
     if (route.params?.newSpot) {
       addSpot(route.params.newSpot);
     }
   }, [route.params?.newSpot]);
+
+  // Handle updated information on an existing spot
+  useEffect(() => {
+    if (route.params?.editSpot) {
+      editSpot(route.params.editSpot);
+    }
+  }, [route.params?.editSpot]);
 
   const [spotArr, setSpotArr] = useState([
     {
@@ -153,7 +177,21 @@ export default function SavedScreen({ navigation, route }) {
     },
   ]);
 
+  const toMenu = () => {
+    console.log("Menu");
+  };
+
+  const toSearch = () => {
+    console.log("Search");
+  };
+
+  // navigate to EditSpotScreen for adding a Spot
+  const toAddSpot = () => {
+    navigation.navigate("EditSpot");
+  };
+
   // Action to add spot
+  // TODO: need to account for time later
   const addSpot = (newSpot) => {
     setSpotArr([
       ...spotArr,
@@ -165,21 +203,36 @@ export default function SavedScreen({ navigation, route }) {
     ]);
   };
 
+  // Function to remove a spot
   const removeSpot = (idx) => {
     setSpotArr(spotArr.filter((spot, index) => index !== idx));
   };
 
-  // navigate to EditSpotScreen
-  const toAddSpot = () => {
-    navigation.navigate("EditSpot");
+  // Go to EditSpot page to edit a spot
+  // TODO: need to add time as parameter later
+  // idx: index in the current spotArr
+  const toEditSpot = ({ idx, title, loc }) => {
+    navigation.navigate({
+      name: "EditSpot",
+      params: {
+        origSpot: {
+          idx: idx,
+          title: title,
+          loc: loc,
+        },
+      },
+    });
   };
 
-  const toMenu = () => {
-    console.log("Menu");
-  };
-
-  const toSearch = () => {
-    console.log("Search");
+  // Function to edit a spot
+  // TODO: need to add time as a parameter
+  const editSpot = ({ idx, title, loc }) => {
+    let tmpSpots = [...spotArr];
+    let target = { ...tmpSpots[idx] };
+    target.title = title;
+    target.loc = loc;
+    tmpSpots[idx] = target;
+    setSpotArr(tmpSpots);
   };
 
   return (
@@ -235,6 +288,7 @@ export default function SavedScreen({ navigation, route }) {
             key={i}
             rmIdx={i}
             rmFunc={removeSpot}
+            editFunc={toEditSpot}
             style={styles.spot}
             title={spot.title}
             loc={spot.loc}

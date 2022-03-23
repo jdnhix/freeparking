@@ -1,11 +1,11 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Alert,
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -18,6 +18,16 @@ import { useForm, Controller } from "react-hook-form";
 // 5. Time availability design
 
 export default function EditSpotScreen({ route, navigation }) {
+  const [edit, setEdit] = useState(false);
+
+  useEffect(() => {
+    console.log("From Edit!");
+    if (route.params?.origSpot) {
+      console.log(route.params.origSpot);
+      setEdit(true);
+    }
+  }, [route.params?.origSpot]);
+
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -36,15 +46,28 @@ export default function EditSpotScreen({ route, navigation }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: "",
-      loc: "",
+      title: route.params.origSpot.title,
+      loc: route.params.origSpot.loc,
     },
   });
   const onSubmit = (data) => {
-    navigation.navigate("Tabs", {
-      screen: "Saved",
-      params: { newSpot: { title: data.title, loc: data.loc } },
-    });
+    if (edit) {
+      navigation.navigate("Tabs", {
+        screen: "Saved",
+        params: {
+          editSpot: {
+            idx: route.params.origSpot.idx,
+            title: data.title,
+            loc: data.loc,
+          },
+        },
+      });
+    } else {
+      navigation.navigate("Tabs", {
+        screen: "Saved",
+        params: { newSpot: { title: data.title, loc: data.loc } },
+      });
+    }
   };
 
   return (
@@ -89,7 +112,6 @@ export default function EditSpotScreen({ route, navigation }) {
             control={control}
             rules={{
               required: true,
-              // pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
               pattern: /[a-zA-Z0-9,. ]/,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -108,7 +130,6 @@ export default function EditSpotScreen({ route, navigation }) {
             control={control}
             rules={{
               required: true,
-              // pattern: /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/,
               pattern: /[a-zA-Z0-9,. ]/,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -176,8 +197,6 @@ const styles = StyleSheet.create({
     color: COLORS.green_theme,
     borderBottomColor: COLORS.green_theme,
     borderBottomWidth: 2,
-    // borderWidth: 1,
-    // borderColor: COLORS.green_theme,
     width: "55%",
     height: 40,
     marginBottom: 20,
