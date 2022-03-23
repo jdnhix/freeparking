@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './components/Tabs'
 import WelcomeScreen from './screens/WelcomeScreen'
+import CameraScreen from './screens/CameraScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,10 @@ export default function App() {
           <Stack.Screen
             name="Tabs"
             component={Tabs}
+          />
+          <Stack.Screen
+            name="CameraScreen"
+            component={CameraScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
