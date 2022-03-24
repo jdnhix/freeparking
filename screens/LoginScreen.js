@@ -1,32 +1,62 @@
 import * as React from 'react';
 import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
-import CustomButton from "../components/Button"
+import CustomButton from "../components/Button";
+import { useAuth } from "../providers/AuthProvider";
 
 
 export default function LoginScreen ({navigation}) {
 
-    const [text, onChangeText] = React.useState("");
+    const [email, onChangeEmail] = React.useState("");
+    const [password, onChangePassword] = React.useState("");
+    const {user, signUp, signIn} = useAuth();
     const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
 
     React.useEffect(() => {
-       const keyboardDidShowListener = Keyboard.addListener(
-         'keyboardDidShow',
-         () => {
-           setKeyboardVisible(true); 
-         }
-       );
-       const keyboardDidHideListener = Keyboard.addListener(
-         'keyboardDidHide',
-         () => {
-           setKeyboardVisible(false);
-         }
-       );
+        if (user != null) {
+            navigation.navigate("Tabs");
+        }
+
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+            setKeyboardVisible(true); 
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+            setKeyboardVisible(false);
+            }
+        );
    
-       return () => {
-         keyboardDidHideListener.remove();
-         keyboardDidShowListener.remove();
-       };
-     }, []);
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, [user]);
+
+    const onPressSignIn = async () => {
+        console.log("Trying sign in with user: " + email);
+        try {
+            await signIn(email, password);
+        } catch (error) {
+            const errorMessage = `Failed to sign in: ${error.message}`;
+            console.error(errorMessage);
+            Alert.alert(errorMessage);
+        }
+    };
+
+    const onPressSignUp = async () => {
+        console.log("Trying signup with user: " + email);
+        try {
+            await signUp(email, password);
+            signIn(email, password);
+        } catch (error) {
+            const errorMessage = `Failed to sign up: ${error.message}`;
+            console.error(errorMessage);
+            Alert.alert(errorMessage);
+        }
+    };
 
 
     return(
@@ -45,26 +75,28 @@ export default function LoginScreen ({navigation}) {
 
                         <TextInput
                             style={[styles.input, {top: "45%"}]}
-                            onChangeText={onChangeText}
+                            onChangeText={onChangeEmail}
                             placeholder='Email'
-                            value={text}
+                            value={email}
                             keyboardType='email-address'
                         /> 
                         <TextInput
                             style={[styles.input, {top: "47%"}]}
-                            onChangeText={onChangeText}
+                            onChangeText={onChangePassword}
                             placeholder='Password'
-                            value={text}
+                            value={password}
                             keyboardType='default'
                         /> 
 
                         {!isKeyboardVisible && ( 
                             <View style= {{top: '60%'}}>
                                 <View >
-                                    <CustomButton title='Login' callback={() => {navigation.navigate('Tabs')}} height={50}/>    
+                                    <CustomButton title='Login' height={50} />
+                                    <CustomButton onPress={onPressSignIn} title="Login" />
                                 </View>
                                 <View style={{top: '5%'}}>
-                                    <CustomButton title='Signup' height= {50} />    
+                                    <CustomButton title='Sign Up' height= {50} />   
+                                    <CustomButton onPress={onPressSignUp} title="Sign Up" />
                                 </View>
                             </View>  
                         )}
