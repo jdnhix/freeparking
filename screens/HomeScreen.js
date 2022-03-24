@@ -84,7 +84,7 @@ class HomeScreen extends React.Component {
                                     longitudeDelta: .005
                                 }
 
-                                this.mapRef.animateToRegion(r, 1000) //todo get this working 
+                                this.mapRef.animateToRegion(r, 1000)
                         
                             }}
                         />
@@ -96,6 +96,15 @@ class HomeScreen extends React.Component {
                     onBackdropPress= {() => {
                         this.modalOff()
                         this.activeSpot = {}
+
+                        let r = {
+                            latitude: LATITUDE,
+                            longitude: LONGITUDE,
+                            latitudeDelta: LATITUDE_DELTA,
+                            longitudeDelta: LONGITUDE_DELTA
+                        }
+
+                        this.mapRef.animateToRegion(r, 750) 
                     }}
                     animationType='fade'
                 >
