@@ -14,24 +14,16 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
 const markers = [
     {
-        latitude: 36.174465,
-        longitude: -86.767960,
-        name: "test"
-    },
-    {
-        latitude: 36.12,
-        longitude: -86.763,
-        name: "test2"
-    },
-    {
         latitude: 36.23,
         longitude: -86.71,
-        name: "test3"
+        name: "Brentwood??",
+        address: "idek lol"
     },
     {
         latitude: 36.09,
         longitude: -86.74,
-        name: "test"
+        name: "Middle of nowhere",
+        address: "1818 church st"
     },
     {
         latitude: 36.146450,
@@ -52,6 +44,7 @@ class HomeScreen extends React.Component {
         }
         this.modalOn = this.setModalVisible.bind(this)
         this.modalOff = this.setModalNotVisible.bind(this)
+        this.activeSpot = {}
     }
 
     setModalVisible(e) {
@@ -81,10 +74,18 @@ class HomeScreen extends React.Component {
                             key={index}
                             coordinate={{latitude: spot.latitude, longitude: spot.longitude}}
                             onPress={ () => {
-                                console.log(`marker ${spot.name} pressed`)
                                 this.modalOn()
-                                // this.mapRef.fitToSuppliedMarkers(spot) todo get this working 
-                            
+                                this.activeSpot = spot
+
+                                let r = {
+                                    latitude: spot.latitude + .001,
+                                    longitude: spot.longitude + .001,
+                                    latitudeDelta: .005,
+                                    longitudeDelta: .005
+                                }
+
+                                this.mapRef.animateToRegion(r, 1000) //todo get this working 
+                        
                             }}
                         />
                     ))}
@@ -92,10 +93,13 @@ class HomeScreen extends React.Component {
                 <Modal
                     style={styles.modal}
                     visible={this.state.modalVisible}
-                    onBackdropPress= {() => this.modalOff()}
+                    onBackdropPress= {() => {
+                        this.modalOff()
+                        this.activeSpot = {}
+                    }}
                     animationType='fade'
                 >
-                    <MapModal/>
+                    <MapModal name={this.activeSpot.name} address={this.activeSpot.address}/>
                 </Modal>
              </View>
         );
