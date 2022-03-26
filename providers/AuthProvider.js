@@ -1,5 +1,7 @@
 import app from "../RealmApp";
+import Realm from "realm";
 import React, { useContext, useState, useEffect, useRef } from "react";
+
 const AuthContext = React.createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -15,7 +17,7 @@ const AuthProvider = ({ children }) => {
         const config = {
             sync: {
                 user,
-                partitinValue: `user=${user.id}`,
+                partitionValue: `user=${user.id}`,
             },
         };
 
@@ -74,4 +76,4 @@ const useAuth = () => {
     return auth;
 };
 
-export { AuthProvider, useAuth};
+export { AuthProvider, useAuth };

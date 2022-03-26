@@ -13,7 +13,10 @@
     "@react-navigation/material-bottom-tabs": "^6.1.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "@types/react": "^17.0.43",
     "expo": "~44.0.0",
+    "expo-dev-client": "~0.8.4",
+    "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -24,9 +27,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
-    "realm": "^10.13.0",
-    "expo-splash-screen": "~0.14.1",
-    "expo-dev-client": "~0.8.4"
+    "realm": "^10.13.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
