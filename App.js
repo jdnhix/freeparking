@@ -9,7 +9,9 @@ import LoginScreen from './screens/LoginScreen'
 import WelcomeScreen from './screens/WelcomeScreen'
 import { AuthProvider } from './providers/AuthProvider';
 import { Logout } from "./components/Logout"
-
+import Saved from "./screens/SavedScreen";
+import EditSpot from "./screens/EditSpotScreen";
+import { MenuProvider } from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -17,25 +19,23 @@ const Tab = createMaterialBottomTabNavigator();
 export default function App() {
   return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Welcome" screenOptions={{headerShown: false}}>
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-            />
-            <Stack.Screen
-              name="Tabs"
-              component={Tabs}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <StatusBar/>
-      </SafeAreaProvider>
+      <MenuProvider>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="Welcome"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Tabs" component={Tabs} />
+              <Stack.Screen name="Saved" component={Saved} />
+              <Stack.Screen name="EditSpot" component={EditSpot} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar />
+        </SafeAreaProvider>
+      </MenuProvider>
     </AuthProvider>
   );
 }
