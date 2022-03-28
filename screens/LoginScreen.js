@@ -7,7 +7,7 @@ export default function LoginScreen ({navigation}) {
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const { user, signUp, signIn, signOut } = useAuth();
+    const { user, signUp, signIn } = useAuth();
     //const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
 
     React.useEffect(() => {

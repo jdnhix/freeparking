@@ -10,7 +10,6 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (!user) {
-            console.warn("NO USER Logged In");
             return;
         }
 

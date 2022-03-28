@@ -1,14 +1,14 @@
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
+com/realm/freeParking/BuildConfig.java
+ com.realm.freeParking.BuildConfig
 com/realm/freeParking/MainActivity.java
  com.realm.freeParking.MainActivity
 com/realm/freeParking/MainApplication.java
  com.realm.freeParking.MainApplication
  com.realm.freeParking.MainApplication$1
-com/realm/freeParking/BuildConfig.java
- com.realm.freeParking.BuildConfig
 com/realm/freeParking/ReactNativeFlipper.java
  com.realm.freeParking.ReactNativeFlipper
  com.realm.freeParking.ReactNativeFlipper$1
  com.realm.freeParking.ReactNativeFlipper$2
  com.realm.freeParking.ReactNativeFlipper$2$1
-com/facebook/react/PackageList.java
- com.facebook.react.PackageList
