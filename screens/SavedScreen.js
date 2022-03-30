@@ -25,9 +25,14 @@ import { createOpenLink } from "react-native-open-maps";
 // Component for each saved spot
 function Spot(props) {
   // whether or not the favourite star is checked
-  const [fav, setFav] = useState(false);
+  const [fav, setFav] = useState(props.fav);
   // "star" for filled star icon; "staro" for star outline
-  const [favName, setFavName] = useState("staro");
+  const [favName, setFavName] = useState(props.fav ? "star" : "staro");
+  useEffect(() => {
+    console.log(`${props.rmIdx} mounts`);
+    setFav(props.fav);
+    setFavName(props.fav ? "star" : "staro");
+  }, [props.fav]);
 
   // when route icon is clicked. Go to Apple/Google maps
   const toRoute = createOpenLink({ query: props.loc });
@@ -49,10 +54,12 @@ function Spot(props) {
     rmFunc(props.rmIdx);
   };
 
+  const editFav = props.editFav;
+
   const flipFav = () =>
     fav
-      ? (setFav(false), setFavName("staro"))
-      : (setFav(true), setFavName("star"));
+      ? (setFav(false), setFavName("staro"), editFav(props.rmIdx, false))
+      : (setFav(true), setFavName("star"), editFav(props.rmIdx, true));
 
   // Styles for the dropdown menu
   const menuStyles = {
@@ -168,24 +175,80 @@ export default function SavedScreen({ navigation, route }) {
     }
   }, [route.params?.editSpot]);
 
+  useEffect(() => {}, []);
+
   const [spotArr, setSpotArr] = useState([
     {
       title: "Vanderbilt",
       loc: "2301 Vanderbilt Place",
       time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 0,
     },
     {
       title: "Vandy",
       loc: "2301 Vanderbilt Place",
       time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 1,
+    },
+    {
+      title: "Target1",
+      loc: "White bridge",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 2,
+    },
+    {
+      title: "Target2",
+      loc: "White bridge",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 3,
+    },
+    {
+      title: "Target3",
+      loc: "White bridge",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 4,
+    },
+    {
+      title: "Target4",
+      loc: "White bridge",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 5,
+    },
+    {
+      title: "Target5",
+      loc: "White bridge",
+      time: "M-F: 6PM - 6AM, S-U: All Day",
+      fav: false,
+      idx: 6,
     },
   ]);
+
+  // Boolean indicating only show fav or not
+  const [showFav, setShowFav] = useState(false);
 
   // Make the spots scrollable or not
   const [scroll, setScroll] = useState(false);
 
-  const toMenu = () => {
-    console.log("Menu");
+  // Styles for the dropdown menu
+  const menuStyles = {
+    optionsContainer: {
+      width: 140,
+      padding: 3,
+    },
+    optionWrapper: {
+      margin: 3,
+    },
+    optionText: {
+      fontSize: 17,
+      fontWeight: "400",
+      color: COLORS.green_theme,
+    },
   };
 
   const toSearch = () => {
@@ -200,19 +263,27 @@ export default function SavedScreen({ navigation, route }) {
   // Action to add spot
   // TODO: need to account for time later
   const addSpot = (newSpot) => {
+    console.log(`Adding to ${spotArr.length}`);
     setSpotArr([
       ...spotArr,
       {
         title: newSpot.title,
         loc: newSpot.loc,
         time: "M-F: 6PM - 6AM, S-U: All Day",
+        fav: false,
+        idx: spotArr.length,
       },
     ]);
   };
 
   // Function to remove a spot
   const removeSpot = (idx) => {
-    setSpotArr(spotArr.filter((spot, index) => index !== idx));
+    let tmpArr = spotArr.filter((spot) => spot.idx !== idx);
+    for (let i = idx; i < tmpArr.length; ++i) {
+      tmpArr[i].idx = i;
+    }
+    console.log(`After removal ${tmpArr}`);
+    setSpotArr(tmpArr);
   };
 
   // Go to EditSpot page to edit a spot
@@ -234,6 +305,7 @@ export default function SavedScreen({ navigation, route }) {
   // Function to edit a spot
   // TODO: need to add time as a parameter
   const editSpot = ({ idx, title, loc }) => {
+    console.log(`Editing ${idx}`);
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.title = title;
@@ -242,12 +314,21 @@ export default function SavedScreen({ navigation, route }) {
     setSpotArr(tmpSpots);
   };
 
+  // Function to set a spot favourite or not
+  // favQ: boolean, favourite or not
+  const flipFav = (idx, favQ) => {
+    console.log(`Flipping ${idx} setting to ${favQ}`);
+    let tmpSpots = [...spotArr];
+    let target = { ...tmpSpots[idx] };
+    target.fav = favQ;
+    tmpSpots[idx] = target;
+    setSpotArr(tmpSpots);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.topBar}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPressOut={toMenu}
+        <View
           style={{
             flex: 1,
             alignItems: "flex-start",
@@ -255,10 +336,29 @@ export default function SavedScreen({ navigation, route }) {
             marginLeft: "4%",
           }}
         >
-          <View>
-            <Ionicons name="ios-menu" size={40} color={COLORS.green_theme} />
-          </View>
-        </TouchableOpacity>
+          <Menu>
+            <MenuTrigger>
+              <Ionicons name="ios-menu" size={40} color={COLORS.green_theme} />
+            </MenuTrigger>
+            <MenuOptions customStyles={menuStyles}>
+              {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
+              <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
+              <MenuOption
+                text="Show Favourite"
+                onSelect={() => {
+                  setShowFav(true);
+                }}
+              />
+              <MenuOption
+                text="Show All"
+                onSelect={() => {
+                  setShowFav(false);
+                }}
+              />
+            </MenuOptions>
+          </Menu>
+        </View>
+
         <View
           style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
         >
@@ -301,18 +401,58 @@ export default function SavedScreen({ navigation, route }) {
             scrollEnabled={scroll}
             contentContainerStyle={styles.scrollSec}
           >
-            {spotArr.map((spot, i) => (
-              <Spot
-                key={i}
-                rmIdx={i}
-                rmFunc={removeSpot}
-                editFunc={toEditSpot}
-                style={styles.spot}
-                title={spot.title}
-                loc={spot.loc}
-                time={spot.time}
-              ></Spot>
-            ))}
+            {/* {
+              const displayArr = showFav
+                ? spotArr.filter((spot) => spot.fav)
+                : spotArr;
+              return displayArr.map((spot, i) => (
+                <Spot
+                  key={i}
+                  rmIdx={spot.idx}
+                  rmFunc={removeSpot}
+                  editFunc={toEditSpot}
+                  editFav={flipFav}
+                  style={styles.spot}
+                  title={spot.title}
+                  loc={spot.loc}
+                  time={spot.time}
+                  fav={spot.fav}
+                ></Spot>
+              ));
+            } */}
+            {showFav
+              ? spotArr
+                  .filter((spot) => spot.fav)
+                  .map((spot, i) => {
+                    return (
+                      <Spot
+                        key={i}
+                        rmIdx={spot.idx}
+                        rmFunc={removeSpot}
+                        editFunc={toEditSpot}
+                        editFav={flipFav}
+                        style={styles.spot}
+                        title={spot.title}
+                        loc={spot.loc}
+                        time={spot.time}
+                        fav={true}
+                      ></Spot>
+                    );
+                  })
+              : spotArr.map((spot, i) => (
+                  <Spot
+                    key={i}
+                    rmIdx={spot.idx}
+                    rmFunc={removeSpot}
+                    editFunc={toEditSpot}
+                    editFav={flipFav}
+                    style={styles.spot}
+                    title={spot.title}
+                    loc={spot.loc}
+                    time={spot.time}
+                    fav={spot.fav}
+                  ></Spot>
+                ))}
           </ScrollView>
         </View>
       </View>
