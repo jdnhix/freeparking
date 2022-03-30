@@ -3,11 +3,26 @@ import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, Keybo
 import CustomButton from "../components/Button"
 import { useForm, Controller } from "react-hook-form";
 
+const emailRegex: 
+
 
 export default function LoginScreen ({navigation}) {
 
-    const [text, onChangeText] = React.useState("");
+    const [email, onChangeEmail] = React.useState("");
+    const [password, onChangePassword] = React.useState("");
     const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
+
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+      } = useForm({
+        defaultValues: {
+          email: "",
+          password:  "",
+        },
+      });
 
     React.useEffect(() => {
        const keyboardDidShowListener = Keyboard.addListener(
@@ -31,12 +46,12 @@ export default function LoginScreen ({navigation}) {
 
 
     return(
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={300}
             style={{flex: 1}}
         >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.center}>
                         <Image
                             style={styles.logo}
@@ -44,18 +59,28 @@ export default function LoginScreen ({navigation}) {
                         />
                         <Text style={styles.text}>Please enter your username and password to proceed</Text>
 
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: true,
+                                pattern: /[a-zA-Z0-9,. ]/,
+                            }}
+
+
+
+                        />
                         <TextInput
                             style={[styles.input, {top: "45%"}]}
-                            onChangeText={onChangeText}
+                            onChangeText={onChangeEmail}
                             placeholder='Email'
-                            value={text}
+                            value={email}
                             keyboardType='email-address'
                         /> 
                         <TextInput
                             style={[styles.input, {top: "47%"}]}
-                            onChangeText={onChangeText}
+                            onChangeText={onChangePassword}
                             placeholder='Password'
-                            value={text}
+                            value={password}
                             keyboardType='default'
                         /> 
 
@@ -71,8 +96,8 @@ export default function LoginScreen ({navigation}) {
                         )}
                         
                 </SafeAreaView>
-            </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 
 }
