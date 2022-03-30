@@ -29,7 +29,6 @@ function Spot(props) {
   // "star" for filled star icon; "staro" for star outline
   const [favName, setFavName] = useState(props.fav ? "star" : "staro");
   useEffect(() => {
-    console.log(`${props.rmIdx} mounts`);
     setFav(props.fav);
     setFavName(props.fav ? "star" : "staro");
   }, [props.fav]);
@@ -175,8 +174,6 @@ export default function SavedScreen({ navigation, route }) {
     }
   }, [route.params?.editSpot]);
 
-  useEffect(() => {}, []);
-
   const [spotArr, setSpotArr] = useState([
     {
       title: "Vanderbilt",
@@ -229,6 +226,12 @@ export default function SavedScreen({ navigation, route }) {
     },
   ]);
 
+  // Generate ID for the Spots list.
+  // Can delete after backend is ready
+  const generateID = (spot, i) => {
+    return `${spot.title}_${new Date().getTime()}_${i}`;
+  };
+
   // Boolean indicating only show fav or not
   const [showFav, setShowFav] = useState(false);
 
@@ -263,7 +266,6 @@ export default function SavedScreen({ navigation, route }) {
   // Action to add spot
   // TODO: need to account for time later
   const addSpot = (newSpot) => {
-    console.log(`Adding to ${spotArr.length}`);
     setSpotArr([
       ...spotArr,
       {
@@ -282,7 +284,6 @@ export default function SavedScreen({ navigation, route }) {
     for (let i = idx; i < tmpArr.length; ++i) {
       tmpArr[i].idx = i;
     }
-    console.log(`After removal ${tmpArr}`);
     setSpotArr(tmpArr);
   };
 
@@ -305,7 +306,6 @@ export default function SavedScreen({ navigation, route }) {
   // Function to edit a spot
   // TODO: need to add time as a parameter
   const editSpot = ({ idx, title, loc }) => {
-    console.log(`Editing ${idx}`);
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.title = title;
@@ -317,7 +317,6 @@ export default function SavedScreen({ navigation, route }) {
   // Function to set a spot favourite or not
   // favQ: boolean, favourite or not
   const flipFav = (idx, favQ) => {
-    console.log(`Flipping ${idx} setting to ${favQ}`);
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.fav = favQ;
@@ -401,32 +400,13 @@ export default function SavedScreen({ navigation, route }) {
             scrollEnabled={scroll}
             contentContainerStyle={styles.scrollSec}
           >
-            {/* {
-              const displayArr = showFav
-                ? spotArr.filter((spot) => spot.fav)
-                : spotArr;
-              return displayArr.map((spot, i) => (
-                <Spot
-                  key={i}
-                  rmIdx={spot.idx}
-                  rmFunc={removeSpot}
-                  editFunc={toEditSpot}
-                  editFav={flipFav}
-                  style={styles.spot}
-                  title={spot.title}
-                  loc={spot.loc}
-                  time={spot.time}
-                  fav={spot.fav}
-                ></Spot>
-              ));
-            } */}
             {showFav
               ? spotArr
                   .filter((spot) => spot.fav)
                   .map((spot, i) => {
                     return (
                       <Spot
-                        key={i}
+                        key={generateID(spot, i)}
                         rmIdx={spot.idx}
                         rmFunc={removeSpot}
                         editFunc={toEditSpot}
@@ -435,13 +415,13 @@ export default function SavedScreen({ navigation, route }) {
                         title={spot.title}
                         loc={spot.loc}
                         time={spot.time}
-                        fav={true}
+                        fav={spot.fav}
                       ></Spot>
                     );
                   })
               : spotArr.map((spot, i) => (
                   <Spot
-                    key={i}
+                    key={generateID(spot, i)}
                     rmIdx={spot.idx}
                     rmFunc={removeSpot}
                     editFunc={toEditSpot}
