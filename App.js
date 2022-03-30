@@ -12,7 +12,8 @@ import LoginScreen from "./screens/LoginScreen";
 import { MenuProvider } from "react-native-popup-menu";
 
 const Stack = createNativeStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+
+
 
 export default function App() {
   return (

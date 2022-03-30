@@ -4,14 +4,14 @@ import { COLORS } from "../components/Colors";
 import { MaterialCommunityIcons, MaterialIcons, AntDesign } from '@expo/vector-icons'; 
 
 
-export default function SettingsScreen() {
+export default function SettingsScreen({navigation}) {
     return (
         <View style={{ flex: 1}}>
             <View style={{ alignItems: 'center', marginTop: '16%', height: 50}}>
                 <Text style={styles.pageTitle}>Settings</Text>
             </View>
 
-            <TouchableOpacity activeOpacity={.4} style={styles.option}>
+            <TouchableOpacity activeOpacity={.4} style={styles.option} onPress={() => navigation.navigate("Account")}>
                 <MaterialCommunityIcons name="account-circle-outline" size={24} color={COLORS.green_theme}  style={{flex: 1}}/>
                 <Text style={styles.optionText}>Account</Text>
                 <MaterialIcons name="arrow-forward-ios" size={24} color={COLORS.green_theme}  style={{flex: 1}}/>
