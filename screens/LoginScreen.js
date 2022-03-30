@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import CustomButton from "../components/Button"
+import { useForm, Controller } from "react-hook-form";
 
 
 export default function LoginScreen ({navigation}) {
@@ -30,12 +31,12 @@ export default function LoginScreen ({navigation}) {
 
 
     return(
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={300}
             style={{flex: 1}}
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.center}>
                         <Image
                             style={styles.logo}
@@ -70,8 +71,8 @@ export default function LoginScreen ({navigation}) {
                         )}
                         
                 </SafeAreaView>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
     );
 
 }
