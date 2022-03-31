@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableHighlightBase } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableHighlightBase, StatusBar } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import MapModal from '../components/MapModal';
 import Modal from 'react-native-modal';
+import { BlurView } from 'expo-blur';
+
+
 
 const { height, width } = Dimensions.get( 'window' );
 const LATITUDE = 36.174465; // Nashville, TN
@@ -58,6 +61,7 @@ class HomeScreen extends React.Component {
     render() {
         return (
             <View style={styles.center}>
+                <BlurView intensity={100} style={styles.statusBarBlur}/>
                 <MapView style={styles.map}
                     ref = {(ref) => {this.mapRef = ref}}
                     initialRegion = {{
@@ -118,50 +122,6 @@ class HomeScreen extends React.Component {
 
 }
 
-// export default function HomeScreen() {
-
-//     const [modalVisible, setModalVisible] = React.useState(false)
-//     const mapRef = React.useRef(null)
-
-
-//     return (
-//         <View style={styles.center}>
-//             <MapView style={styles.map}
-//                 ref = {mapRef}
-//                 initialRegion = {{
-//                     latitude: LATITUDE,
-//                     longitude: LONGITUDE,
-//                     latitudeDelta: LATITUDE_DELTA,
-//                     longitudeDelta: LONGITUDE_DELTA,
-//                     showCompass: false,
-//                     maxZoomLevel: 20
-//                 }}
-//             >
-//                 {markers.map((spot, index) => (
-//                     <Marker
-//                         key={index}
-//                         coordinate={{latitude: spot.latitude, longitude: spot.longitude}}
-//                         onPress={ () => {
-//                             console.log(`marker ${spot.name} pressed`)
-//                             setModalVisible(true)
-//                             mapRef.fitToSuppliedMarkers(spot)
-                        
-//                         }}
-//                     />
-//                 ))}
-//             </MapView> 
-//             <Modal
-//                 style={styles.modal}
-//                 visible={modalVisible}
-//                 onBackdropPress= {() => setModalVisible(false)}
-//                 animationType='fade'
-//             >
-//                 <MapModal/>
-//             </Modal>
-//          </View>
-//     );
-// }
-
 const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
@@ -176,9 +136,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor: 'blue',
-    }
-
-
+    },
+    statusBarBlur: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 40
+      }
 });
 
 

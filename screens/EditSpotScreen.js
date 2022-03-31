@@ -12,6 +12,9 @@ import {
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
+import * as Location from "expo-location"
+import Button from "../components/Button";
+
 
 // TODO:
 // 1. Time availability design (checkout modal)
@@ -60,6 +63,24 @@ export default function EditSpotScreen({ route, navigation }) {
     }
   };
 
+
+  const getLocation = async () => {
+    let status = await Location.requestForegroundPermissionsAsync() //use status for debugging
+    let coords = await Location.getCurrentPositionAsync()
+
+
+    
+    console.log(coords)
+  }
+
+
+
+
+
+
+
+
+
   return (
     // Make keyboard disappear when clicked in blank spot
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -88,7 +109,10 @@ export default function EditSpotScreen({ route, navigation }) {
               marginRight: "7%",
             }}
             activeOpacity={0.8}
-            onPressOut={toCamera}
+            onPressOut={() => {
+              toCamera()
+              getLocation()
+            }}
           >
             <View>
               <Feather name="camera" size={40} color={COLORS.green_theme} />
@@ -152,6 +176,7 @@ export default function EditSpotScreen({ route, navigation }) {
         >
           <Text style={styles.saveBtnTxt}>Save</Text>
         </TouchableOpacity>
+
       </View>
     </TouchableWithoutFeedback>
   );

@@ -78,7 +78,7 @@ export default function LoginScreen ({navigation}) {
                         name="email"
                         rules={{
                             required: true,
-                            pattern: emailRegex, //todo uncomment this for prod
+                            // pattern: emailRegex, //todo uncomment this for prod
                         }}
                         render={({field: { onChange, value } }) => (
                             <TextInput
