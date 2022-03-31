@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback } from 'react-native';
 import CustomButton from "../components/Button"
 import { useForm, Controller } from "react-hook-form";
+import { COLORS } from "../components/Colors";
 
 const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
@@ -64,12 +65,26 @@ export default function LoginScreen ({navigation}) {
                         />
                         <Text style={styles.text}>Please enter your username and password to proceed</Text>
 
+                        <View style={{position: 'absolute', alignItems: 'center', top: "95%"}}>
+                            {((errors.email && errors.email.type === "required") ||
+                                (errors.password && errors.password.type === "required")) && (
+                                <Text style={styles.errorMsg}>Both fields are required.</Text>
+                            )}
+                            {((errors.email && errors.email.type === "pattern") ||
+                                (errors.password && errors.password.type === "pattern")) && (
+                                <Text style={styles.errorMsg}>
+                                Format error: alphanumeric and comma only.
+                                </Text>
+                            )}
+                        </View>
+
+
                         <Controller
                             control={control}
                             name="email"
                             rules={{
                                 required: true,
-                                // pattern: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
+                                pattern: emailRegex, //todo uncomment this for prod
                             }}
                             render={({field: { onChange, value } }) => (
                                 <TextInput
@@ -102,7 +117,7 @@ export default function LoginScreen ({navigation}) {
                         {!isKeyboardVisible && ( 
                             <View style= {{top: '60%'}}>
                                 <View >
-                                    <CustomButton title='Login' callback={handleSubmit(onLogin, (e) => console.log(e))} height={50}/>    
+                                    <CustomButton title='Login' callback={handleSubmit(onLogin)} height={50}/>    
                                 </View>
                                 <View style={{top: '5%'}}>
                                     <CustomButton title='Signup' height= {50} />    
@@ -122,7 +137,6 @@ const styles = StyleSheet.create({
     center: {
         justifyContent: 'center',
         alignItems: 'center'
-        
     },
     logo: {
         top: 40
@@ -130,7 +144,7 @@ const styles = StyleSheet.create({
     text: {
         width: '80%',
         maxWidth: 330,
-        top: '25%',
+        top: '20%',
         fontWeight: 'bold',
         fontSize: 23,
         textAlign: 'center'
@@ -144,12 +158,11 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 0
     },
-    loginButton:{
-        
-    },
-    signupButton:{
-        
-    },
+    errorMsg: {
+        color: COLORS.red_theme,
+        fontWeight: "300",
+        top: '5%',
+      },
 
 
 });
