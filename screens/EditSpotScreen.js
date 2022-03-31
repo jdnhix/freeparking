@@ -39,6 +39,7 @@ export default function EditSpotScreen({ route, navigation }) {
       loc: route.params?.origSpot ? route.params.origSpot.loc : "",
     },
   });
+  
   const onSubmit = (data) => {
     if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
