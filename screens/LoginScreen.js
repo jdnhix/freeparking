@@ -52,82 +52,75 @@ export default function LoginScreen ({navigation}) {
 
 
     return(
-        <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={300}
-            style={{flex: 1}}
-        >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <SafeAreaView style={styles.center}>
-                        <Image
-                            style={styles.logo}
-                            source={require('../assets/logo.png')}
-                        />
-                        <Text style={styles.text}>Please enter your username and password to proceed</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.center}>
+                    <Image
+                        style={styles.logo}
+                        source={require('../assets/logo.png')}
+                    />
+                    <Text style={styles.text}>Please enter your username and password to proceed</Text>
 
-                        <View style={{position: 'absolute', alignItems: 'center', top: "95%"}}>
-                            {((errors.email && errors.email.type === "required") ||
-                                (errors.password && errors.password.type === "required")) && (
-                                <Text style={styles.errorMsg}>Both fields are required.</Text>
-                            )}
-                            {((errors.email && errors.email.type === "pattern") ||
-                                (errors.password && errors.password.type === "pattern")) && (
-                                <Text style={styles.errorMsg}>
-                                Format error: alphanumeric and comma only.
-                                </Text>
-                            )}
-                        </View>
-
-
-                        <Controller
-                            control={control}
-                            name="email"
-                            rules={{
-                                required: true,
-                                pattern: emailRegex, //todo uncomment this for prod
-                            }}
-                            render={({field: { onChange, value } }) => (
-                                <TextInput
-                                style={[styles.input, {top: "45%"}]}
-                                onChangeText={onChange}
-                                placeholder='Email'
-                                value={value}
-                                keyboardType='email-address'
-                                /> 
-                            )}
-                        />
-
-                        <Controller
-                            control={control}
-                            name="password"
-                            rules={{
-                                required: true,
-                            }}
-                            render={({field: { onChange, value } }) => (
-                                <TextInput
-                                style={[styles.input, {top: "47%"}]}
-                                onChangeText={onChange}
-                                placeholder='Password'
-                                value={value}
-                                keyboardType='default'
-                            /> 
-                            )}
-                        />
-
-                        {!isKeyboardVisible && ( 
-                            <View style= {{top: '60%'}}>
-                                <View >
-                                    <CustomButton title='Login' callback={handleSubmit(onLogin)} height={50}/>    
-                                </View>
-                                <View style={{top: '5%'}}>
-                                    <CustomButton title='Signup' height= {50} />    
-                                </View>
-                            </View>  
+                    <View style={{position: 'absolute', alignItems: 'center', top: "75%"}}>
+                        {((errors.email && errors.email.type === "required") ||
+                            (errors.password && errors.password.type === "required")) && (
+                            <Text style={styles.errorMsg}>Both fields are required.</Text>
                         )}
-                        
-                </SafeAreaView>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+                        {((errors.email && errors.email.type === "pattern")) && (
+                            <Text style={styles.errorMsg}>
+                            Format error: incorrect email pattern.
+                            </Text>
+                        )}
+                    </View>
+
+
+                    <Controller
+                        control={control}
+                        name="email"
+                        rules={{
+                            required: true,
+                            pattern: emailRegex, //todo uncomment this for prod
+                        }}
+                        render={({field: { onChange, value } }) => (
+                            <TextInput
+                            style={[styles.input, {top: "23%"}]}
+                            onChangeText={onChange}
+                            placeholder='Email'
+                            value={value}
+                            keyboardType='email-address'
+                            /> 
+                        )}
+                    />
+
+                    <Controller
+                        control={control}
+                        name="password"
+                        rules={{
+                            required: true,
+                        }}
+                        render={({field: { onChange, value } }) => (
+                            <TextInput
+                            style={[styles.input, {top: "23%"}]}
+                            onChangeText={onChange}
+                            placeholder='Password'
+                            value={value}
+                            keyboardType='default'
+                        /> 
+                        )}
+                    />
+
+                    {/* {!isKeyboardVisible && (  */}
+                        <View style= {{top: '40%'}}>
+                            <View >
+                                <CustomButton title='Login' callback={handleSubmit(onLogin)} height={50}/>    
+                            </View>
+                            <View style={{top: '10%'}}>
+                                <CustomButton title='Signup' height= {50} />    
+                            </View>
+                        </View>  
+                    {/* )} */}
+                    
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
     );
 
 }
@@ -139,25 +132,34 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     logo: {
-        top: 40
+        top: 20
     },
     text: {
         width: '80%',
         maxWidth: 330,
-        top: '20%',
-        fontWeight: 'bold',
-        fontSize: 23,
+        top: '5%',
+        fontWeight: "500",
+        fontSize: 21,
         textAlign: 'center'
     },
+    // input: {
+    //     width: '80%',
+    //     maxWidth: 273,
+    //     height: 50,
+    //     backgroundColor: '#c4c4c4',
+    //     borderRadius: 10,
+    //     padding: 10,
+    //     margin: 0
+    // },
     input: {
-        width: '80%',
-        maxWidth: 273,
-        height: 50,
-        backgroundColor: '#c4c4c4',
-        borderRadius: 10,
-        padding: 10,
-        margin: 0
-    },
+        fontSize: 20,
+        color: COLORS.green_theme,
+        borderBottomColor: COLORS.green_theme,
+        borderBottomWidth: 2,
+        width: "55%",
+        height: 40,
+        marginBottom: 20,
+      },
     errorMsg: {
         color: COLORS.red_theme,
         fontWeight: "300",
