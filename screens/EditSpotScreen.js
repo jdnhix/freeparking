@@ -12,12 +12,10 @@ import {
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
-import * as Location from "expo-location"
+import * as Location from "expo-location";
 import Button from "../components/Button";
 import TimeModal from "../components/TimeModal";
-import Modal from 'react-native-modal';
-
-
+import Modal from "react-native-modal";
 
 // TODO:
 // 1. Time availability design (checkout modal)
@@ -45,7 +43,7 @@ export default function EditSpotScreen({ route, navigation }) {
       loc: route.params?.origSpot ? route.params.origSpot.loc : "",
     },
   });
-  
+
   const onSubmit = (data) => {
     if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
@@ -66,14 +64,15 @@ export default function EditSpotScreen({ route, navigation }) {
     }
   };
 
-
   // testing geolocation functionality, ignore this for now - Jaden
   const getLocation = async () => {
-    let status = await Location.requestForegroundPermissionsAsync() //use status for debugging
-    let coords = await Location.getCurrentPositionAsync()
+    let status = await Location.requestForegroundPermissionsAsync(); //use status for debugging
+    let coords = await Location.getCurrentPositionAsync();
 
-    console.log(coords)
-  }
+    console.log(coords);
+  };
+
+  const [modalVisible, setModalVisible] = React.useState("false");
 
   return (
     // Make keyboard disappear when clicked in blank spot
@@ -104,8 +103,8 @@ export default function EditSpotScreen({ route, navigation }) {
             }}
             activeOpacity={0.8}
             onPressOut={() => {
-              toCamera()
-              getLocation()
+              toCamera();
+              getLocation();
             }}
           >
             <View>
@@ -163,8 +162,14 @@ export default function EditSpotScreen({ route, navigation }) {
           )}
         </View>
 
-
         {/* todo Check out DateTimePicker Expo */}
+
+        <View style={styles.timeAvailView}>
+          <Text style={{ fontSize: 20 }}>Availability:</Text>
+          <TouchableOpacity>
+            <Text style={styles.timeText}>+ Add Time Slot</Text>
+          </TouchableOpacity>
+        </View>
 
         <TouchableOpacity
           style={styles.saveBtn}
@@ -173,15 +178,9 @@ export default function EditSpotScreen({ route, navigation }) {
           <Text style={styles.saveBtnTxt}>Save</Text>
         </TouchableOpacity>
 
-        <Modal 
-          style={styles.modal}
-          visible={true}
-        >
-          <TimeModal/>
+        <Modal style={styles.modal} visible={modalVisible}>
+          <TimeModal />
         </Modal>
-
-      
-
       </View>
     </TouchableWithoutFeedback>
   );
@@ -231,13 +230,24 @@ const styles = StyleSheet.create({
     color: COLORS.red_theme,
     fontWeight: "300",
   },
+
   modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'blue',
-    width: 100,
-    zIndex: 4,
-    position: 'absolute'
-  }
-  
+    justifyContent: "center",
+    alignItems: "center",
+    // position: 'absolute',
+    backgroundColor: "blue",
+  },
+
+  timeAvailView: {
+    // backgroundColor: "red",
+    alignItems: "flex-start",
+    height: 200,
+    paddingLeft: 65,
+    marginTop: 20,
+  },
+  timeText: {
+    fontSize: 20,
+    margin: 15,
+    color: COLORS.green_theme,
+  },
 });

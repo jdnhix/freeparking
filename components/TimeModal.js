@@ -7,27 +7,22 @@ export default function TimeModal(props) {
     return (
         <View style={styles.modal}>
             <Text>HIIIiiiii</Text>
-
-
-
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     modal: {
-        width: 300,
-        height: 300,
-        backgroundColor: 'red',
+        width: 340,
+        height: 250,
+        backgroundColor: 'white',
         position: 'absolute',
-        top: "15%",
-        left: "20%",
+        top: "25%",
         borderRadius: 20,
         flex: 1,
         padding: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'blue'
 
     }
 })
