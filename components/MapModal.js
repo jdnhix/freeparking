@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Modal, useEffect } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, useEffect } from 'react-native';
 import Position from 'react-native/Libraries/Components/Touchable/Position';
 import { COLORS } from "../components/Colors";
 import { createOpenLink } from "react-native-open-maps";

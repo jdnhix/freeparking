@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     modal: {
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'blue',
     },
     statusBarBlur: {
         position: 'absolute',

@@ -14,6 +14,9 @@ import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location"
 import Button from "../components/Button";
+import TimeModal from "../components/TimeModal";
+import Modal from 'react-native-modal';
+
 
 
 // TODO:
@@ -64,22 +67,13 @@ export default function EditSpotScreen({ route, navigation }) {
   };
 
 
+  // testing geolocation functionality, ignore this for now - Jaden
   const getLocation = async () => {
     let status = await Location.requestForegroundPermissionsAsync() //use status for debugging
     let coords = await Location.getCurrentPositionAsync()
 
-
-    
     console.log(coords)
   }
-
-
-
-
-
-
-
-
 
   return (
     // Make keyboard disappear when clicked in blank spot
@@ -168,7 +162,9 @@ export default function EditSpotScreen({ route, navigation }) {
             </Text>
           )}
         </View>
-        {/* Check out DateTimePicker Expo */}
+
+
+        {/* todo Check out DateTimePicker Expo */}
 
         <TouchableOpacity
           style={styles.saveBtn}
@@ -176,6 +172,15 @@ export default function EditSpotScreen({ route, navigation }) {
         >
           <Text style={styles.saveBtnTxt}>Save</Text>
         </TouchableOpacity>
+
+        <Modal 
+          style={styles.modal}
+          visible={true}
+        >
+          <TimeModal/>
+        </Modal>
+
+      
 
       </View>
     </TouchableWithoutFeedback>
@@ -226,4 +231,13 @@ const styles = StyleSheet.create({
     color: COLORS.red_theme,
     fontWeight: "300",
   },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'blue',
+    width: 100,
+    zIndex: 4,
+    position: 'absolute'
+  }
+  
 });
