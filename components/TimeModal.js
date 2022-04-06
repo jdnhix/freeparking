@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  useEffect,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../components/Colors";
 import DayCheckbox from "./DayCheckbox";
 
@@ -39,14 +32,6 @@ export default function TimeModal() {
             />
           );
         })}
-
-        {/* <DayCheckbox letter="M" />
-        <DayCheckbox letter="T" />
-        <DayCheckbox letter="W" />
-        <DayCheckbox letter="R" />
-        <DayCheckbox letter="F" />
-        <DayCheckbox letter="S" />
-        <DayCheckbox letter="U" /> */}
       </View>
       <View style={styles.timeSection}>
         <Text style={styles.text}>Start: 2:00 PM</Text>
