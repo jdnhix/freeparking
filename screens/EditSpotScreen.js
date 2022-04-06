@@ -72,12 +72,17 @@ export default function EditSpotScreen({ route, navigation }) {
     console.log(coords);
   };
 
-  const [modalVisible, setModalVisible] = React.useState("false");
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
     // Make keyboard disappear when clicked in blank spot
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+          // backgroundColor: modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)", //todo this background shift is a little janky right now
+        }}
+      >
         {/* The top two icons */}
         <View style={styles.topBar}>
           <TouchableOpacity
@@ -166,7 +171,7 @@ export default function EditSpotScreen({ route, navigation }) {
 
         <View style={styles.timeAvailView}>
           <Text style={{ fontSize: 20 }}>Availability:</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.timeText}>+ Add Time Slot</Text>
           </TouchableOpacity>
         </View>
@@ -178,7 +183,15 @@ export default function EditSpotScreen({ route, navigation }) {
           <Text style={styles.saveBtnTxt}>Save</Text>
         </TouchableOpacity>
 
-        <Modal style={styles.modal} visible={modalVisible}>
+        <Modal
+          visible={modalVisible}
+          onBackdropPress={() => setModalVisible(false)}
+          animationType={"fade"}
+          // transparent={true}
+          hasBackdrop={true}
+          backdropOpacity={10}
+          backdropColor={"rgba(255, 0, 0, 0.8)"}
+        >
           <TimeModal />
         </Modal>
       </View>
@@ -203,7 +216,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    elevation: 3,
   },
   // Add spot button text
   saveBtnTxt: {
@@ -231,15 +243,7 @@ const styles = StyleSheet.create({
     fontWeight: "300",
   },
 
-  modal: {
-    justifyContent: "center",
-    alignItems: "center",
-    // position: 'absolute',
-    backgroundColor: "blue",
-  },
-
   timeAvailView: {
-    // backgroundColor: "red",
     alignItems: "flex-start",
     height: 200,
     paddingLeft: 65,
