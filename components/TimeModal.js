@@ -1,7 +1,8 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "../components/Colors";
 import DayCheckbox from "./DayCheckbox";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const DAYS = ["M", "T", "W", "R", "F", "S", "U"];
 
@@ -10,12 +11,24 @@ export default function TimeModal() {
     new Array(DAYS.length).fill(false)
   );
 
+  const [startTime, setStartTime] = React.useState(new Date(0, 0, 0));
+  const [endTime, setEndTime] = React.useState(new Date(0, 0, 0));
+
+  const onChangeStartTime = (event, time) => {
+    setStartTime(time);
+    // console.log(startTime);
+  };
+
+  const onChangeEndTime = (event, time) => {
+    setEndTime(time);
+    // console.log(endTime);
+  };
+
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((day, index) =>
       index === position ? !day : day
     );
 
-    console.log(updatedCheckedState);
     setCheckedState(updatedCheckedState);
   };
 
@@ -33,10 +46,30 @@ export default function TimeModal() {
           );
         })}
       </View>
-      <View style={styles.timeSection}>
-        <Text style={styles.text}>Start: 2:00 PM</Text>
-        <Text style={styles.text}>End: 3:00 PM</Text>
+
+      <View style={[styles.timeSection, { marginTop: 15 }]}>
+        <Text style={styles.text}>Start:</Text>
+        <DateTimePicker
+          style={{ width: 100 }}
+          mode={"time"}
+          value={startTime}
+          onChange={onChangeStartTime}
+        />
       </View>
+
+      <View style={styles.timeSection}>
+        <Text style={styles.text}>End:</Text>
+        <DateTimePicker
+          style={{ width: 100 }}
+          mode={"time"}
+          value={endTime}
+          onChange={onChangeEndTime}
+        />
+      </View>
+
+      <TouchableOpacity>
+        <Text style={styles.addTimeText}>+ Add Another Time</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -65,6 +98,16 @@ const styles = StyleSheet.create({
   },
 
   timeSection: {
-    marginTop: 20,
+    width: 150,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  addTimeText: {
+    fontSize: 20,
+    marginTop: 15,
+    color: COLORS.green_theme,
+    textDecorationLine: "underline",
   },
 });
