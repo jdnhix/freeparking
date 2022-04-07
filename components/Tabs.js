@@ -1,12 +1,30 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import SavedScreen from '../screens/SavedScreen'
+import AccountSettingsScreen from '../screens/AccountSettingsScreen'
+
 
 
 
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+
+const SettingsStackNavigator = () => {
+    return (
+        <Stack.Navigator
+            initialRouteName="Main"
+            screenOptions={{ headerShown: false }}
+        >
+            <Stack.Screen name="Main" component={SettingsScreen}/>
+            <Stack.Screen name="Account" component={AccountSettingsScreen}/>
+            {/* <Stack.Screen name="Security" component={}/> */}
+        </Stack.Navigator>
+    )
+}
 
 export default function Tabs() {
     return (
@@ -38,7 +56,7 @@ export default function Tabs() {
             />
             <Tab.Screen
                 name='Settings'
-                component={SettingsScreen}
+                component={SettingsStackNavigator}
                 options={{
                     tabBarLabel: 'Settings',
                     tabBarIcon: ({color}) => (
