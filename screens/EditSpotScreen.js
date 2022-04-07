@@ -13,7 +13,6 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
-import Button from "../components/Button";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
 
@@ -166,8 +165,6 @@ export default function EditSpotScreen({ route, navigation }) {
             </Text>
           )}
         </View>
-
-        {/* todo Check out DateTimePicker Expo */}
 
         <View style={styles.timeAvailView}>
           <Text style={{ fontSize: 20 }}>Availability:</Text>

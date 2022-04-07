@@ -343,7 +343,7 @@ export default function SavedScreen({ navigation, route }) {
               {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
               <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
               <MenuOption
-                text="Show Favourite"
+                text="Show Favorite"
                 onSelect={() => {
                   setShowFav(true);
                 }}
