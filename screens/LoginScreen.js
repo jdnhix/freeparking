@@ -1,8 +1,3 @@
-import React from "react";
-import { View, Text, Keyboard, StyleSheet, SafeAreaView, Image, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Alert, Button } from 'react-native';
-import CustomButton from "../components/Button";
-import { useAuth } from "../providers/AuthProvider";
-import * as React from "react";
 import {
   View,
   Text,
@@ -11,11 +6,12 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import CustomButton from "../components/Button";
-import { useForm, Controller } from "react-hook-form";
+import { useAuth } from "../providers/AuthProvider";
+import * as React from "react";
 import { COLORS } from "../components/Colors";
 
 const emailRegex =
@@ -26,57 +22,57 @@ export default function LoginScreen({ navigation }) {
   // const [password, onChangePassword] = React.useState("");
   const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
 
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const { user, signUp, signIn } = useAuth();
-    //const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const { user, signUp, signIn } = useAuth();
+  //const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
 
-    React.useEffect(() => {
-        if (user != null) {
-            navigation.navigate("Tabs");
-        }
+  React.useEffect(() => {
+    if (user != null) {
+      navigation.navigate("Tabs");
+    }
 
-        // const keyboardDidShowListener = Keyboard.addListener(
-        //     'keyboardDidShow',
-        //     () => {
-        //     setKeyboardVisible(true); 
-        //     }
-        // );
-        // const keyboardDidHideListener = Keyboard.addListener(
-        //     'keyboardDidHide',
-        //     () => {
-        //     setKeyboardVisible(false);
-        //     }
-        // );
-   
-        // return () => {
-        //     keyboardDidHideListener.remove();
-        //     keyboardDidShowListener.remove();
-        // };
-    }, [user]);
+    // const keyboardDidShowListener = Keyboard.addListener(
+    //     'keyboardDidShow',
+    //     () => {
+    //     setKeyboardVisible(true);
+    //     }
+    // );
+    // const keyboardDidHideListener = Keyboard.addListener(
+    //     'keyboardDidHide',
+    //     () => {
+    //     setKeyboardVisible(false);
+    //     }
+    // );
 
-    const onPressSignIn = async () => {
-        console.log("Trying sign in with user: " + email);
-        try {
-            await signIn(email, password);
-        } catch (error) {
-            const errorMessage = `Failed to sign in: ${error.message}`;
-            console.error(errorMessage);
-            Alert.alert(errorMessage);
-        }
-    };
+    // return () => {
+    //     keyboardDidHideListener.remove();
+    //     keyboardDidShowListener.remove();
+    // };
+  }, [user]);
 
-    const onPressSignUp = async () => {
-        console.log("Trying signup with user: " + email);
-        try {
-            await signUp(email, password);
-            signIn(email, password);
-        } catch (error) {
-            const errorMessage = `Failed to sign up: ${error.message}`;
-            console.error(errorMessage);
-            Alert.alert(errorMessage);
-        }
-    };
+  const onPressSignIn = async () => {
+    console.log("Trying sign in with user: " + email);
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      const errorMessage = `Failed to sign in: ${error.message}`;
+      console.error(errorMessage);
+      Alert.alert(errorMessage);
+    }
+  };
+
+  const onPressSignUp = async () => {
+    console.log("Trying signup with user: " + email);
+    try {
+      await signUp(email, password);
+      signIn(email, password);
+    } catch (error) {
+      const errorMessage = `Failed to sign up: ${error.message}`;
+      console.error(errorMessage);
+      Alert.alert(errorMessage);
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -85,33 +81,35 @@ export default function LoginScreen({ navigation }) {
         <Text style={styles.text}>
           Please enter your username and password to proceed
         </Text>
-        
-            <TextInput
-              style={[styles.input, { top: "23%" }]}
-              onChangeText={onChange}
-              placeholder="Email"
-              value={value}
-              keyboardType="email-address"
-            />
 
+        <TextInput
+          style={[styles.input, { top: "23%" }]}
+          onChangeText={(text) => setEmail(text)}
+          placeholder="Email"
+          value={email}
+          keyboardType="email-address"
+        />
 
-            <TextInput
-              style={[styles.input, { top: "23%" }]}
-              onChangeText={onChange}
-              placeholder="Password"
-              value={value}
-              keyboardType="default"
-              secureTextEntry
-            />
- 
+        <TextInput
+          style={[styles.input, { top: "23%" }]}
+          onChangeText={(text) => setPassword(text)}
+          placeholder="Password"
+          value={password}
+          keyboardType="default"
+          secureTextEntry
+        />
 
         {/* {!isKeyboardVisible && (  */}
         <View style={{ top: "40%" }}>
           <View>
-          <CustomButton callback={onPressSignIn} title="Login" height={50}/>
+            <CustomButton callback={onPressSignIn} title="Login" height={50} />
           </View>
           <View style={{ top: "10%" }}>
-          <CustomButton callback={onPressSignUp} title="Sign up" height={50} />
+            <CustomButton
+              callback={onPressSignUp}
+              title="Sign up"
+              height={50}
+            />
           </View>
         </View>
         {/* )} */}
