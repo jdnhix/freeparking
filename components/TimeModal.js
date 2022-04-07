@@ -24,7 +24,7 @@ export default function TimeModal() {
     // console.log(endTime);
   };
 
-  const handleOnChange = (position) => {
+  const handleOnChangeDay = (position) => {
     const updatedCheckedState = checkedState.map((day, index) =>
       index === position ? !day : day
     );
@@ -41,7 +41,7 @@ export default function TimeModal() {
             <DayCheckbox
               letter={letter}
               checked={checkedState[index]}
-              onChange={() => handleOnChange(index)}
+              onChange={() => handleOnChangeDay(index)}
             />
           );
         })}
