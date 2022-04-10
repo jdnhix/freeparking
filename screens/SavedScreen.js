@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
@@ -17,10 +18,7 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
-
-// TODO:
-//  2. All/favourite/sort in the meny icon (another pop-up?)
-//  3. Search screen
+import { SearchBar } from "@rneui/themed";
 
 // Component for each saved spot
 function Spot(props) {
@@ -150,31 +148,7 @@ export default function SavedScreen({ navigation, route }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
 
-  // route.params.newSpot is an Object received from EditSpotScreen containing
-  // information for a new Spot to be added. So far it contains title: "a title"
-  // and loc: "location". Will need to add time in some format later
-
-  // route.params.origSpot is an Object sent to EditSpotScreen containing
-  // information for an existing Spot.
-
-  // route.params.editSpot is an Object received from EditSpotScreen containing
-  // updated information for an existing Spot.
-
-  // Handle received newSpot information
-  useEffect(() => {
-    if (route.params?.newSpot) {
-      addSpot(route.params.newSpot);
-    }
-  }, [route.params?.newSpot]);
-
-  // Handle updated information on an existing spot
-  useEffect(() => {
-    if (route.params?.editSpot) {
-      editSpot(route.params.editSpot);
-    }
-  }, [route.params?.editSpot]);
-
-  const [spotArr, setSpotArr] = useState([
+  const initArr = [
     {
       title: "Vanderbilt",
       loc: "2301 Vanderbilt Place",
@@ -224,7 +198,37 @@ export default function SavedScreen({ navigation, route }) {
       fav: false,
       idx: 6,
     },
-  ]);
+  ];
+
+  // route.params.newSpot is an Object received from EditSpotScreen containing
+  // information for a new Spot to be added. So far it contains title: "a title"
+  // and loc: "location". Will need to add time in some format later
+
+  // route.params.origSpot is an Object sent to EditSpotScreen containing
+  // information for an existing Spot.
+
+  // route.params.editSpot is an Object received from EditSpotScreen containing
+  // updated information for an existing Spot.
+
+  // Handle received newSpot information
+  useEffect(() => {
+    if (route.params?.newSpot) {
+      addSpot(route.params.newSpot);
+    }
+  }, [route.params?.newSpot]);
+
+  // Handle updated information on an existing spot
+  useEffect(() => {
+    if (route.params?.editSpot) {
+      editSpot(route.params.editSpot);
+    }
+  }, [route.params?.editSpot]);
+
+  const [spotArr, setSpotArr] = useState(
+    initArr.map((spot) => {
+      return { ...spot };
+    })
+  );
 
   // Generate ID for the Spots list.
   // Can delete after backend is ready
@@ -237,6 +241,12 @@ export default function SavedScreen({ navigation, route }) {
 
   // Make the spots scrollable or not
   const [scroll, setScroll] = useState(false);
+
+  const [showSearch, setShowSearch] = useState(false);
+
+  const [query, setQuery] = useState("");
+
+  const search = useRef(null);
 
   // Styles for the dropdown menu
   const menuStyles = {
@@ -254,8 +264,16 @@ export default function SavedScreen({ navigation, route }) {
     },
   };
 
-  const toSearch = () => {
-    console.log("Search");
+  // Show search bar or not. The search icon and "Cancel" call this function
+  // Clears the search query so there won't be issues displaying all the spots
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    setQuery("");
+  };
+
+  // Updates search query
+  const updateQuery = (query) => {
+    setQuery(query);
   };
 
   // navigate to EditSpotScreen for adding a Spot
@@ -324,60 +342,87 @@ export default function SavedScreen({ navigation, route }) {
     setSpotArr(tmpSpots);
   };
 
+  const filterSearch = (spot) => {
+    return (
+      spot.title.toLowerCase().includes(query.toLowerCase()) ||
+      spot.loc.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.topBar}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "flex-start",
-            justifyContent: "center",
-            marginLeft: "4%",
-          }}
-        >
-          <Menu>
-            <MenuTrigger>
-              <Ionicons name="ios-menu" size={40} color={COLORS.green_theme} />
-            </MenuTrigger>
-            <MenuOptions customStyles={menuStyles}>
-              {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
+      {showSearch ? (
+        <SearchBar
+          ref={search}
+          containerStyle={styles.searchBar}
+          lightTheme={true}
+          platform={Platform.OS}
+          showCancel={true}
+          cancelButtonTitle="Cancel"
+          onCancel={toggleSearch}
+          inputStyle={styles.searchBarInput}
+          placeholder="Type title/address..."
+          onChangeText={updateQuery}
+          value={query}
+        />
+      ) : (
+        <View style={styles.topBar}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "flex-start",
+              justifyContent: "center",
+              marginLeft: "4%",
+            }}
+          >
+            <Menu>
+              <MenuTrigger>
+                <Ionicons
+                  name="ios-menu"
+                  size={40}
+                  color={COLORS.green_theme}
+                />
+              </MenuTrigger>
+              <MenuOptions customStyles={menuStyles}>
+                {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
               <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
-              <MenuOption
-                text="Show Favorite"
-                onSelect={() => {
-                  setShowFav(true);
-                }}
-              />
-              <MenuOption
-                text="Show All"
-                onSelect={() => {
-                  setShowFav(false);
-                }}
-              />
-            </MenuOptions>
-          </Menu>
-        </View>
-
-        <View
-          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={styles.pageTitle}>Saved Spots</Text>
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPressOut={toSearch}
-          style={{
-            flex: 1,
-            alignItems: "flex-end",
-            justifyContent: "center",
-            marginRight: "5%",
-          }}
-        >
-          <View>
-            <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+                <MenuOption
+                  text="Show Favorite"
+                  onSelect={() => {
+                    setShowFav(true);
+                  }}
+                />
+                <MenuOption
+                  text="Show All"
+                  onSelect={() => {
+                    setShowFav(false);
+                  }}
+                />
+              </MenuOptions>
+            </Menu>
           </View>
-        </TouchableOpacity>
-      </View>
+
+          <View
+            style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
+          >
+            <Text style={styles.pageTitle}>Saved Spots</Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPressOut={toggleSearch}
+            style={{
+              flex: 1,
+              alignItems: "flex-end",
+              justifyContent: "center",
+              marginRight: "5%",
+            }}
+          >
+            <View>
+              <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={{ flex: 1 }}>
         <View
@@ -400,9 +445,42 @@ export default function SavedScreen({ navigation, route }) {
             scrollEnabled={scroll}
             contentContainerStyle={styles.scrollSec}
           >
-            {showFav
-              ? spotArr
-                  .filter((spot) => spot.fav)
+            {query === ""
+              ? showFav
+                ? spotArr
+                    .filter((spot) => spot.fav)
+                    .map((spot, i) => {
+                      return (
+                        <Spot
+                          key={generateID(spot, i)}
+                          rmIdx={spot.idx}
+                          rmFunc={removeSpot}
+                          editFunc={toEditSpot}
+                          editFav={flipFav}
+                          style={styles.spot}
+                          title={spot.title}
+                          loc={spot.loc}
+                          time={spot.time}
+                          fav={spot.fav}
+                        ></Spot>
+                      );
+                    })
+                : spotArr.map((spot, i) => (
+                    <Spot
+                      key={generateID(spot, i)}
+                      rmIdx={spot.idx}
+                      rmFunc={removeSpot}
+                      editFunc={toEditSpot}
+                      editFav={flipFav}
+                      style={styles.spot}
+                      title={spot.title}
+                      loc={spot.loc}
+                      time={spot.time}
+                      fav={spot.fav}
+                    ></Spot>
+                  ))
+              : spotArr
+                  .filter((spot) => filterSearch(spot))
                   .map((spot, i) => {
                     return (
                       <Spot
@@ -418,21 +496,7 @@ export default function SavedScreen({ navigation, route }) {
                         fav={spot.fav}
                       ></Spot>
                     );
-                  })
-              : spotArr.map((spot, i) => (
-                  <Spot
-                    key={generateID(spot, i)}
-                    rmIdx={spot.idx}
-                    rmFunc={removeSpot}
-                    editFunc={toEditSpot}
-                    editFav={flipFav}
-                    style={styles.spot}
-                    title={spot.title}
-                    loc={spot.loc}
-                    time={spot.time}
-                    fav={spot.fav}
-                  ></Spot>
-                ))}
+                  })}
           </ScrollView>
         </View>
       </View>
@@ -458,6 +522,17 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: "13%",
     flexDirection: "row",
+  },
+  // Search bar styling
+  searchBar: {
+    height: 55,
+    marginTop: "13%",
+    justifyContent: "center",
+  },
+  // Seach bar input styling
+  searchBarInput: {
+    fontSize: 20,
+    justifyContent: "center",
   },
   // "Saved Spots" text styling
   pageTitle: {
