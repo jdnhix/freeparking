@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
 import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
@@ -17,9 +18,9 @@ import {
   MenuTrigger,
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
+import { SearchBar } from "@rneui/themed";
 
 // TODO:
-//  2. All/favourite/sort in the meny icon (another pop-up?)
 //  3. Search screen
 
 // Component for each saved spot
@@ -238,6 +239,12 @@ export default function SavedScreen({ navigation, route }) {
   // Make the spots scrollable or not
   const [scroll, setScroll] = useState(false);
 
+  const [showSearch, setShowSearch] = useState(false);
+
+  const [query, setQuery] = useState("");
+
+  const search = useRef(null);
+
   // Styles for the dropdown menu
   const menuStyles = {
     optionsContainer: {
@@ -254,8 +261,13 @@ export default function SavedScreen({ navigation, route }) {
     },
   };
 
-  const toSearch = () => {
-    console.log("Search");
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    setQuery("");
+  };
+
+  const updateQuery = (query) => {
+    setQuery(query);
   };
 
   // navigate to EditSpotScreen for adding a Spot
@@ -326,58 +338,78 @@ export default function SavedScreen({ navigation, route }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.topBar}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: "flex-start",
-            justifyContent: "center",
-            marginLeft: "4%",
-          }}
-        >
-          <Menu>
-            <MenuTrigger>
-              <Ionicons name="ios-menu" size={40} color={COLORS.green_theme} />
-            </MenuTrigger>
-            <MenuOptions customStyles={menuStyles}>
-              {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
+      {showSearch ? (
+        <SearchBar
+          ref={search}
+          containerStyle={styles.searchBar}
+          lightTheme={true}
+          platform={Platform.OS}
+          showCancel={true}
+          cancelButtonTitle="Cancel"
+          onCancel={toggleSearch}
+          inputStyle={styles.searchBarInput}
+          placeholder="Type here..."
+          onChangeText={updateQuery}
+          value={query}
+        />
+      ) : (
+        <View style={styles.topBar}>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "flex-start",
+              justifyContent: "center",
+              marginLeft: "4%",
+            }}
+          >
+            <Menu>
+              <MenuTrigger>
+                <Ionicons
+                  name="ios-menu"
+                  size={40}
+                  color={COLORS.green_theme}
+                />
+              </MenuTrigger>
+              <MenuOptions customStyles={menuStyles}>
+                {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
               <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
-              <MenuOption
-                text="Show Favourite"
-                onSelect={() => {
-                  setShowFav(true);
-                }}
-              />
-              <MenuOption
-                text="Show All"
-                onSelect={() => {
-                  setShowFav(false);
-                }}
-              />
-            </MenuOptions>
-          </Menu>
-        </View>
-
-        <View
-          style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
-        >
-          <Text style={styles.pageTitle}>Saved Spots</Text>
-        </View>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPressOut={toSearch}
-          style={{
-            flex: 1,
-            alignItems: "flex-end",
-            justifyContent: "center",
-            marginRight: "5%",
-          }}
-        >
-          <View>
-            <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+                <MenuOption
+                  text="Show Favourite"
+                  onSelect={() => {
+                    setShowFav(true);
+                  }}
+                />
+                <MenuOption
+                  text="Show All"
+                  onSelect={() => {
+                    setShowFav(false);
+                  }}
+                />
+              </MenuOptions>
+            </Menu>
           </View>
-        </TouchableOpacity>
-      </View>
+
+          <View
+            style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
+          >
+            <Text style={styles.pageTitle}>Saved Spots</Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPressOut={toggleSearch}
+            style={{
+              flex: 1,
+              alignItems: "flex-end",
+              justifyContent: "center",
+              marginRight: "5%",
+            }}
+          >
+            <View>
+              <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
       <View style={{ flex: 1 }}>
         <View
@@ -458,6 +490,17 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: "13%",
     flexDirection: "row",
+  },
+  // Search bar styling
+  searchBar: {
+    height: 55,
+    marginTop: "13%",
+    justifyContent: "center",
+  },
+  // Seach bar input styling
+  searchBarInput: {
+    fontSize: 25,
+    justifyContent: "center",
   },
   // "Saved Spots" text styling
   pageTitle: {
