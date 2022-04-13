@@ -2,9 +2,21 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { COLORS } from "../components/Colors";
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { useAuth } from "../providers/AuthProvider";
+import { useSpots } from "../providers/SpotsProvider";
 
 
 export default function SettingsScreen({navigation}) {
+    const { signOut } = useAuth();
+    const { closeRealm } = useSpots();
+
+    const onPressSignOut = () => {
+        console.log("Attempting signout");
+        closeRealm();
+        signOut();
+        navigation.navigate("Welcome");
+    }
+
     return (
         <View style={{ flex: 1}}>
             <View style={styles.titleBar}>
@@ -15,7 +27,7 @@ export default function SettingsScreen({navigation}) {
             <View style={{marginTop: 20, marginLeft: 20}}>
 
                 <TouchableOpacity activeOpacity={.4} style={styles.option}>
-                    <Text style={[styles.optionText, {color: COLORS.green_theme}]}>Logout</Text>
+                    <Text style={[styles.optionText, {color: COLORS.green_theme}]} onPress={onPressSignOut}>Logout</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity activeOpacity={.4} style={styles.option}>

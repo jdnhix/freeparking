@@ -30,7 +30,9 @@
     </queries>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include required permissions for Google Maps API to run. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Include required permissions for Google Maps API to run. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
@@ -38,6 +40,8 @@
         android:required="true" />
 
     <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
         android:name="com.realm.freeParking.MainApplication"
@@ -137,6 +141,11 @@
                 android:resource="@xml/file_system_provider_paths" />
         </provider>
 
+        <service
+            android:name="expo.modules.location.services.LocationTaskService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
         <meta-data
             android:name="org.unimodules.core.AppLoader#react-native-headless"
             android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" /> <!-- Needs to be explicitly declared on P+ -->
@@ -158,6 +167,16 @@
             android:authorities="com.realm.freeParking.lifecycle-process"
             android:exported="false"
             android:multiprocess="true" />
+
+        <service
+            android:name="io.nlopez.smartlocation.activity.providers.ActivityGooglePlayServicesProvider$ActivityRecognitionService"
+            android:exported="false" />
+        <service
+            android:name="io.nlopez.smartlocation.geofencing.providers.GeofencingGooglePlayServicesProvider$GeofencingService"
+            android:exported="false" />
+        <service
+            android:name="io.nlopez.smartlocation.geocoding.providers.AndroidGeocodingProvider$AndroidGeocodingService"
+            android:exported="false" />
     </application>
 
 </manifest>

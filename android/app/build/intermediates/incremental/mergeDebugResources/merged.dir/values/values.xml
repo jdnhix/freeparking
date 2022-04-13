@@ -128,6 +128,7 @@
     <color name="common_google_signin_btn_text_light_disabled">#1F000000</color>
     <color name="common_google_signin_btn_text_light_focused">#90000000</color>
     <color name="common_google_signin_btn_text_light_pressed">#DE000000</color>
+    <color name="default_overlay_color">#AAFFFFFF</color>
     <color name="design_bottom_navigation_shadow_color">#14000000</color>
     <color name="design_dark_default_color_background">#121212</color>
     <color name="design_dark_default_color_error">#CF6679</color>
@@ -655,6 +656,8 @@
     <integer name="bottom_sheet_slide_duration">150</integer>
     <integer name="cancel_button_image_alpha">127</integer>
     <integer name="config_tooltipAnimTime">150</integer>
+    <integer name="default_blur_radius">15</integer>
+    <integer name="default_downsample_factor">8</integer>
     <integer name="design_snackbar_text_max_lines">2</integer>
     <integer name="design_tab_indicator_anim_duration_ms">300</integer>
     <integer name="google_play_services_version">12451000</integer>
@@ -3056,6 +3059,12 @@
     </style>
     <style name="SpinnerDatePickerStyle" ns2:targetApi="lollipop" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+    <style name="SpinnerTimePickerDialog" ns2:targetApi="lollipop" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:timePickerStyle">@style/SpinnerTimePickerStyle</item>
+    </style>
+    <style name="SpinnerTimePickerStyle" ns2:targetApi="lollipop" parent="android:Widget.Material.Light.TimePicker">
+        <item name="android:timePickerMode">spinner</item>
     </style>
     <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerFamily">rounded</item>
@@ -6684,6 +6693,11 @@
     <declare-styleable name="PopupWindowBackgroundState">
         <!-- State identifier indicating the popup will be above the anchor. -->
         <attr format="boolean" name="state_above_anchor"/>
+    </declare-styleable>
+    <declare-styleable name="PxBlurringView">
+        <attr format="integer" name="blurRadius"/>
+        <attr format="integer" name="downsampleFactor"/>
+        <attr format="color" name="overlayColor"/>
     </declare-styleable>
     <declare-styleable name="RecycleListView">
         <!-- Bottom padding to use when no buttons are present. -->
