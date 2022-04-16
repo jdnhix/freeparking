@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, Entypo, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
@@ -19,7 +19,70 @@ import Modal from "react-native-modal";
 // TODO:
 // 1. Time availability design (checkout modal)
 
+// Display the time availability (does not contain any actual
+// code to edit the spot and stuff. That is in the EditSpotScreen)
+function AvailDisplay(props) {
+  const [text, setText] = useState(
+    "M-F: 6PM - 6AM, S-U: All DayLLLLLLLLLLLOOOONNNNGDAAAYY"
+  );
+
+  const onEdit = () => {
+    console.log("edit time avail");
+  };
+
+  const onDelete = () => {
+    console.log("delete this time avail");
+  };
+
+  return (
+    <View style={styles.avilContainer}>
+      <Text style={[styles.avilText, { flex: 4 }]}>{text}</Text>
+      <TouchableOpacity style={{ flex: 1 }} onPressOut={onEdit}>
+        <Text style={styles.avilBtnText}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{ flex: 1 }} onPress={onDelete}>
+        <View>
+          <Entypo name="cross" size={24} color={COLORS.green_theme} />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default function EditSpotScreen({ route, navigation }) {
+  const [timeArr, setTimeArr] = useState([
+    {
+      days: [true, false, true, false, true, false, true],
+      start: new Date("1899-12-31T10:00:00.000Z"),
+      end: new Date("1899-12-31T13:00:00.000Z"),
+      idx: 0,
+    },
+    {
+      days: [false, true, false, true, false, true, false],
+      start: new Date("1899-12-31T14:00:00.000Z"),
+      end: new Date("1899-12-31T17:00:00.000Z"),
+      idx: 1,
+    },
+  ]);
+
+  // Toggle to set modal visible or not
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [timeCt, setTimeCt] = useState(0);
+
+  // idx of which time spot is being edited
+  // -1 means a new time availability is being added
+  const [editIdx, setEditIdx] = useState(-1);
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setEditIdx(-1);
+  };
+
+  const generateID = (time, i) => {
+    return `${time.start.toString()}_${new Date().getTime()}_${i}`;
+  };
+
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -40,10 +103,12 @@ export default function EditSpotScreen({ route, navigation }) {
     defaultValues: {
       title: route.params?.origSpot ? route.params.origSpot.title : "",
       loc: route.params?.origSpot ? route.params.origSpot.loc : "",
+      // TODO: add time availability stuff
     },
   });
 
   const onSubmit = (data) => {
+    // Editing spot
     if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
         screen: "Saved",
@@ -56,6 +121,7 @@ export default function EditSpotScreen({ route, navigation }) {
         },
       });
     } else {
+      // Adding a new spot
       navigation.navigate("Tabs", {
         screen: "Saved",
         params: { newSpot: { title: data.title, loc: data.loc } },
@@ -70,8 +136,6 @@ export default function EditSpotScreen({ route, navigation }) {
 
     console.log(coords);
   };
-
-  const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
     // Make keyboard disappear when clicked in blank spot
@@ -167,7 +231,11 @@ export default function EditSpotScreen({ route, navigation }) {
         </View>
 
         <View style={styles.timeAvailView}>
-          <Text style={{ fontSize: 20 }}>Availability:</Text>
+          <Text style={{ fontSize: 20, marginBottom: 10 }}>Availability:</Text>
+          {timeArr.map((time, i) => (
+            <AvailDisplay key={generateID(time, i)} />
+          ))}
+
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.timeText}>+ Add Time Slot</Text>
           </TouchableOpacity>
@@ -182,14 +250,13 @@ export default function EditSpotScreen({ route, navigation }) {
 
         <Modal
           visible={modalVisible}
-          onBackdropPress={() => setModalVisible(false)}
           animationType={"fade"}
           // transparent={true}
           hasBackdrop={true}
           backdropOpacity={10}
           backdropColor={"rgba(255, 0, 0, 0.8)"}
         >
-          <TimeModal />
+          <TimeModal closeModal={closeModal} />
         </Modal>
       </View>
     </TouchableWithoutFeedback>
@@ -249,6 +316,25 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 20,
     margin: 15,
+    color: COLORS.green_theme,
+  },
+  avilContainer: {
+    marginTop: 5,
+    marginBottom: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  avilText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: COLORS.green_theme,
+    marginRight: 7,
+  },
+  avilBtnText: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: 18,
     color: COLORS.green_theme,
   },
 });

@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "../components/Colors";
 import DayCheckbox from "./DayCheckbox";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Entypo } from "@expo/vector-icons";
 
 const DAYS = ["M", "T", "W", "R", "F", "S", "U"];
 
-export default function TimeModal() {
+export default function TimeModal(props) {
   const [checkedState, setCheckedState] = React.useState(
     new Array(DAYS.length).fill(false)
   );
@@ -16,12 +17,13 @@ export default function TimeModal() {
 
   const onChangeStartTime = (event, time) => {
     setStartTime(time);
-    // console.log(startTime);
+    console.log(time.getTimezoneOffset() / 60);
+    console.log(time);
   };
 
   const onChangeEndTime = (event, time) => {
     setEndTime(time);
-    // console.log(endTime);
+    console.log(time);
   };
 
   const handleOnChangeDay = (position) => {
@@ -34,11 +36,31 @@ export default function TimeModal() {
 
   return (
     <View style={styles.modal}>
-      <Text style={styles.text}>Time Slot</Text>
+      <View style={styles.modTopBar}>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.text}>Time Slot</Text>
+        </View>
+        <TouchableOpacity
+          style={{ flex: 1, alignItems: "flex-end" }}
+          onPressOut={props.closeModal}
+        >
+          <View style={{ justifyContent: "center", backgroundColor: "red" }}>
+            <Entypo name="cross" size={35} color={COLORS.green_theme} />
+          </View>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.checkboxRow}>
         {DAYS.map((letter, index) => {
           return (
             <DayCheckbox
+              key={index}
               letter={letter}
               checked={checkedState[index]}
               onChange={() => handleOnChangeDay(index)}
@@ -109,5 +131,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: COLORS.green_theme,
     textDecorationLine: "underline",
+  },
+
+  modTopBar: {
+    flexDirection: "row",
+    flex: 1,
   },
 });

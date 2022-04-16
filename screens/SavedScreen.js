@@ -20,6 +20,9 @@ import {
 import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
 
+// TODO:
+// Make the cancel button on search bar always visible
+
 // Component for each saved spot
 function Spot(props) {
   // whether or not the favourite star is checked
