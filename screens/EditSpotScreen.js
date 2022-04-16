@@ -8,6 +8,7 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import { AntDesign, Feather, Entypo, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
@@ -22,9 +23,7 @@ import Modal from "react-native-modal";
 // Display the time availability (does not contain any actual
 // code to edit the spot and stuff. That is in the EditSpotScreen)
 function AvailDisplay(props) {
-  const [text, setText] = useState(
-    "M-F: 6PM - 6AM, S-U: All DayLLLLLLLLLLLOOOONNNNGDAAAYY"
-  );
+  const [text, setText] = useState(props.text);
 
   const onEdit = () => {
     console.log("edit time avail");
@@ -50,25 +49,28 @@ function AvailDisplay(props) {
 }
 
 export default function EditSpotScreen({ route, navigation }) {
+  const screenHeight = Dimensions.get("window").height;
+  const scrollThreshold = 0.4; // when the time take up x% of the screen, scoll is enabled
+
   const [timeArr, setTimeArr] = useState([
     {
       days: [true, false, true, false, true, false, true],
       start: new Date("1899-12-31T10:00:00.000Z"),
       end: new Date("1899-12-31T13:00:00.000Z"),
+      string: "M,W,F,U: 10AM - 1PM",
       idx: 0,
     },
     {
       days: [false, true, false, true, false, true, false],
       start: new Date("1899-12-31T14:00:00.000Z"),
       end: new Date("1899-12-31T17:00:00.000Z"),
+      string: "T,R,S: 2PM - 5PM",
       idx: 1,
     },
   ]);
 
   // Toggle to set modal visible or not
   const [modalVisible, setModalVisible] = useState(false);
-
-  const [timeCt, setTimeCt] = useState(0);
 
   // idx of which time spot is being edited
   // -1 means a new time availability is being added
@@ -135,6 +137,20 @@ export default function EditSpotScreen({ route, navigation }) {
     let coords = await Location.getCurrentPositionAsync();
 
     console.log(coords);
+  };
+
+  const onSave = (checkedState, startTime, endTime, string) => {
+    setTimeArr([
+      ...timeArr,
+      {
+        days: [...checkedState],
+        start: new Date(startTime.getTime()),
+        end: new Date(endTime.getTime()),
+        string: string.slice(),
+        idx: timeArr.length,
+      },
+    ]);
+    setModalVisible(false);
   };
 
   return (
@@ -233,7 +249,7 @@ export default function EditSpotScreen({ route, navigation }) {
         <View style={styles.timeAvailView}>
           <Text style={{ fontSize: 20, marginBottom: 10 }}>Availability:</Text>
           {timeArr.map((time, i) => (
-            <AvailDisplay key={generateID(time, i)} />
+            <AvailDisplay key={generateID(time, i)} text={time.string} />
           ))}
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -256,7 +272,7 @@ export default function EditSpotScreen({ route, navigation }) {
           backdropOpacity={10}
           backdropColor={"rgba(255, 0, 0, 0.8)"}
         >
-          <TimeModal closeModal={closeModal} />
+          <TimeModal closeModal={closeModal} onSave={onSave} />
         </Modal>
       </View>
     </TouchableWithoutFeedback>
