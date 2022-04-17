@@ -45,6 +45,7 @@ function Spot(props) {
       idx: props.rmIdx,
       title: props.title,
       loc: props.loc,
+      timeArr: props.timeArr.map((t) => ({ ...t })),
     });
   };
 
@@ -328,7 +329,7 @@ export default function SavedScreen({ navigation, route }) {
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, loc }) => {
+  const toEditSpot = ({ idx, title, loc, timeArr }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
@@ -336,6 +337,7 @@ export default function SavedScreen({ navigation, route }) {
           idx: idx,
           title: title,
           loc: loc,
+          timeArr: timeArr,
         },
       },
     });
@@ -343,11 +345,12 @@ export default function SavedScreen({ navigation, route }) {
 
   // Function to edit a spot
   // TODO: need to add time as a parameter
-  const editSpot = ({ idx, title, loc }) => {
+  const editSpot = ({ idx, title, loc, timeArr }) => {
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.title = title;
     target.loc = loc;
+    target.timeArr = timeArr.map((t) => ({ ...t }));
     tmpSpots[idx] = target;
     setSpotArr(tmpSpots);
   };
@@ -497,6 +500,7 @@ export default function SavedScreen({ navigation, route }) {
                           loc={spot.loc}
                           time={connectTimeStr(spot.timeArr)}
                           fav={spot.fav}
+                          timeArr={spot.timeArr}
                         ></Spot>
                       );
                     })
@@ -512,6 +516,7 @@ export default function SavedScreen({ navigation, route }) {
                       loc={spot.loc}
                       time={connectTimeStr(spot.timeArr)}
                       fav={spot.fav}
+                      timeArr={spot.timeArr}
                     ></Spot>
                   ))
               : spotArr

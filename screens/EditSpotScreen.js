@@ -58,7 +58,11 @@ export default function EditSpotScreen({ route, navigation }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.4; // when the time take up x% of the screen, scoll is enabled
 
-  const [timeArr, setTimeArr] = useState([]);
+  const [timeArr, setTimeArr] = useState(
+    route.params?.origSpot
+      ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
+      : []
+  );
 
   // Toggle to set modal visible or not
   const [modalVisible, setModalVisible] = useState(false);
@@ -112,6 +116,7 @@ export default function EditSpotScreen({ route, navigation }) {
             idx: route.params.origSpot.idx,
             title: data.title,
             loc: data.loc,
+            timeArr: timeArr,
           },
         },
       });
