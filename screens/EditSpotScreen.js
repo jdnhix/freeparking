@@ -17,6 +17,11 @@ import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 // TODO:
 // 1. Time availability design (checkout modal)
@@ -53,22 +58,7 @@ export default function EditSpotScreen({ route, navigation }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.4; // when the time take up x% of the screen, scoll is enabled
 
-  const [timeArr, setTimeArr] = useState([
-    {
-      days: [true, false, true, false, true, false, true],
-      start: new Date("1899-12-31T10:00:00.000Z"),
-      end: new Date("1899-12-31T13:00:00.000Z"),
-      string: "M,W,F,U: 10:00 AM - 1:00 PM",
-      idx: 0,
-    },
-    {
-      days: [false, true, false, true, false, true, false],
-      start: new Date("1899-12-31T14:00:00.000Z"),
-      end: new Date("1899-12-31T17:00:00.000Z"),
-      string: "T,R,S: 2:00 PM - 5:00 PM",
-      idx: 1,
-    },
-  ]);
+  const [timeArr, setTimeArr] = useState([]);
 
   // Toggle to set modal visible or not
   const [modalVisible, setModalVisible] = useState(false);
@@ -109,7 +99,6 @@ export default function EditSpotScreen({ route, navigation }) {
     defaultValues: {
       title: route.params?.origSpot ? route.params.origSpot.title : "",
       loc: route.params?.origSpot ? route.params.origSpot.loc : "",
-      // TODO: add time availability stuff
     },
   });
 
@@ -130,7 +119,9 @@ export default function EditSpotScreen({ route, navigation }) {
       // Adding a new spot
       navigation.navigate("Tabs", {
         screen: "Saved",
-        params: { newSpot: { title: data.title, loc: data.loc } },
+        params: {
+          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr },
+        },
       });
     }
   };

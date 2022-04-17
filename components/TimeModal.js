@@ -26,7 +26,6 @@ export default function TimeModal(props) {
 
   const onChangeEndTime = (event, time) => {
     const tmp = new Date(0, 0, 0);
-    console.log(time > startTime || startTime.getTime() === tmp.getTime());
     time > startTime || startTime.getTime() === tmp.getTime()
       ? (setEndTime(time), setErr(""))
       : (setEndTime(startTime), setErr("End must be later than Start"));
