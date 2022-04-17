@@ -561,7 +561,6 @@ const styles = StyleSheet.create({
   // Each spot entry's styling
   spot: {
     height: 200,
-    backgroundColor: "blue",
   },
   // First line of the spot entry
   spotTitle: {

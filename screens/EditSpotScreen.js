@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { AntDesign, Feather, Entypo, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
@@ -30,7 +31,7 @@ function AvailDisplay(props) {
   };
 
   const onDelete = () => {
-    console.log("delete this time avail");
+    props.removeTime(props.arrIdx);
   };
 
   return (
@@ -57,14 +58,14 @@ export default function EditSpotScreen({ route, navigation }) {
       days: [true, false, true, false, true, false, true],
       start: new Date("1899-12-31T10:00:00.000Z"),
       end: new Date("1899-12-31T13:00:00.000Z"),
-      string: "M,W,F,U: 10AM - 1PM",
+      string: "M,W,F,U: 10:00 AM - 1:00 PM",
       idx: 0,
     },
     {
       days: [false, true, false, true, false, true, false],
       start: new Date("1899-12-31T14:00:00.000Z"),
       end: new Date("1899-12-31T17:00:00.000Z"),
-      string: "T,R,S: 2PM - 5PM",
+      string: "T,R,S: 2:00 PM - 5:00 PM",
       idx: 1,
     },
   ]);
@@ -75,6 +76,9 @@ export default function EditSpotScreen({ route, navigation }) {
   // idx of which time spot is being edited
   // -1 means a new time availability is being added
   const [editIdx, setEditIdx] = useState(-1);
+
+  // For the times to be scrollable. NOT working atm
+  const [scroll, setScroll] = useState(false);
 
   const closeModal = () => {
     setModalVisible(false);
@@ -139,6 +143,7 @@ export default function EditSpotScreen({ route, navigation }) {
     console.log(coords);
   };
 
+  // for the Save button in TimeModal
   const onSave = (checkedState, startTime, endTime, string) => {
     setTimeArr([
       ...timeArr,
@@ -151,6 +156,15 @@ export default function EditSpotScreen({ route, navigation }) {
       },
     ]);
     setModalVisible(false);
+  };
+
+  // For the remove "x" in the current screen
+  const removeTime = (idx) => {
+    let tmpArr = timeArr.filter((time) => time.idx !== idx);
+    for (let i = idx; i < tmpArr.length; ++i) {
+      tmpArr[i].idx = i;
+    }
+    setTimeArr(tmpArr);
   };
 
   return (
@@ -248,9 +262,42 @@ export default function EditSpotScreen({ route, navigation }) {
 
         <View style={styles.timeAvailView}>
           <Text style={{ fontSize: 20, marginBottom: 10 }}>Availability:</Text>
+
           {timeArr.map((time, i) => (
-            <AvailDisplay key={generateID(time, i)} text={time.string} />
+            <AvailDisplay
+              key={generateID(time, i)}
+              text={time.string}
+              arrIdx={time.idx}
+              removeTime={removeTime}
+            />
           ))}
+
+          {/* <View
+            style={styles.scrollContainer}
+            onLayout={(event) => {
+              const { x, y, width, height } = event.nativeEvent.layout;
+              if (height / screenHeight > scrollThreshold) {
+                setScroll(true);
+              } else {
+                setScroll(true);
+              }
+            }}
+          >
+            <ScrollView
+              scrollEnabled={scroll}
+              contentContainerStyle={styles.scrollSec}
+              style={{ backgroundColor: "red" }}
+            >
+              {timeArr.map((time, i) => (
+                <AvailDisplay
+                  key={generateID(time, i)}
+                  text={time.string}
+                  arrIdx={time.idx}
+                  removeTime={removeTime}
+                />
+              ))}
+            </ScrollView>
+          </View> */}
 
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.timeText}>+ Add Time Slot</Text>
@@ -352,5 +399,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     color: COLORS.green_theme,
+  },
+  // Scroll section style
+  scrollSec: {
+    paddingBottom: "20%",
+  },
+  scrollContainer: {
+    flex: 1,
+    paddingTop: 0,
+    flexDirection: "column",
+    backgroundColor: "lightblue",
+    width: "100%",
   },
 });
