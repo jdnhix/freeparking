@@ -8,14 +8,14 @@ import { Entypo } from "@expo/vector-icons";
 const DAYS = ["M", "T", "W", "R", "F", "S", "U"];
 
 export default function TimeModal(props) {
-  const [checkedState, setCheckedState] = React.useState(
-    new Array(DAYS.length).fill(false)
-  );
+  const [checkedState, setCheckedState] = React.useState([
+    ...props.modalInit.days,
+  ]);
 
   const [err, setErr] = React.useState("");
 
-  const [startTime, setStartTime] = React.useState(new Date(0, 0, 0));
-  const [endTime, setEndTime] = React.useState(new Date(0, 0, 0));
+  const [startTime, setStartTime] = React.useState(props.modalInit.start);
+  const [endTime, setEndTime] = React.useState(props.modalInit.end);
 
   const onChangeStartTime = (event, time) => {
     const tmp = new Date(0, 0, 0);

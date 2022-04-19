@@ -29,7 +29,7 @@ LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
 
-const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //todo DELETE THIS ASAP
+const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //TODO: DELETE THIS ASAP
 
 // Display the time availability (does not contain any actual
 // code to edit the spot and stuff. That is in the EditSpotScreen)
@@ -37,7 +37,7 @@ function AvailDisplay(props) {
   const [text, setText] = useState(props.text);
 
   const onEdit = () => {
-    console.log("edit time avail");
+    props.editTime(props.arrIdx);
   };
 
   const onDelete = () => {
@@ -63,6 +63,13 @@ export default function EditSpotScreen({ route, navigation }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.4; // when the time take up x% of the screen, scoll is enabled
 
+  // This is to pass into the time modal
+  const emptyModal = {
+    days: new Array(7).fill(false),
+    start: new Date(0, 0, 0),
+    end: new Date(0, 0, 0),
+  };
+
   const [timeArr, setTimeArr] = useState(
     route.params?.origSpot
       ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
@@ -78,6 +85,8 @@ export default function EditSpotScreen({ route, navigation }) {
 
   // For the times to be scrollable. NOT working atm
   const [scroll, setScroll] = useState(false);
+
+  const [modalInit, setModalInit] = useState({ ...emptyModal });
 
   const closeModal = () => {
     setModalVisible(false);
@@ -174,16 +183,28 @@ export default function EditSpotScreen({ route, navigation }) {
 
   // for the Save button in TimeModal
   const onSave = (checkedState, startTime, endTime, string) => {
-    setTimeArr([
-      ...timeArr,
-      {
-        days: [...checkedState],
-        start: new Date(startTime.getTime()),
-        end: new Date(endTime.getTime()),
-        string: string.slice(),
-        idx: timeArr.length,
-      },
-    ]);
+    if (editIdx === -1) {
+      setTimeArr([
+        ...timeArr,
+        {
+          days: [...checkedState],
+          start: new Date(startTime.getTime()),
+          end: new Date(endTime.getTime()),
+          string: string.slice(),
+          idx: timeArr.length,
+        },
+      ]);
+    } else {
+      let tmpTimes = [...timeArr];
+      let target = { ...tmpTimes[editIdx] };
+      target.days = [...checkedState];
+      target.start = new Date(startTime.getTime());
+      target.end = new Date(endTime.getTime());
+      target.string = string.slice();
+      tmpTimes[editIdx] = target;
+      setTimeArr(tmpTimes);
+    }
+
     setModalVisible(false);
   };
 
@@ -194,6 +215,16 @@ export default function EditSpotScreen({ route, navigation }) {
       tmpArr[i].idx = i;
     }
     setTimeArr(tmpArr);
+  };
+
+  const editTime = (idx) => {
+    setEditIdx(idx);
+    setModalVisible(true);
+    setModalInit({
+      days: [...timeArr[idx].days],
+      start: new Date(timeArr[idx].start.getTime()),
+      end: new Date(timeArr[idx].end.getTime()),
+    });
   };
 
   return (
@@ -322,6 +353,7 @@ export default function EditSpotScreen({ route, navigation }) {
               text={time.string}
               arrIdx={time.idx}
               removeTime={removeTime}
+              editTime={editTime}
             />
           ))}
 
@@ -352,7 +384,13 @@ export default function EditSpotScreen({ route, navigation }) {
             </ScrollView>
           </View> */}
 
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <TouchableOpacity
+            onPress={() => {
+              setModalVisible(true);
+              setEditIdx(-1);
+              setModalInit({ ...emptyModal });
+            }}
+          >
             <Text style={styles.timeText}>+ Add Time Slot</Text>
           </TouchableOpacity>
         </View>
@@ -372,7 +410,11 @@ export default function EditSpotScreen({ route, navigation }) {
           backdropOpacity={10}
           backdropColor={"rgba(255, 0, 0, 0.8)"}
         >
-          <TimeModal closeModal={closeModal} onSave={onSave} />
+          <TimeModal
+            closeModal={closeModal}
+            onSave={onSave}
+            modalInit={modalInit}
+          />
         </Modal>
       </View>
     </TouchableWithoutFeedback>
