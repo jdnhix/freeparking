@@ -145,7 +145,6 @@ export default function EditSpotScreen({ route, navigation }) {
     let coords = await Location.getCurrentPositionAsync();
 
     //todo change these coords below back when done testing
-
     // 36.174465 +
     // "," +
     // -86.76796 +
@@ -426,8 +425,8 @@ const styles = StyleSheet.create({
   timeAvailView: {
     alignItems: "flex-start",
     height: 200,
-    paddingLeft: 65,
-    marginTop: 20,
+    paddingLeft: 45,
+    marginTop: 35,
   },
   timeText: {
     fontSize: 20,
