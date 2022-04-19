@@ -11,7 +11,13 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { AntDesign, Feather, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  Entypo,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller, set } from "react-hook-form";
 import * as Location from "expo-location";
@@ -457,6 +463,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "lightblue",
     width: "100%",
+  },
   gps: {
     position: "absolute",
     left: "60%",

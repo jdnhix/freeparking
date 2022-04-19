@@ -424,23 +424,6 @@ export default function SavedScreen({ navigation, route }) {
               <MenuOptions customStyles={menuStyles}>
                 {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
               <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
-<<<<<<< HEAD
-              <MenuOption
-                text="Show Favorite"
-                onSelect={() => {
-                  setShowFav(true);
-                }}
-              />
-              <MenuOption
-                text="Show All"
-                onSelect={() => {
-                  setShowFav(false);
-                }}
-              />
-            </MenuOptions>
-          </Menu>
-        </View>
-=======
                 <MenuOption
                   text="Show Favorite"
                   onSelect={() => {
@@ -456,7 +439,6 @@ export default function SavedScreen({ navigation, route }) {
               </MenuOptions>
             </Menu>
           </View>
->>>>>>> dba342c427080195d273b85c0edbf025fa71bab0
 
           <View
             style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
