@@ -11,9 +11,9 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { AntDesign, Feather, Entypo, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
@@ -23,8 +23,7 @@ LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
 
-// TODO:
-// 1. Time availability design (checkout modal)
+const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //todo DELETE THIS ASAP
 
 // Display the time availability (does not contain any actual
 // code to edit the spot and stuff. That is in the EditSpotScreen)
@@ -82,6 +81,7 @@ export default function EditSpotScreen({ route, navigation }) {
   const generateID = (time, i) => {
     return `${time.start.toString()}_${new Date().getTime()}_${i}`;
   };
+  const [failedGeolocation, setFailedGeolocation] = React.useState(false);
 
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
@@ -98,6 +98,7 @@ export default function EditSpotScreen({ route, navigation }) {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -133,10 +134,36 @@ export default function EditSpotScreen({ route, navigation }) {
 
   // testing geolocation functionality, ignore this for now - Jaden
   const getLocation = async () => {
+    console.log("retrieivng current address");
     let status = await Location.requestForegroundPermissionsAsync(); //use status for debugging
     let coords = await Location.getCurrentPositionAsync();
 
-    console.log(coords);
+    //todo change these coords below back when done testing
+
+    // 36.174465 +
+    // "," +
+    // -86.76796 +
+
+    fetch(
+      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+        coords.latitude +
+        "," +
+        coords.longitude +
+        "&key=" +
+        apiKey
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.status != "OK") {
+          console.error("there was an issue calculating the current address");
+          setFailedGeolocation(true);
+        } else {
+          setFailedGeolocation(false);
+          const address = responseJson.results[0].formatted_address;
+          console.log(address);
+          setValue("loc", address);
+        }
+      });
   };
 
   // for the Save button in TimeModal
@@ -198,7 +225,6 @@ export default function EditSpotScreen({ route, navigation }) {
             activeOpacity={0.8}
             onPressOut={() => {
               toCamera();
-              getLocation();
             }}
           >
             <View>
@@ -227,23 +253,43 @@ export default function EditSpotScreen({ route, navigation }) {
             name="title"
           />
 
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              pattern: /[a-zA-Z0-9,. ]/,
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Spot Address"
+          >
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                pattern: /[a-zA-Z0-9,. ]/,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Spot Address"
+                />
+              )}
+              name="loc"
+            />
+
+            <TouchableOpacity
+              activeOpacity={0.4}
+              style={styles.gps}
+              onPress={() => getLocation()}
+            >
+              <MaterialIcons
+                name="gps-fixed"
+                size={24}
+                color={COLORS.green_theme}
               />
-            )}
-            name="loc"
-          />
+            </TouchableOpacity>
+          </View>
+
           {((errors.title && errors.title.type === "required") ||
             (errors.loc && errors.loc.type === "required")) && (
             <Text style={styles.errorMsg}>Both fields are required.</Text>
@@ -252,6 +298,11 @@ export default function EditSpotScreen({ route, navigation }) {
             (errors.loc && errors.loc.type === "pattern")) && (
             <Text style={styles.errorMsg}>
               Format error: alphanumeric and comma only.
+            </Text>
+          )}
+          {failedGeolocation && (
+            <Text style={styles.errorMsg}>
+              Failed to geolocate, please manually type address.
             </Text>
           )}
         </View>
@@ -406,5 +457,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "lightblue",
     width: "100%",
+  gps: {
+    position: "absolute",
+    left: "60%",
   },
 });
