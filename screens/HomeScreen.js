@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableHighlightBase,
+} from "react-native";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 import MapModal from "../components/MapModal";
@@ -12,24 +18,44 @@ const LONGITUDE = -86.76796; // Nashville, TN
 const LATITUDE_DELTA = 0.28;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
+const defTimeArr = [
+  {
+    days: [true, true, true, true, true, false, false],
+    start: new Date("1899-12-31T6:00:00.000Z"),
+    end: new Date("1899-12-31T18:00:00.000Z"),
+    string: "M-F: 6:00 AM - 6:00 PM",
+    idx: 0,
+  },
+  {
+    days: [false, false, false, false, false, true, true],
+    start: new Date("1899-12-31T14:00:00.000Z"),
+    end: new Date("1899-12-31T17:00:00.000Z"),
+    string: "S,U: 0:00 AM - 0:00 AM",
+    idx: 1,
+  },
+];
+
 const markers = [
   {
     latitude: 36.23,
     longitude: -86.71,
     name: "Brentwood??",
     address: "idek lol",
+    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
   {
     latitude: 36.09,
     longitude: -86.74,
     name: "Middle of nowhere",
     address: "1818 church st",
+    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
   {
     latitude: 36.14645,
     longitude: -86.803482,
     name: "Vanderbilt",
     address: "2301 Vanderbilt Place",
+    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
 ];
 
@@ -52,6 +78,21 @@ class HomeScreen extends React.Component {
   setModalNotVisible(e) {
     this.setState({ modalVisible: false });
   }
+
+  connectTimeStr = (pArr) => {
+    let res = "";
+    if (pArr.length !== 0) {
+      res = pArr[0].string.slice();
+      pArr.forEach((time, i) => {
+        if (i !== 0) {
+          res += "; " + time.string.slice();
+        }
+      });
+    } else {
+      res = "No Available Time";
+    }
+    return res;
+  };
 
   render() {
     return (
@@ -115,6 +156,7 @@ class HomeScreen extends React.Component {
           <MapModal
             name={this.activeSpot.name}
             address={this.activeSpot.address}
+            time={this.activeSpot.timeArr}
           />
         </Modal>
       </View>

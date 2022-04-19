@@ -34,7 +34,6 @@ export default function LoginScreen({ navigation }) {
   });
 
   const onLogin = () => {
-    console.log("attempted to login");
     navigation.navigate("Tabs");
   };
 
