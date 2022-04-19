@@ -160,7 +160,7 @@ export default function EditSpotScreen({ route, navigation }) {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.status != "OK") {
-          console.error("there was an issue calculating the current address");
+          console.error("there was an issue calculating the current address"); //todo maybe make this a log instead
           setFailedGeolocation(true);
         } else {
           setFailedGeolocation(false);
