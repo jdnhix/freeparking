@@ -9,17 +9,21 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
 
+const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //TODO DELETE THIS ASAP
+
 // TODO:
 // 1. Time availability design (checkout modal)
 
 export default function EditSpotScreen({ route, navigation }) {
+  // const [address, setAddress] = React.useState("test");
+
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -35,6 +39,7 @@ export default function EditSpotScreen({ route, navigation }) {
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -65,10 +70,34 @@ export default function EditSpotScreen({ route, navigation }) {
 
   // testing geolocation functionality, ignore this for now - Jaden
   const getLocation = async () => {
+    console.log("retrieivng current address");
     let status = await Location.requestForegroundPermissionsAsync(); //use status for debugging
     let coords = await Location.getCurrentPositionAsync();
 
-    console.log(coords);
+    //todo change these coords below back when done testing
+
+    // 36.174465 +
+    // "," +
+    // -86.76796 +
+
+    fetch(
+      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+        coords.latitude +
+        "," +
+        coords.longitude +
+        "&key=" +
+        apiKey
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if (responseJson.status != "OK") {
+          console.error("there was an issue calculating the current address");
+        } else {
+          const address = responseJson.results[0].formatted_address;
+          console.log(address);
+          setValue("loc", address);
+        }
+      });
   };
 
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -108,7 +137,6 @@ export default function EditSpotScreen({ route, navigation }) {
             activeOpacity={0.8}
             onPressOut={() => {
               toCamera();
-              getLocation();
             }}
           >
             <View>
@@ -137,23 +165,43 @@ export default function EditSpotScreen({ route, navigation }) {
             name="title"
           />
 
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              pattern: /[a-zA-Z0-9,. ]/,
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                placeholder="Spot Address"
+          >
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                pattern: /[a-zA-Z0-9,. ]/,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Spot Address"
+                />
+              )}
+              name="loc"
+            />
+
+            <TouchableOpacity
+              activeOpacity={0.4}
+              style={styles.gps}
+              onPress={() => getLocation()}
+            >
+              <MaterialIcons
+                name="gps-fixed"
+                size={24}
+                color={COLORS.green_theme}
               />
-            )}
-            name="loc"
-          />
+            </TouchableOpacity>
+          </View>
+
           {((errors.title && errors.title.type === "required") ||
             (errors.loc && errors.loc.type === "required")) && (
             <Text style={styles.errorMsg}>Both fields are required.</Text>
@@ -250,5 +298,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 15,
     color: COLORS.green_theme,
+  },
+  gps: {
+    position: "absolute",
+    left: "60%",
   },
 });
