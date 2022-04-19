@@ -41,20 +41,15 @@ export default function MapModal(props) {
       {/* todo eventually add in text saying if the spot is currently available or not */}
       <Text style={styles.timeText}>{connectTimeStr(props.time)}</Text>
 
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.routeButton}
-        onPressOut={toRoute}
-      >
-        <Text style={styles.btnText}>Route</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.editButton}
-        onPress={() => console.log(props.time)}
-      >
-        <Text style={styles.btnText}>Edit</Text>
-      </TouchableOpacity>
+      <View style={styles.routeButtonView}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.routeButton}
+          onPressOut={toRoute}
+        >
+          <Text style={styles.btnText}>Route</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -94,16 +89,18 @@ const styles = StyleSheet.create({
     fontSize: 17,
     top: "25%",
   },
+  routeButtonView: {
+    top: "47%",
+    width: "100%",
+    alignItems: "center",
+  },
   routeButton: {
     backgroundColor: COLORS.green_theme,
-    width: 80,
+    width: 100,
     height: 40,
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    top: "93%",
-    left: "20%",
   },
   editButton: {
     backgroundColor: COLORS.green_theme,
