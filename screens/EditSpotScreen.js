@@ -11,18 +11,15 @@ import {
 } from "react-native";
 import { AntDesign, Feather, MaterialIcons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
 
-const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //TODO DELETE THIS ASAP
-
-// TODO:
-// 1. Time availability design (checkout modal)
+const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //todo DELETE THIS ASAP
 
 export default function EditSpotScreen({ route, navigation }) {
-  // const [address, setAddress] = React.useState("test");
+  const [failedGeolocation, setFailedGeolocation] = React.useState(false);
 
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
@@ -92,7 +89,9 @@ export default function EditSpotScreen({ route, navigation }) {
       .then((responseJson) => {
         if (responseJson.status != "OK") {
           console.error("there was an issue calculating the current address");
+          setFailedGeolocation(true);
         } else {
+          setFailedGeolocation(false);
           const address = responseJson.results[0].formatted_address;
           console.log(address);
           setValue("loc", address);
@@ -210,6 +209,11 @@ export default function EditSpotScreen({ route, navigation }) {
             (errors.loc && errors.loc.type === "pattern")) && (
             <Text style={styles.errorMsg}>
               Format error: alphanumeric and comma only.
+            </Text>
+          )}
+          {failedGeolocation && (
+            <Text style={styles.errorMsg}>
+              Failed to geolocate, please manually type address.
             </Text>
           )}
         </View>
