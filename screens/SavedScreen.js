@@ -20,6 +20,9 @@ import {
 import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
 
+// TODO:
+// Make the cancel button on search bar always visible
+
 // Component for each saved spot
 function Spot(props) {
   // whether or not the favourite star is checked
@@ -42,6 +45,7 @@ function Spot(props) {
       idx: props.rmIdx,
       title: props.title,
       loc: props.loc,
+      timeArr: props.timeArr.map((t) => ({ ...t })),
     });
   };
 
@@ -148,54 +152,71 @@ export default function SavedScreen({ navigation, route }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
 
+  const defTimeArr = [
+    {
+      days: [true, true, true, true, true, false, false],
+      start: new Date("1899-12-31T6:00:00.000Z"),
+      end: new Date("1899-12-31T18:00:00.000Z"),
+      string: "M-F: 6:00 AM - 6:00 PM",
+      idx: 0,
+    },
+    {
+      days: [false, false, false, false, false, true, true],
+      start: new Date("1899-12-31T14:00:00.000Z"),
+      end: new Date("1899-12-31T17:00:00.000Z"),
+      string: "S,U: 0:00 AM - 0:00 AM",
+      idx: 1,
+    },
+  ];
+
   const initArr = [
     {
       title: "Vanderbilt",
       loc: "2301 Vanderbilt Place",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 0,
     },
     {
       title: "Vandy",
       loc: "2301 Vanderbilt Place",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 1,
     },
     {
       title: "Target1",
       loc: "White bridge",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 2,
     },
     {
       title: "Target2",
       loc: "White bridge",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 3,
     },
     {
       title: "Target3",
       loc: "White bridge",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 4,
     },
     {
       title: "Target4",
       loc: "White bridge",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 5,
     },
     {
       title: "Target5",
       loc: "White bridge",
-      time: "M-F: 6PM - 6AM, S-U: All Day",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 6,
     },
   ];
@@ -289,8 +310,8 @@ export default function SavedScreen({ navigation, route }) {
       {
         title: newSpot.title,
         loc: newSpot.loc,
-        time: "M-F: 6PM - 6AM, S-U: All Day",
         fav: false,
+        timeArr: newSpot.timeArr,
         idx: spotArr.length,
       },
     ]);
@@ -308,7 +329,7 @@ export default function SavedScreen({ navigation, route }) {
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, loc }) => {
+  const toEditSpot = ({ idx, title, loc, timeArr }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
@@ -316,6 +337,7 @@ export default function SavedScreen({ navigation, route }) {
           idx: idx,
           title: title,
           loc: loc,
+          timeArr: timeArr,
         },
       },
     });
@@ -323,11 +345,12 @@ export default function SavedScreen({ navigation, route }) {
 
   // Function to edit a spot
   // TODO: need to add time as a parameter
-  const editSpot = ({ idx, title, loc }) => {
+  const editSpot = ({ idx, title, loc, timeArr }) => {
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.title = title;
     target.loc = loc;
+    target.timeArr = timeArr.map((t) => ({ ...t }));
     tmpSpots[idx] = target;
     setSpotArr(tmpSpots);
   };
@@ -347,6 +370,21 @@ export default function SavedScreen({ navigation, route }) {
       spot.title.toLowerCase().includes(query.toLowerCase()) ||
       spot.loc.toLowerCase().includes(query.toLowerCase())
     );
+  };
+
+  const connectTimeStr = (pArr) => {
+    let res = "";
+    if (pArr.length !== 0) {
+      res = pArr[0].string.slice();
+      pArr.forEach((time, i) => {
+        if (i !== 0) {
+          res += "; " + time.string.slice();
+        }
+      });
+    } else {
+      res = "No Available Time";
+    }
+    return res;
   };
 
   return (
@@ -478,8 +516,9 @@ export default function SavedScreen({ navigation, route }) {
                           style={styles.spot}
                           title={spot.title}
                           loc={spot.loc}
-                          time={spot.time}
+                          time={connectTimeStr(spot.timeArr)}
                           fav={spot.fav}
+                          timeArr={spot.timeArr}
                         ></Spot>
                       );
                     })
@@ -493,8 +532,9 @@ export default function SavedScreen({ navigation, route }) {
                       style={styles.spot}
                       title={spot.title}
                       loc={spot.loc}
-                      time={spot.time}
+                      time={connectTimeStr(spot.timeArr)}
                       fav={spot.fav}
+                      timeArr={spot.timeArr}
                     ></Spot>
                   ))
               : spotArr
@@ -576,7 +616,6 @@ const styles = StyleSheet.create({
   // Each spot entry's styling
   spot: {
     height: 200,
-    backgroundColor: "blue",
   },
   // First line of the spot entry
   spotTitle: {

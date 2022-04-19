@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -8,18 +8,81 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
+  ScrollView,
 } from "react-native";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { AntDesign, Feather, Entypo, Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller } from "react-hook-form";
 import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
 
 // TODO:
 // 1. Time availability design (checkout modal)
 
+// Display the time availability (does not contain any actual
+// code to edit the spot and stuff. That is in the EditSpotScreen)
+function AvailDisplay(props) {
+  const [text, setText] = useState(props.text);
+
+  const onEdit = () => {
+    console.log("edit time avail");
+  };
+
+  const onDelete = () => {
+    props.removeTime(props.arrIdx);
+  };
+
+  return (
+    <View style={styles.avilContainer}>
+      <Text style={[styles.avilText, { flex: 4 }]}>{text}</Text>
+      <TouchableOpacity style={{ flex: 1 }} onPressOut={onEdit}>
+        <Text style={styles.avilBtnText}>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{ flex: 1 }} onPress={onDelete}>
+        <View>
+          <Entypo name="cross" size={24} color={COLORS.green_theme} />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default function EditSpotScreen({ route, navigation }) {
+  const screenHeight = Dimensions.get("window").height;
+  const scrollThreshold = 0.4; // when the time take up x% of the screen, scoll is enabled
+
+  const [timeArr, setTimeArr] = useState(
+    route.params?.origSpot
+      ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
+      : []
+  );
+
+  // Toggle to set modal visible or not
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // idx of which time spot is being edited
+  // -1 means a new time availability is being added
+  const [editIdx, setEditIdx] = useState(-1);
+
+  // For the times to be scrollable. NOT working atm
+  const [scroll, setScroll] = useState(false);
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setEditIdx(-1);
+  };
+
+  const generateID = (time, i) => {
+    return `${time.start.toString()}_${new Date().getTime()}_${i}`;
+  };
+
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
   const toSaved = () => {
@@ -44,6 +107,7 @@ export default function EditSpotScreen({ route, navigation }) {
   });
 
   const onSubmit = (data) => {
+    // Editing spot
     if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
         screen: "Saved",
@@ -52,13 +116,17 @@ export default function EditSpotScreen({ route, navigation }) {
             idx: route.params.origSpot.idx,
             title: data.title,
             loc: data.loc,
+            timeArr: timeArr,
           },
         },
       });
     } else {
+      // Adding a new spot
       navigation.navigate("Tabs", {
         screen: "Saved",
-        params: { newSpot: { title: data.title, loc: data.loc } },
+        params: {
+          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr },
+        },
       });
     }
   };
@@ -71,7 +139,29 @@ export default function EditSpotScreen({ route, navigation }) {
     console.log(coords);
   };
 
-  const [modalVisible, setModalVisible] = React.useState(false);
+  // for the Save button in TimeModal
+  const onSave = (checkedState, startTime, endTime, string) => {
+    setTimeArr([
+      ...timeArr,
+      {
+        days: [...checkedState],
+        start: new Date(startTime.getTime()),
+        end: new Date(endTime.getTime()),
+        string: string.slice(),
+        idx: timeArr.length,
+      },
+    ]);
+    setModalVisible(false);
+  };
+
+  // For the remove "x" in the current screen
+  const removeTime = (idx) => {
+    let tmpArr = timeArr.filter((time) => time.idx !== idx);
+    for (let i = idx; i < tmpArr.length; ++i) {
+      tmpArr[i].idx = i;
+    }
+    setTimeArr(tmpArr);
+  };
 
   return (
     // Make keyboard disappear when clicked in blank spot
@@ -167,7 +257,44 @@ export default function EditSpotScreen({ route, navigation }) {
         </View>
 
         <View style={styles.timeAvailView}>
-          <Text style={{ fontSize: 20 }}>Availability:</Text>
+          <Text style={{ fontSize: 20, marginBottom: 10 }}>Availability:</Text>
+
+          {timeArr.map((time, i) => (
+            <AvailDisplay
+              key={generateID(time, i)}
+              text={time.string}
+              arrIdx={time.idx}
+              removeTime={removeTime}
+            />
+          ))}
+
+          {/* <View
+            style={styles.scrollContainer}
+            onLayout={(event) => {
+              const { x, y, width, height } = event.nativeEvent.layout;
+              if (height / screenHeight > scrollThreshold) {
+                setScroll(true);
+              } else {
+                setScroll(true);
+              }
+            }}
+          >
+            <ScrollView
+              scrollEnabled={scroll}
+              contentContainerStyle={styles.scrollSec}
+              style={{ backgroundColor: "red" }}
+            >
+              {timeArr.map((time, i) => (
+                <AvailDisplay
+                  key={generateID(time, i)}
+                  text={time.string}
+                  arrIdx={time.idx}
+                  removeTime={removeTime}
+                />
+              ))}
+            </ScrollView>
+          </View> */}
+
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Text style={styles.timeText}>+ Add Time Slot</Text>
           </TouchableOpacity>
@@ -182,14 +309,13 @@ export default function EditSpotScreen({ route, navigation }) {
 
         <Modal
           visible={modalVisible}
-          onBackdropPress={() => setModalVisible(false)}
           animationType={"fade"}
           // transparent={true}
           hasBackdrop={true}
           backdropOpacity={10}
           backdropColor={"rgba(255, 0, 0, 0.8)"}
         >
-          <TimeModal />
+          <TimeModal closeModal={closeModal} onSave={onSave} />
         </Modal>
       </View>
     </TouchableWithoutFeedback>
@@ -250,5 +376,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 15,
     color: COLORS.green_theme,
+  },
+  avilContainer: {
+    marginTop: 5,
+    marginBottom: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  avilText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: COLORS.green_theme,
+    marginRight: 7,
+  },
+  avilBtnText: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontSize: 18,
+    color: COLORS.green_theme,
+  },
+  // Scroll section style
+  scrollSec: {
+    paddingBottom: "20%",
+  },
+  scrollContainer: {
+    flex: 1,
+    paddingTop: 0,
+    flexDirection: "column",
+    backgroundColor: "lightblue",
+    width: "100%",
   },
 });
