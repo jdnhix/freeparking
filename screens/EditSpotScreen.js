@@ -160,9 +160,9 @@ export default function EditSpotScreen({ route, navigation }) {
 
     fetch(
       "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        coords.latitude +
+        36.174465 +
         "," +
-        coords.longitude +
+        -86.76796 +
         "&key=" +
         apiKey
     )

@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
   spotNameText: {
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 28,
     top: "5%",
     color: COLORS.green_theme,
   },
@@ -79,18 +79,18 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     color: COLORS.green_theme,
     fontSize: 22,
-    top: "15%",
+    top: "10%",
   },
   addressText: {
     fontSize: 20,
-    top: "20%",
+    top: "15%",
   },
   timeText: {
     fontSize: 17,
     top: "25%",
   },
   routeButtonView: {
-    top: "47%",
+    top: "35%",
     width: "100%",
     alignItems: "center",
   },
