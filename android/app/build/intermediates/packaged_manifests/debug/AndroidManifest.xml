@@ -68,6 +68,9 @@
         <meta-data
             android:name="expo.modules.updates.EXPO_UPDATE_URL"
             android:value="https://exp.host/@anonymous/test" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3uxdqftE-sgrPJ9460d58pDivXWCP1-4" />
 
         <activity
             android:name="com.realm.freeParking.MainActivity"

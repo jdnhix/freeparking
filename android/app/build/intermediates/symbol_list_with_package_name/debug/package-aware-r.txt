@@ -151,6 +151,7 @@ attr behavior_overlapTop
 attr behavior_peekHeight
 attr behavior_saveFlags
 attr behavior_skipCollapsed
+attr blurRadius
 attr borderWidth
 attr borderlessButtonStyle
 attr bottomAppBarStyle
@@ -307,6 +308,7 @@ attr divider
 attr dividerHorizontal
 attr dividerPadding
 attr dividerVertical
+attr downsampleFactor
 attr drawableBottomCompat
 attr drawableEndCompat
 attr drawableLeftCompat
@@ -516,6 +518,7 @@ attr navigationViewStyle
 attr number
 attr numericModifiers
 attr overlapAnchor
+attr overlayColor
 attr overlayImage
 attr paddingBottomNoButtons
 attr paddingEnd
@@ -813,6 +816,7 @@ color common_google_signin_btn_text_light_disabled
 color common_google_signin_btn_text_light_focused
 color common_google_signin_btn_text_light_pressed
 color common_google_signin_btn_tint
+color default_overlay_color
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
 color design_dark_default_color_background
@@ -1843,6 +1847,8 @@ integer app_bar_elevation_anim_duration
 integer bottom_sheet_slide_duration
 integer cancel_button_image_alpha
 integer config_tooltipAnimTime
+integer default_blur_radius
+integer default_downsample_factor
 integer design_snackbar_text_max_lines
 integer design_tab_indicator_anim_duration_ms
 integer google_play_services_version
@@ -2482,6 +2488,8 @@ style ShapeAppearanceOverlay_TopLeftCut
 style ShapeAppearanceOverlay_TopRightDifferentCornerSize
 style SpinnerDatePickerDialog
 style SpinnerDatePickerStyle
+style SpinnerTimePickerDialog
+style SpinnerTimePickerStyle
 style Test_ShapeAppearanceOverlay_MaterialComponents_MaterialCalendar_Day
 style Test_Theme_MaterialComponents_MaterialCalendar
 style Test_Widget_MaterialComponents_MaterialCalendar
@@ -2963,6 +2971,7 @@ styleable MenuView android_windowAnimationStyle android_itemTextAppearance andro
 styleable NavigationView android_background android_fitsSystemWindows android_maxWidth elevation headerLayout itemBackground itemHorizontalPadding itemIconPadding itemIconSize itemIconTint itemMaxLines itemShapeAppearance itemShapeAppearanceOverlay itemShapeFillColor itemShapeInsetBottom itemShapeInsetEnd itemShapeInsetStart itemShapeInsetTop itemTextAppearance itemTextColor menu
 styleable PopupWindow android_popupBackground android_popupAnimationStyle overlapAnchor
 styleable PopupWindowBackgroundState state_above_anchor
+styleable PxBlurringView blurRadius downsampleFactor overlayColor
 styleable RecycleListView paddingBottomNoButtons paddingTopNoTitle
 styleable RecyclerView android_orientation android_clipToPadding android_descendantFocusability fastScrollEnabled fastScrollHorizontalThumbDrawable fastScrollHorizontalTrackDrawable fastScrollVerticalThumbDrawable fastScrollVerticalTrackDrawable layoutManager reverseLayout spanCount stackFromEnd
 styleable ScrimInsetsFrameLayout insetForeground

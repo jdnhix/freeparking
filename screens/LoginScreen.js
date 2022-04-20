@@ -76,14 +76,14 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView style={styles.center}>
+      <SafeAreaView style={[styles.center, {flex: 1}]}>
         <Image style={styles.logo} source={require("../assets/logo.png")} />
         <Text style={styles.text}>
           Please enter your username and password to proceed
         </Text>
 
         <TextInput
-          style={[styles.input, { top: "23%" }]}
+          style={[styles.input]}
           onChangeText={(text) => setEmail(text)}
           placeholder="Email"
           value={email}
@@ -91,7 +91,7 @@ export default function LoginScreen({ navigation }) {
         />
 
         <TextInput
-          style={[styles.input, { top: "23%" }]}
+          style={[styles.input]}
           onChangeText={(text) => setPassword(text)}
           placeholder="Password"
           value={password}
@@ -100,11 +100,11 @@ export default function LoginScreen({ navigation }) {
         />
 
         {/* {!isKeyboardVisible && (  */}
-        <View style={{ top: "40%" }}>
+        <View style={{top: 0}}>
           <View>
             <CustomButton callback={onPressSignIn} title="Login" height={50} />
           </View>
-          <View style={{ top: "10%" }}>
+          <View style={{top: 10}}>
             <CustomButton
               callback={onPressSignUp}
               title="Sign up"
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    top: 20,
+    top: -100,
   },
   text: {
     width: "80%",
     maxWidth: 330,
-    top: "5%",
+    top: -75,
     fontWeight: "500",
     fontSize: 21,
     textAlign: "center",
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     width: "55%",
     height: 40,
     marginBottom: 20,
+    top: -35
   },
   errorMsg: {
     color: COLORS.red_theme,

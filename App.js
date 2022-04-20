@@ -12,6 +12,8 @@ import { SpotsProvider } from './providers/SpotsProvider'
 import Saved from "./screens/SavedScreen";
 import EditSpot from "./screens/EditSpotScreen";
 import { MenuProvider } from "react-native-popup-menu";
+import SavedScreen from './screens/SavedScreen';
+import EditSpotScreen from './screens/EditSpotScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,25 +22,47 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <AuthProvider>
-      <SpotsProvider>
-        <MenuProvider>
-          <SafeAreaProvider>
-            <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName="Welcome"
-                screenOptions={{ headerShown: false }}
-              >
-                <Stack.Screen name="Welcome" component={WelcomeScreen} />
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Tabs" component={Tabs} />
-                <Stack.Screen name="Saved" component={Saved} />
-                <Stack.Screen name="EditSpot" component={EditSpot} />
-              </Stack.Navigator>
-            </NavigationContainer>
-            <StatusBar />
-          </SafeAreaProvider>
-        </MenuProvider>
-      </SpotsProvider>
+      <MenuProvider>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="Welcome"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Tabs">
+                {() => {
+                  return (
+                    <SpotsProvider>
+                      <Tabs/>
+                    </SpotsProvider>
+                  );
+                }}
+              </Stack.Screen>
+              <Stack.Screen name="Saved">
+                {() => {
+                  return (
+                    <SpotsProvider>
+                      <Saved/>
+                    </SpotsProvider>
+                  );
+                }}
+              </Stack.Screen>
+              <Stack.Screen name="EditSpot">
+                {() => {
+                  return (
+                    <SpotsProvider>
+                      <EditSpot/>
+                    </SpotsProvider>
+                  );
+                }}
+              </Stack.Screen>
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar />
+        </SafeAreaProvider>
+      </MenuProvider>
     </AuthProvider>
   );
 }

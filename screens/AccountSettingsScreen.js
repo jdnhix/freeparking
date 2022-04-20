@@ -12,9 +12,9 @@ export default function SettingsScreen({navigation}) {
 
     const onPressSignOut = () => {
         console.log("Attempting signout");
+        navigation.navigate("Welcome");
         closeRealm();
         signOut();
-        navigation.navigate("Welcome");
     }
 
     return (

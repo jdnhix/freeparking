@@ -86,7 +86,7 @@
 44-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:16:22-91
 45
 46    <application
-46-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:14:3-34:17
+46-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:14:3-35:17
 47        android:name="com.realm.freeParking.MainApplication"
 47-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:14:16-47
 48        android:allowBackup="true"
@@ -134,215 +134,221 @@
 69-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:19:16-67
 70            android:value="https://exp.host/@anonymous/test" />
 70-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:19:68-116
-71
-72        <activity
-72-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:5-32:16
-73            android:name="com.realm.freeParking.MainActivity"
-73-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:15-43
-74            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-74-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:77-154
-75            android:label="@string/app_name"
-75-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:44-76
-76            android:launchMode="singleTask"
-76-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:155-186
-77            android:screenOrientation="portrait"
-77-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:276-312
-78            android:theme="@style/Theme.App.SplashScreen"
-78-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:230-275
-79            android:windowSoftInputMode="adjustResize" >
-79-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:187-229
-80            <intent-filter>
-80-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:7-24:23
-81                <action android:name="android.intent.action.MAIN" />
-81-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:22:9-60
-81-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:22:17-58
-82
-83                <category android:name="android.intent.category.LAUNCHER" />
-83-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:23:9-68
-83-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:23:19-66
-84            </intent-filter>
-85            <intent-filter>
-85-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:25:7-31:23
-86                <action android:name="android.intent.action.VIEW" />
-86-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
-86-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
-87
-88                <category android:name="android.intent.category.DEFAULT" />
-88-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:9-67
-88-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:19-65
-89                <category android:name="android.intent.category.BROWSABLE" />
-89-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
-89-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+71        <meta-data
+71-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:5-119
+72            android:name="com.google.android.geo.API_KEY"
+72-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:16-61
+73            android:value="AIzaSyC3uxdqftE-sgrPJ9460d58pDivXWCP1-4" />
+73-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:20:62-117
+74
+75        <activity
+75-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:5-33:16
+76            android:name="com.realm.freeParking.MainActivity"
+76-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:15-43
+77            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+77-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:77-154
+78            android:label="@string/app_name"
+78-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:44-76
+79            android:launchMode="singleTask"
+79-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:155-186
+80            android:screenOrientation="portrait"
+80-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:276-312
+81            android:theme="@style/Theme.App.SplashScreen"
+81-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:230-275
+82            android:windowSoftInputMode="adjustResize" >
+82-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:21:187-229
+83            <intent-filter>
+83-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:22:7-25:23
+84                <action android:name="android.intent.action.MAIN" />
+84-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:23:9-60
+84-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:23:17-58
+85
+86                <category android:name="android.intent.category.LAUNCHER" />
+86-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:24:9-68
+86-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:24:19-66
+87            </intent-filter>
+88            <intent-filter>
+88-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:26:7-32:23
+89                <action android:name="android.intent.action.VIEW" />
+89-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
+89-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
 90
-91                <data android:scheme="com.realm.freeParking" />
-91-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
-91-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
-92                <data android:scheme="exp+test" />
-92-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
-92-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
-93            </intent-filter>
-94        </activity>
-95        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-95-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:33:5-81
-95-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:33:15-79
-96
-97        <meta-data
-97-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-18:37
-98            android:name="expo.modules.updates.AUTO_SETUP"
-98-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-59
-99            android:value="false" />
-99-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-34
-100
-101        <activity
-101-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:9-33:20
-102            android:name="expo.modules.devlauncher.launcher.DevLauncherActivity"
-102-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-81
-103            android:launchMode="singleTask"
-103-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:13-44
-104            android:screenOrientation="portrait"
-104-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-49
-105            android:theme="@style/Theme.DevLauncher.LauncherActivity" >
-105-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-70
-106            <intent-filter>
-106-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:13-32:29
-107                <action android:name="android.intent.action.VIEW" />
-107-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
-107-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
-108
-109                <category android:name="android.intent.category.DEFAULT" />
-109-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:9-67
-109-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:19-65
-110                <category android:name="android.intent.category.BROWSABLE" />
-110-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
-110-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+91                <category android:name="android.intent.category.DEFAULT" />
+91-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:9-67
+91-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:19-65
+92                <category android:name="android.intent.category.BROWSABLE" />
+92-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
+92-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+93
+94                <data android:scheme="com.realm.freeParking" />
+94-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
+94-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
+95                <data android:scheme="exp+test" />
+95-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
+95-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
+96            </intent-filter>
+97        </activity>
+98        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+98-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:34:5-81
+98-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:34:15-79
+99
+100        <meta-data
+100-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-18:37
+101            android:name="expo.modules.updates.AUTO_SETUP"
+101-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-59
+102            android:value="false" />
+102-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-34
+103
+104        <activity
+104-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:9-33:20
+105            android:name="expo.modules.devlauncher.launcher.DevLauncherActivity"
+105-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-81
+106            android:launchMode="singleTask"
+106-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:13-44
+107            android:screenOrientation="portrait"
+107-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-49
+108            android:theme="@style/Theme.DevLauncher.LauncherActivity" >
+108-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-70
+109            <intent-filter>
+109-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:13-32:29
+110                <action android:name="android.intent.action.VIEW" />
+110-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
+110-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
 111
-112                <data android:scheme="expo-dev-launcher" />
-112-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
-112-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
-113            </intent-filter>
-114        </activity>
-115        <activity
-115-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:9-37:70
-116            android:name="expo.modules.devlauncher.launcher.errors.DevLauncherErrorActivity"
-116-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:35:13-93
-117            android:screenOrientation="portrait"
-117-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:13-49
-118            android:theme="@style/Theme.DevLauncher.ErrorActivity" />
-118-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:37:13-67
-119        <activity
-119-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-25:20
-120            android:name="expo.modules.devmenu.DevMenuActivity"
-120-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-64
-121            android:exported="true"
-121-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-36
-122            android:launchMode="singleTask"
-122-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-44
-123            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" >
-123-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-75
-124            <intent-filter>
-124-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-24:29
-125                <action android:name="android.intent.action.VIEW" />
-125-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
-125-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
-126
-127                <category android:name="android.intent.category.DEFAULT" />
-127-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:9-67
-127-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:27:19-65
-128                <category android:name="android.intent.category.BROWSABLE" />
-128-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
-128-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+112                <category android:name="android.intent.category.DEFAULT" />
+112-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:9-67
+112-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:19-65
+113                <category android:name="android.intent.category.BROWSABLE" />
+113-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
+113-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+114
+115                <data android:scheme="expo-dev-launcher" />
+115-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
+115-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
+116            </intent-filter>
+117        </activity>
+118        <activity
+118-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:34:9-37:70
+119            android:name="expo.modules.devlauncher.launcher.errors.DevLauncherErrorActivity"
+119-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:35:13-93
+120            android:screenOrientation="portrait"
+120-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:13-49
+121            android:theme="@style/Theme.DevLauncher.ErrorActivity" />
+121-->[:expo-dev-launcher] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-launcher\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:37:13-67
+122        <activity
+122-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-25:20
+123            android:name="expo.modules.devmenu.DevMenuActivity"
+123-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-64
+124            android:exported="true"
+124-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-36
+125            android:launchMode="singleTask"
+125-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-44
+126            android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" >
+126-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-75
+127            <intent-filter>
+127-->[:expo-dev-menu] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-dev-menu\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-24:29
+128                <action android:name="android.intent.action.VIEW" />
+128-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:7-58
+128-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:9:15-56
 129
-130                <data android:scheme="expo-dev-menu" />
-130-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
-130-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
-131            </intent-filter>
-132        </activity>
-133
-134        <provider
-134-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:9-34:20
-135            android:name="expo.modules.filesystem.FileSystemFileProvider"
-135-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:13-74
-136            android:authorities="com.realm.freeParking.FileSystemFileProvider"
-136-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:13-74
-137            android:exported="false"
-137-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-37
-138            android:grantUriPermissions="true" >
-138-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:13-47
-139            <meta-data
-139-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-33:70
-140                android:name="android.support.FILE_PROVIDER_PATHS"
-140-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:17-67
-141                android:resource="@xml/file_system_provider_paths" />
-141-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:17-67
-142        </provider>
-143
-144        <service
-144-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-19:56
-145            android:name="expo.modules.location.services.LocationTaskService"
-145-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-78
-146            android:exported="false"
-146-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-37
-147            android:foregroundServiceType="location" />
-147-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-53
-148
-149        <meta-data
-149-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-14:89
-150            android:name="org.unimodules.core.AppLoader#react-native-headless"
-150-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-79
-151            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" /> <!-- Needs to be explicitly declared on P+ -->
-151-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-86
-152        <uses-library
-152-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
-153            android:name="org.apache.http.legacy"
-153-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
-154            android:required="false" />
-154-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
-155
-156        <activity
-156-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
-157            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-157-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
-158            android:exported="false"
-158-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
-159            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-159-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
-160
-161        <meta-data
-161-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
-162            android:name="com.google.android.gms.version"
-162-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
-163            android:value="@integer/google_play_services_version" />
-163-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
-164
-165        <provider
-165-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:25:9-29:43
-166            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-166-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:26:13-79
-167            android:authorities="com.realm.freeParking.lifecycle-process"
-167-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:27:13-69
-168            android:exported="false"
-168-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:28:13-37
-169            android:multiprocess="true" />
-169-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:29:13-40
-170
-171        <service
-171-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:19:9-21:40
-172            android:name="io.nlopez.smartlocation.activity.providers.ActivityGooglePlayServicesProvider$ActivityRecognitionService"
-172-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:20:13-132
-173            android:exported="false" />
-173-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:21:13-37
+130                <category android:name="android.intent.category.DEFAULT" />
+130-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:9-67
+130-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:28:19-65
+131                <category android:name="android.intent.category.BROWSABLE" />
+131-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:7-67
+131-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:10:17-65
+132
+133                <data android:scheme="expo-dev-menu" />
+133-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:7-37
+133-->C:\Users\toddb\FreeParking\freeparking\android\app\src\main\AndroidManifest.xml:11:13-35
+134            </intent-filter>
+135        </activity>
+136
+137        <provider
+137-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:9-34:20
+138            android:name="expo.modules.filesystem.FileSystemFileProvider"
+138-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:13-74
+139            android:authorities="com.realm.freeParking.FileSystemFileProvider"
+139-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:13-74
+140            android:exported="false"
+140-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:28:13-37
+141            android:grantUriPermissions="true" >
+141-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:13-47
+142            <meta-data
+142-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-33:70
+143                android:name="android.support.FILE_PROVIDER_PATHS"
+143-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:32:17-67
+144                android:resource="@xml/file_system_provider_paths" />
+144-->[:expo-file-system] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-file-system\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:33:17-67
+145        </provider>
+146
+147        <service
+147-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-19:56
+148            android:name="expo.modules.location.services.LocationTaskService"
+148-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-78
+149            android:exported="false"
+149-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-37
+150            android:foregroundServiceType="location" />
+150-->[:expo-location] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-location\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-53
+151
+152        <meta-data
+152-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-14:89
+153            android:name="org.unimodules.core.AppLoader#react-native-headless"
+153-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-79
+154            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" /> <!-- Needs to be explicitly declared on P+ -->
+154-->[:expo-modules-core] C:\Users\toddb\FreeParking\freeparking\node_modules\expo-modules-core\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-86
+155        <uses-library
+155-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+156            android:name="org.apache.http.legacy"
+156-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+157            android:required="false" />
+157-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\be2f60d3ca5e09744cd4e8e129d788fd\transformed\jetified-play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+158
+159        <activity
+159-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:23:9-26:75
+160            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+160-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:24:13-79
+161            android:exported="false"
+161-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:25:13-37
+162            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+162-->[com.google.android.gms:play-services-base:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\d47104d7d3e76985fe28c350f9ff0f03\transformed\jetified-play-services-base-17.0.0\AndroidManifest.xml:26:13-72
+163
+164        <meta-data
+164-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:23:9-25:69
+165            android:name="com.google.android.gms.version"
+165-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:24:13-58
+166            android:value="@integer/google_play_services_version" />
+166-->[com.google.android.gms:play-services-basement:17.0.0] C:\Users\toddb\.gradle\caches\transforms-3\51475fde4d23562144a5d1436682b46e\transformed\jetified-play-services-basement-17.0.0\AndroidManifest.xml:25:13-66
+167
+168        <provider
+168-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:25:9-29:43
+169            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+169-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:26:13-79
+170            android:authorities="com.realm.freeParking.lifecycle-process"
+170-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:27:13-69
+171            android:exported="false"
+171-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:28:13-37
+172            android:multiprocess="true" />
+172-->[androidx.lifecycle:lifecycle-process:2.2.0] C:\Users\toddb\.gradle\caches\transforms-3\8b46158bd4206a233f95cbac4a59faac\transformed\jetified-lifecycle-process-2.2.0\AndroidManifest.xml:29:13-40
+173
 174        <service
-174-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:22:9-24:40
-175            android:name="io.nlopez.smartlocation.geofencing.providers.GeofencingGooglePlayServicesProvider$GeofencingService"
-175-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:23:13-127
+174-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:19:9-21:40
+175            android:name="io.nlopez.smartlocation.activity.providers.ActivityGooglePlayServicesProvider$ActivityRecognitionService"
+175-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:20:13-132
 176            android:exported="false" />
-176-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:24:13-37
+176-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:21:13-37
 177        <service
-177-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:25:9-27:40
-178            android:name="io.nlopez.smartlocation.geocoding.providers.AndroidGeocodingProvider$AndroidGeocodingService"
-178-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:26:13-120
+177-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:22:9-24:40
+178            android:name="io.nlopez.smartlocation.geofencing.providers.GeofencingGooglePlayServicesProvider$GeofencingService"
+178-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:23:13-127
 179            android:exported="false" />
-179-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:27:13-37
-180    </application>
-181
-182</manifest>
+179-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:24:13-37
+180        <service
+180-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:25:9-27:40
+181            android:name="io.nlopez.smartlocation.geocoding.providers.AndroidGeocodingProvider$AndroidGeocodingService"
+181-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:26:13-120
+182            android:exported="false" />
+182-->[io.nlopez.smartlocation:library:3.2.11] C:\Users\toddb\.gradle\caches\transforms-3\50f96ea50ba1f1a11bd09d14e65c1f63\transformed\jetified-library-3.2.11\AndroidManifest.xml:27:13-37
+183    </application>
+184
+185</manifest>
