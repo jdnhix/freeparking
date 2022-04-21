@@ -532,8 +532,9 @@ export default function SavedScreen({ navigation, route }) {
                         style={styles.spot}
                         title={spot.title}
                         loc={spot.loc}
-                        time={spot.time}
+                        time={connectTimeStr(spot.timeArr)}
                         fav={spot.fav}
+                        timeArr={spot.timeArr}
                       ></Spot>
                     );
                   })}
