@@ -21,7 +21,7 @@ import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
 import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addSpot } from "../redux/SpotActions";
+import { addSpot, removeSpot } from "../redux/SpotActions";
 
 // TODO:
 // Make the cancel button on search bar always visible
@@ -52,10 +52,10 @@ function Spot(props) {
     });
   };
 
-  // when "remove" in dropdown menu is selected
+  //when "remove" in dropdown menu is selected
   const removeSpot = () => {
     const rmFunc = props.rmFunc;
-    rmFunc(props.rmIdx);
+    rmFunc();
   };
 
   const editFav = props.editFav;
@@ -329,13 +329,13 @@ function SavedScreen({ navigation, route, spots }) {
   // };
 
   // Function to remove a spot
-  const removeSpot = (idx) => {
-    let tmpArr = spotArr.filter((spot) => spot.idx !== idx);
-    for (let i = idx; i < tmpArr.length; ++i) {
-      tmpArr[i].idx = i;
-    }
-    setSpotArr(tmpArr);
-  };
+  // const removeSpot = (idx) => {
+  //   let tmpArr = spotArr.filter((spot) => spot.idx !== idx);
+  //   for (let i = idx; i < tmpArr.length; ++i) {
+  //     tmpArr[i].idx = i;
+  //   }
+  //   setSpotArr(tmpArr);
+  // };
 
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
@@ -503,7 +503,9 @@ function SavedScreen({ navigation, route, spots }) {
                         <Spot
                           key={generateID(spot, i)}
                           rmIdx={spot.idx}
-                          rmFunc={removeSpot}
+                          rmFunc={() => {
+                            dispatch(removeSpot(spot.idx));
+                          }}
                           editFunc={toEditSpot}
                           editFav={flipFav}
                           style={styles.spot}
@@ -519,7 +521,9 @@ function SavedScreen({ navigation, route, spots }) {
                     <Spot
                       key={generateID(spot, i)}
                       rmIdx={spot.idx}
-                      rmFunc={removeSpot}
+                      rmFunc={() => {
+                        dispatch(removeSpot(spot.idx));
+                      }}
                       editFunc={toEditSpot}
                       editFav={flipFav}
                       style={styles.spot}
@@ -537,7 +541,9 @@ function SavedScreen({ navigation, route, spots }) {
                       <Spot
                         key={generateID(spot, i)}
                         rmIdx={spot.idx}
-                        rmFunc={removeSpot}
+                        rmFunc={() => {
+                          dispatch(removeSpot(spot.idx));
+                        }}
                         editFunc={toEditSpot}
                         editFav={flipFav}
                         style={styles.spot}
@@ -656,6 +662,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       addSpot,
+      removeSpot,
     },
     dispatch
   );

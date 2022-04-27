@@ -50,10 +50,20 @@ const INITIAL_STATE = {
 };
 
 const spotReducer = (state = INITIAL_STATE, action) => {
+  const spots = [...state.spots];
   switch (action.type) {
     case "ADD_SPOT":
-      const spots = [...state.spots];
+      let newSpot = action.payload;
+      newSpot.idx = spots.length;
       spots.push(action.payload);
+
+      return {
+        ...state,
+        spots,
+      };
+
+    case "REMOVE_SPOT":
+      spots.splice(action.payload, 1);
 
       return {
         ...state,
