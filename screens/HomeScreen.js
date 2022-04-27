@@ -135,7 +135,7 @@ class HomeScreen extends React.Component {
           animationType="fade"
         >
           <MapModal
-            name={this.activeSpot.name}
+            name={this.activeSpot.title}
             address={this.activeSpot.address}
             time={this.activeSpot.timeArr}
           />

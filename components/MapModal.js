@@ -59,7 +59,7 @@ export default function MapModal(props) {
 const styles = StyleSheet.create({
   modal: {
     width: 300,
-    height: 280,
+    height: 300,
     backgroundColor: "white",
     position: "absolute",
     top: "15%",
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     top: "25%",
   },
   routeButtonView: {
-    // backgroundColor: "blue",
     flex: 1,
     width: "100%",
     alignItems: "center",
