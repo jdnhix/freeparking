@@ -11,6 +11,7 @@ import { Marker } from "react-native-maps";
 import MapModal from "../components/MapModal";
 import Modal from "react-native-modal";
 import { BlurView } from "expo-blur";
+import { connect } from "react-redux";
 
 const { height, width } = Dimensions.get("window");
 const LATITUDE = 36.174465; // Nashville, TN
@@ -18,44 +19,24 @@ const LONGITUDE = -86.76796; // Nashville, TN
 const LATITUDE_DELTA = 0.28;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
 
-const defTimeArr = [
-  {
-    days: [true, true, true, true, true, false, false],
-    start: new Date("1899-12-31T6:00:00.000Z"),
-    end: new Date("1899-12-31T18:00:00.000Z"),
-    string: "M-F: 6:00 AM - 6:00 PM",
-    idx: 0,
-  },
-  {
-    days: [false, false, false, false, false, true, true],
-    start: new Date("1899-12-31T14:00:00.000Z"),
-    end: new Date("1899-12-31T17:00:00.000Z"),
-    string: "S,U: 0:00 AM - 0:00 AM",
-    idx: 1,
-  },
-];
-
 const markers = [
   {
     latitude: 36.23,
     longitude: -86.71,
     name: "Brentwood??",
     address: "idek lol",
-    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
   {
     latitude: 36.09,
     longitude: -86.74,
     name: "Middle of nowhere",
     address: "1818 church st",
-    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
   {
     latitude: 36.14645,
     longitude: -86.803482,
     name: "Vanderbilt",
     address: "2301 Vanderbilt Place",
-    timeArr: defTimeArr.map((time) => ({ ...time })),
   },
 ];
 
@@ -112,20 +93,20 @@ class HomeScreen extends React.Component {
             maxZoomLevel: 20,
           }}
         >
-          {markers.map((spot, index) => (
+          {this.props.spots.map((spot, index) => (
             <Marker
               key={index}
               coordinate={{
-                latitude: spot.latitude,
-                longitude: spot.longitude,
+                latitude: spot.lat,
+                longitude: spot.long,
               }}
               onPress={() => {
                 this.modalOn();
                 this.activeSpot = spot;
 
                 let r = {
-                  latitude: spot.latitude + 0.001,
-                  longitude: spot.longitude + 0.001,
+                  latitude: spot.lat + 0.001,
+                  longitude: spot.long + 0.001,
                   latitudeDelta: 0.005,
                   longitudeDelta: 0.005,
                 };
@@ -187,4 +168,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+const mapStateToProps = (state) => {
+  const { spots } = state.spots;
+  return { spots };
+};
+
+export default connect(mapStateToProps)(HomeScreen);

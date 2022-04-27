@@ -33,13 +33,15 @@ export default function MapModal(props) {
   //TODO ADD A SHADOW TO THIS
   return (
     <View style={styles.modal}>
-      <Text style={styles.spotNameText}>{props.name}</Text>
-      <Text style={styles.freeParkingText}>Free Parking</Text>
+      <View style={{ flex: 2 }}>
+        <Text style={styles.spotNameText}>{props.name}</Text>
+        <Text style={styles.freeParkingText}>Free Parking</Text>
 
-      <Text style={styles.addressText}>{props.address}</Text>
+        <Text style={styles.addressText}>{props.address}</Text>
 
-      {/* todo eventually add in text saying if the spot is currently available or not */}
-      <Text style={styles.timeText}>{connectTimeStr(props.time)}</Text>
+        {/* todo eventually add in text saying if the spot is currently available or not */}
+        <Text style={styles.timeText}>{connectTimeStr(props.time)}</Text>
+      </View>
 
       <View style={styles.routeButtonView}>
         <TouchableOpacity
@@ -57,7 +59,7 @@ export default function MapModal(props) {
 const styles = StyleSheet.create({
   modal: {
     width: 300,
-    height: 320,
+    height: 280,
     backgroundColor: "white",
     position: "absolute",
     top: "15%",
@@ -90,9 +92,11 @@ const styles = StyleSheet.create({
     top: "25%",
   },
   routeButtonView: {
-    top: "35%",
+    // backgroundColor: "blue",
+    flex: 1,
     width: "100%",
     alignItems: "center",
+    justifyContent: "center",
   },
   routeButton: {
     backgroundColor: COLORS.green_theme,
