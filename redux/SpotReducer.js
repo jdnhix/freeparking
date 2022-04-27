@@ -25,7 +25,7 @@ const INITIAL_STATE = {
       title: "Brentwood??",
       address: "idek lol",
       timeArr: defTimeArr.map((time) => ({ ...time })),
-      fav: false,
+      fav: true,
       idx: 432,
     },
     {

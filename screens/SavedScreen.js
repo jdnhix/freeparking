@@ -19,6 +19,9 @@ import {
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { addSpot } from "../redux/SpotActions";
 
 // TODO:
 // Make the cancel button on search bar always visible
@@ -35,7 +38,7 @@ function Spot(props) {
   }, [props.fav]);
 
   // when route icon is clicked. Go to Apple/Google maps
-  const toRoute = createOpenLink({ query: props.loc });
+  const toRoute = createOpenLink({ query: props.address });
 
   // when "edit" in dropdown menu is selected
   // TODO: need to account for time
@@ -44,7 +47,7 @@ function Spot(props) {
     editFunc({
       idx: props.rmIdx,
       title: props.title,
-      loc: props.loc,
+      address: props.address,
       timeArr: props.timeArr.map((t) => ({ ...t })),
     });
   };
@@ -111,7 +114,7 @@ function Spot(props) {
         }}
       >
         <Text style={styles.spotTitle}>{props.title}</Text>
-        <Text style={styles.spotLoc}>{props.loc}</Text>
+        <Text style={styles.spotAddress}>{props.address}</Text>
         <Text>{props.time}</Text>
       </View>
       <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
@@ -148,7 +151,7 @@ function Spot(props) {
   );
 }
 
-export default function SavedScreen({ navigation, route }) {
+function SavedScreen({ navigation, route, spots }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
 
@@ -169,57 +172,57 @@ export default function SavedScreen({ navigation, route }) {
     },
   ];
 
-  const initArr = [
-    {
-      title: "Vanderbilt",
-      loc: "2301 Vanderbilt Place",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 0,
-    },
-    {
-      title: "Vandy",
-      loc: "2301 Vanderbilt Place",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 1,
-    },
-    {
-      title: "Target1",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 2,
-    },
-    {
-      title: "Target2",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 3,
-    },
-    {
-      title: "Target3",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 4,
-    },
-    {
-      title: "Target4",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 5,
-    },
-    {
-      title: "Target5",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 6,
-    },
-  ];
+  // const initArr = [
+  //   {
+  //     title: "Vanderbilt",
+  //     loc: "2301 Vanderbilt Place",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 0,
+  //   },
+  //   {
+  //     title: "Vandy",
+  //     loc: "2301 Vanderbilt Place",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 1,
+  //   },
+  //   {
+  //     title: "Target1",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 2,
+  //   },
+  //   {
+  //     title: "Target2",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 3,
+  //   },
+  //   {
+  //     title: "Target3",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 4,
+  //   },
+  //   {
+  //     title: "Target4",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 5,
+  //   },
+  //   {
+  //     title: "Target5",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 6,
+  //   },
+  // ];
 
   // route.params.newSpot is an Object received from EditSpotScreen containing
   // information for a new Spot to be added. So far it contains title: "a title"
@@ -246,7 +249,11 @@ export default function SavedScreen({ navigation, route }) {
   }, [route.params?.editSpot]);
 
   const [spotArr, setSpotArr] = useState(
-    initArr.map((spot) => {
+    // initArr.map((spot) => {
+    //   return { ...spot };
+    // })
+
+    spots.map((spot) => {
       return { ...spot };
     })
   );
@@ -309,7 +316,7 @@ export default function SavedScreen({ navigation, route }) {
       ...spotArr,
       {
         title: newSpot.title,
-        loc: newSpot.loc,
+        address: newSpot.address,
         fav: false,
         timeArr: newSpot.timeArr,
         idx: spotArr.length,
@@ -329,14 +336,14 @@ export default function SavedScreen({ navigation, route }) {
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, loc, timeArr }) => {
+  const toEditSpot = ({ idx, title, address, timeArr }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
         origSpot: {
           idx: idx,
           title: title,
-          loc: loc,
+          address: address,
           timeArr: timeArr,
         },
       },
@@ -345,11 +352,11 @@ export default function SavedScreen({ navigation, route }) {
 
   // Function to edit a spot
   // TODO: need to add time as a parameter
-  const editSpot = ({ idx, title, loc, timeArr }) => {
+  const editSpot = ({ idx, title, address, timeArr }) => {
     let tmpSpots = [...spotArr];
     let target = { ...tmpSpots[idx] };
     target.title = title;
-    target.loc = loc;
+    target.address = address;
     target.timeArr = timeArr.map((t) => ({ ...t }));
     tmpSpots[idx] = target;
     setSpotArr(tmpSpots);
@@ -368,7 +375,7 @@ export default function SavedScreen({ navigation, route }) {
   const filterSearch = (spot) => {
     return (
       spot.title.toLowerCase().includes(query.toLowerCase()) ||
-      spot.loc.toLowerCase().includes(query.toLowerCase())
+      spot.address.toLowerCase().includes(query.toLowerCase())
     );
   };
 
@@ -497,7 +504,7 @@ export default function SavedScreen({ navigation, route }) {
                           editFav={flipFav}
                           style={styles.spot}
                           title={spot.title}
-                          loc={spot.loc}
+                          address={spot.address}
                           time={connectTimeStr(spot.timeArr)}
                           fav={spot.fav}
                           timeArr={spot.timeArr}
@@ -513,7 +520,7 @@ export default function SavedScreen({ navigation, route }) {
                       editFav={flipFav}
                       style={styles.spot}
                       title={spot.title}
-                      loc={spot.loc}
+                      address={spot.address}
                       time={connectTimeStr(spot.timeArr)}
                       fav={spot.fav}
                       timeArr={spot.timeArr}
@@ -531,7 +538,7 @@ export default function SavedScreen({ navigation, route }) {
                         editFav={flipFav}
                         style={styles.spot}
                         title={spot.title}
-                        loc={spot.loc}
+                        address={spot.address}
                         time={connectTimeStr(spot.timeArr)}
                         fav={spot.fav}
                         timeArr={spot.timeArr}
@@ -606,8 +613,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.green_theme,
   },
-  // Location of the spot
-  spotLoc: {
+  // addressation of the spot
+  spotAddress: {
     fontWeight: "600",
     fontSize: 15,
     color: COLORS.green_theme,
@@ -635,3 +642,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+
+const mapStateToProps = (state) => {
+  const { spots } = state.spots;
+  return { spots };
+};
+
+export default connect(mapStateToProps)(SavedScreen);
