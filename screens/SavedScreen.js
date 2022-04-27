@@ -19,7 +19,7 @@ import {
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addSpot } from "../redux/SpotActions";
 
@@ -155,6 +155,8 @@ function SavedScreen({ navigation, route, spots }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
 
+  const dispatch = useDispatch();
+
   const defTimeArr = [
     {
       days: [true, true, true, true, true, false, false],
@@ -237,7 +239,8 @@ function SavedScreen({ navigation, route, spots }) {
   // Handle received newSpot information
   useEffect(() => {
     if (route.params?.newSpot) {
-      addSpot(route.params.newSpot);
+      // addSpot(route.params.newSpot);
+      dispatch(addSpot(route.params.newSpot));
     }
   }, [route.params?.newSpot]);
 
@@ -311,18 +314,18 @@ function SavedScreen({ navigation, route, spots }) {
 
   // Action to add spot
   // TODO: need to account for time later
-  const addSpot = (newSpot) => {
-    setSpotArr([
-      ...spotArr,
-      {
-        title: newSpot.title,
-        address: newSpot.address,
-        fav: false,
-        timeArr: newSpot.timeArr,
-        idx: spotArr.length,
-      },
-    ]);
-  };
+  // const addSpot = (newSpot) => {
+  //   setSpotArr([
+  //     ...spotArr,
+  //     {
+  //       title: newSpot.title,
+  //       address: newSpot.address,
+  //       fav: false,
+  //       timeArr: newSpot.timeArr,
+  //       idx: spotArr.length,
+  //     },
+  //   ]);
+  // };
 
   // Function to remove a spot
   const removeSpot = (idx) => {
@@ -648,4 +651,12 @@ const mapStateToProps = (state) => {
   return { spots };
 };
 
-export default connect(mapStateToProps)(SavedScreen);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addSpot,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(SavedScreen);

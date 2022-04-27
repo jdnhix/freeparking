@@ -26,7 +26,7 @@ const INITIAL_STATE = {
       address: "idek lol",
       timeArr: defTimeArr.map((time) => ({ ...time })),
       fav: true,
-      idx: 432,
+      idx: 0,
     },
     {
       lat: 36.09,
@@ -35,7 +35,7 @@ const INITIAL_STATE = {
       address: "1818 church st",
       timeArr: defTimeArr.map((time) => ({ ...time })),
       fav: false,
-      idx: 3,
+      idx: 1,
     },
     {
       lat: 36.14645,
@@ -44,7 +44,7 @@ const INITIAL_STATE = {
       address: "2301 Vanderbilt Place",
       timeArr: defTimeArr.map((time) => ({ ...time })),
       fav: false,
-      idx: 2340231,
+      idx: 2,
     },
   ],
 };
@@ -52,11 +52,13 @@ const INITIAL_STATE = {
 const spotReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "ADD_SPOT":
-      const spots = state;
+      const spots = state.spots;
 
       spots.push(action.payload);
 
-      const newState = spots;
+      const newState = { spots };
+
+      console.log(newState);
       return newState;
 
     default:
