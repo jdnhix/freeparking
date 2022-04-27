@@ -21,7 +21,7 @@ import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
 import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addSpot, removeSpot, editSpot } from "../redux/SpotActions";
+import { addSpot, removeSpot, editSpot, toggleFav } from "../redux/SpotActions";
 
 // TODO:
 // Make the cancel button on search bar always visible
@@ -59,10 +59,11 @@ function Spot(props) {
 
   const editFav = props.editFav;
 
-  const flipFav = () =>
+  const flipFav = () => {
     fav
-      ? (setFav(false), setFavName("staro"), editFav(props.rmIdx, false))
-      : (setFav(true), setFavName("star"), editFav(props.rmIdx, true));
+      ? (setFav(false), setFavName("staro"), editFav())
+      : (setFav(true), setFavName("star"), editFav());
+  };
 
   // Styles for the dropdown menu
   const menuStyles = {
@@ -246,7 +247,6 @@ function SavedScreen({ navigation, route, spots }) {
   // Handle updated information on an existing spot
   useEffect(() => {
     if (route.params?.editSpot) {
-      // editSpot(route.params.editSpot);
       dispatch(editSpot(route.params.editSpot));
     }
   }, [route.params?.editSpot]);
@@ -317,28 +317,6 @@ function SavedScreen({ navigation, route, spots }) {
         },
       },
     });
-  };
-
-  // Function to edit a spot
-  // TODO: need to add time as a parameter
-  // const editSpot = ({ idx, title, address, timeArr }) => {
-  //   let tmpSpots = [...spotArr];
-  //   let target = { ...tmpSpots[idx] };
-  //   target.title = title;
-  //   target.address = address;
-  //   target.timeArr = timeArr.map((t) => ({ ...t }));
-  //   tmpSpots[idx] = target;
-  //   setSpotArr(tmpSpots);
-  // };
-
-  // Function to set a spot favourite or not
-  // favQ: boolean, favourite or not
-  const flipFav = (idx, favQ) => {
-    let tmpSpots = [...spotArr];
-    let target = { ...tmpSpots[idx] };
-    target.fav = favQ;
-    tmpSpots[idx] = target;
-    setSpotArr(tmpSpots);
   };
 
   const filterSearch = (spot) => {
@@ -472,7 +450,9 @@ function SavedScreen({ navigation, route, spots }) {
                             dispatch(removeSpot(spot.idx));
                           }}
                           editFunc={toEditSpot}
-                          editFav={flipFav}
+                          editFav={() => {
+                            dispatch(toggleFav(spot.idx));
+                          }}
                           style={styles.spot}
                           title={spot.title}
                           address={spot.address}
@@ -490,7 +470,9 @@ function SavedScreen({ navigation, route, spots }) {
                         dispatch(removeSpot(spot.idx));
                       }}
                       editFunc={toEditSpot}
-                      editFav={flipFav}
+                      editFav={() => {
+                        dispatch(toggleFav(spot.idx));
+                      }}
                       style={styles.spot}
                       title={spot.title}
                       address={spot.address}
@@ -510,7 +492,9 @@ function SavedScreen({ navigation, route, spots }) {
                           dispatch(removeSpot(spot.idx));
                         }}
                         editFunc={toEditSpot}
-                        editFav={flipFav}
+                        editFav={() => {
+                          dispatch(toggleFav(spot.idx));
+                        }}
                         style={styles.spot}
                         title={spot.title}
                         address={spot.address}
@@ -628,6 +612,8 @@ const mapDispatchToProps = (dispatch) =>
     {
       addSpot,
       removeSpot,
+      editSpot,
+      toggleFav,
     },
     dispatch
   );

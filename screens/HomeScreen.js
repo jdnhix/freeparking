@@ -14,31 +14,10 @@ import { BlurView } from "expo-blur";
 import { connect } from "react-redux";
 
 const { height, width } = Dimensions.get("window");
-const LATITUDE = 36.174465; // Nashville, TN
-const LONGITUDE = -86.76796; // Nashville, TN
-const LATITUDE_DELTA = 0.28;
+const LATITUDE = 36.14645; // Nashville, TN
+const LONGITUDE = -86.803482; // Nashville, TN
+const LATITUDE_DELTA = 0.22;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
-
-const markers = [
-  {
-    latitude: 36.23,
-    longitude: -86.71,
-    name: "Brentwood??",
-    address: "idek lol",
-  },
-  {
-    latitude: 36.09,
-    longitude: -86.74,
-    name: "Middle of nowhere",
-    address: "1818 church st",
-  },
-  {
-    latitude: 36.14645,
-    longitude: -86.803482,
-    name: "Vanderbilt",
-    address: "2301 Vanderbilt Place",
-  },
-];
 
 class HomeScreen extends React.Component {
   constructor(props) {

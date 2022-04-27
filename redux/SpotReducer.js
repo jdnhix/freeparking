@@ -20,21 +20,21 @@ const defTimeArr = [
 const INITIAL_STATE = {
   spots: [
     {
-      lat: 36.23,
-      long: -86.71,
-      title: "Brentwood??",
-      address: "idek lol",
+      lat: 36.160542,
+      long: -86.778748,
+      title: "Bridgestone Arena",
+      address: "501 Broadway, Nashville, TN 37203",
       timeArr: defTimeArr.map((time) => ({ ...time })),
-      fav: true,
+      fav: false,
       idx: 0,
     },
     {
-      lat: 36.09,
-      long: -86.74,
-      title: "Middle of nowhere",
-      address: "1818 church st",
-      timeArr: defTimeArr.map((time) => ({ ...time })),
+      lat: 36.13085,
+      long: -86.85464,
+      title: "Target",
+      address: "26 White Bridge Rd",
       fav: false,
+      timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 1,
     },
     {
@@ -72,6 +72,14 @@ const spotReducer = (state = INITIAL_STATE, action) => {
 
     case "EDIT_SPOT":
       spots[action.payload.idx] = action.payload;
+
+      return {
+        ...state,
+        spots,
+      };
+
+    case "TOGGLE_FAV":
+      spots[action.payload].fav = !spots[action.payload].fav;
 
       return {
         ...state,
