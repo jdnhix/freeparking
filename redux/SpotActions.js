@@ -3,7 +3,12 @@ export const addSpot = (spot) => ({
   payload: spot,
 });
 
-export const removeSpot = (spot) => ({
+export const removeSpot = (idx) => ({
   type: "REMOVE_SPOT",
+  payload: idx,
+});
+
+export const editSpot = (spot) => ({
+  type: "EDIT_SPOT",
   payload: spot,
 });

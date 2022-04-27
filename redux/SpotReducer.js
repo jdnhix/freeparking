@@ -70,6 +70,14 @@ const spotReducer = (state = INITIAL_STATE, action) => {
         spots,
       };
 
+    case "EDIT_SPOT":
+      spots[action.payload.idx] = action.payload;
+
+      return {
+        ...state,
+        spots,
+      };
+
     default:
       return state;
   }

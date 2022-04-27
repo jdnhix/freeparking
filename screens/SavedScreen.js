@@ -21,7 +21,7 @@ import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
 import { connect, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import { addSpot, removeSpot } from "../redux/SpotActions";
+import { addSpot, removeSpot, editSpot } from "../redux/SpotActions";
 
 // TODO:
 // Make the cancel button on search bar always visible
@@ -41,7 +41,6 @@ function Spot(props) {
   const toRoute = createOpenLink({ query: props.address });
 
   // when "edit" in dropdown menu is selected
-  // TODO: need to account for time
   const editSpot = () => {
     const editFunc = props.editFunc;
     editFunc({
@@ -240,7 +239,6 @@ function SavedScreen({ navigation, route, spots }) {
   // Handle received newSpot information
   useEffect(() => {
     if (route.params?.newSpot) {
-      // addSpot(route.params.newSpot); todo delete
       dispatch(addSpot(route.params.newSpot));
     }
   }, [route.params?.newSpot]);
@@ -248,19 +246,10 @@ function SavedScreen({ navigation, route, spots }) {
   // Handle updated information on an existing spot
   useEffect(() => {
     if (route.params?.editSpot) {
-      editSpot(route.params.editSpot);
+      // editSpot(route.params.editSpot);
+      dispatch(editSpot(route.params.editSpot));
     }
   }, [route.params?.editSpot]);
-
-  // const [spotArr, setSpotArr] = useState(
-  //   // initArr.map((spot) => {
-  //   //   return { ...spot };
-  //   // })
-
-  //   spots.map((spot) => {
-  //     return { ...spot };
-  //   })
-  // );
 
   // Generate ID for the Spots list.
   // Can delete after backend is ready
@@ -313,30 +302,6 @@ function SavedScreen({ navigation, route, spots }) {
     navigation.navigate("EditSpot");
   };
 
-  // Action to add spot
-  // TODO: need to account for time later
-  // const addSpot = (newSpot) => {
-  //   setSpotArr([
-  //     ...spotArr,
-  //     {
-  //       title: newSpot.title,
-  //       address: newSpot.address,
-  //       fav: false,
-  //       timeArr: newSpot.timeArr,
-  //       idx: spotArr.length,
-  //     },
-  //   ]);
-  // };
-
-  // Function to remove a spot
-  // const removeSpot = (idx) => {
-  //   let tmpArr = spotArr.filter((spot) => spot.idx !== idx);
-  //   for (let i = idx; i < tmpArr.length; ++i) {
-  //     tmpArr[i].idx = i;
-  //   }
-  //   setSpotArr(tmpArr);
-  // };
-
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
@@ -356,15 +321,15 @@ function SavedScreen({ navigation, route, spots }) {
 
   // Function to edit a spot
   // TODO: need to add time as a parameter
-  const editSpot = ({ idx, title, address, timeArr }) => {
-    let tmpSpots = [...spotArr];
-    let target = { ...tmpSpots[idx] };
-    target.title = title;
-    target.address = address;
-    target.timeArr = timeArr.map((t) => ({ ...t }));
-    tmpSpots[idx] = target;
-    setSpotArr(tmpSpots);
-  };
+  // const editSpot = ({ idx, title, address, timeArr }) => {
+  //   let tmpSpots = [...spotArr];
+  //   let target = { ...tmpSpots[idx] };
+  //   target.title = title;
+  //   target.address = address;
+  //   target.timeArr = timeArr.map((t) => ({ ...t }));
+  //   tmpSpots[idx] = target;
+  //   setSpotArr(tmpSpots);
+  // };
 
   // Function to set a spot favourite or not
   // favQ: boolean, favourite or not
