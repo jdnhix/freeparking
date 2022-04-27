@@ -115,7 +115,7 @@ export default function EditSpotScreen({ route, navigation }) {
   } = useForm({
     defaultValues: {
       title: route.params?.origSpot ? route.params.origSpot.title : "",
-      loc: route.params?.origSpot ? route.params.origSpot.loc : "",
+      address: route.params?.origSpot ? route.params.origSpot.address : "",
     },
   });
 
@@ -129,7 +129,7 @@ export default function EditSpotScreen({ route, navigation }) {
           editSpot: {
             idx: route.params.origSpot.idx,
             title: data.title,
-            loc: data.loc,
+            address: data.address,
             timeArr: timeArr,
           },
         },
@@ -139,7 +139,12 @@ export default function EditSpotScreen({ route, navigation }) {
       navigation.navigate("Tabs", {
         screen: "Saved",
         params: {
-          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr },
+          newSpot: {
+            title: data.title,
+            address: data.address,
+            timeArr: timeArr,
+            fav: false,
+          },
         },
       });
     }
@@ -167,7 +172,7 @@ export default function EditSpotScreen({ route, navigation }) {
           setFailedGeolocation(false);
           const address = responseJson.results[0].formatted_address;
           console.log(address);
-          setValue("loc", address);
+          setValue("address", address);
         }
       });
   };
@@ -302,7 +307,7 @@ export default function EditSpotScreen({ route, navigation }) {
                   placeholder="Spot Address"
                 />
               )}
-              name="loc"
+              name="address"
             />
 
             <TouchableOpacity

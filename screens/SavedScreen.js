@@ -19,6 +19,9 @@ import {
 } from "react-native-popup-menu";
 import { createOpenLink } from "react-native-open-maps";
 import { SearchBar } from "@rneui/themed";
+import { connect, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { addSpot, removeSpot, editSpot, toggleFav } from "../redux/SpotActions";
 
 // TODO:
 // Make the cancel button on search bar always visible
@@ -35,32 +38,32 @@ function Spot(props) {
   }, [props.fav]);
 
   // when route icon is clicked. Go to Apple/Google maps
-  const toRoute = createOpenLink({ query: props.loc });
+  const toRoute = createOpenLink({ query: props.address });
 
   // when "edit" in dropdown menu is selected
-  // TODO: need to account for time
   const editSpot = () => {
     const editFunc = props.editFunc;
     editFunc({
       idx: props.rmIdx,
       title: props.title,
-      loc: props.loc,
+      address: props.address,
       timeArr: props.timeArr.map((t) => ({ ...t })),
     });
   };
 
-  // when "remove" in dropdown menu is selected
+  //when "remove" in dropdown menu is selected
   const removeSpot = () => {
     const rmFunc = props.rmFunc;
-    rmFunc(props.rmIdx);
+    rmFunc();
   };
 
   const editFav = props.editFav;
 
-  const flipFav = () =>
+  const flipFav = () => {
     fav
-      ? (setFav(false), setFavName("staro"), editFav(props.rmIdx, false))
-      : (setFav(true), setFavName("star"), editFav(props.rmIdx, true));
+      ? (setFav(false), setFavName("staro"), editFav())
+      : (setFav(true), setFavName("star"), editFav());
+  };
 
   // Styles for the dropdown menu
   const menuStyles = {
@@ -111,7 +114,7 @@ function Spot(props) {
         }}
       >
         <Text style={styles.spotTitle}>{props.title}</Text>
-        <Text style={styles.spotLoc}>{props.loc}</Text>
+        <Text style={styles.spotAddress}>{props.address}</Text>
         <Text>{props.time}</Text>
       </View>
       <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
@@ -148,9 +151,11 @@ function Spot(props) {
   );
 }
 
-export default function SavedScreen({ navigation, route }) {
+function SavedScreen({ navigation, route, spots }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
+
+  const dispatch = useDispatch();
 
   const defTimeArr = [
     {
@@ -169,57 +174,58 @@ export default function SavedScreen({ navigation, route }) {
     },
   ];
 
-  const initArr = [
-    {
-      title: "Vanderbilt",
-      loc: "2301 Vanderbilt Place",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 0,
-    },
-    {
-      title: "Vandy",
-      loc: "2301 Vanderbilt Place",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 1,
-    },
-    {
-      title: "Target1",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 2,
-    },
-    {
-      title: "Target2",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 3,
-    },
-    {
-      title: "Target3",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 4,
-    },
-    {
-      title: "Target4",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 5,
-    },
-    {
-      title: "Target5",
-      loc: "White bridge",
-      fav: false,
-      timeArr: defTimeArr.map((time) => ({ ...time })),
-      idx: 6,
-    },
-  ];
+  // todo delete this
+  // const initArr = [
+  //   {
+  //     title: "Vanderbilt",
+  //     loc: "2301 Vanderbilt Place",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 0,
+  //   },
+  //   {
+  //     title: "Vandy",
+  //     loc: "2301 Vanderbilt Place",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 1,
+  //   },
+  //   {
+  //     title: "Target1",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 2,
+  //   },
+  //   {
+  //     title: "Target2",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 3,
+  //   },
+  //   {
+  //     title: "Target3",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 4,
+  //   },
+  //   {
+  //     title: "Target4",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 5,
+  //   },
+  //   {
+  //     title: "Target5",
+  //     loc: "White bridge",
+  //     fav: false,
+  //     timeArr: defTimeArr.map((time) => ({ ...time })),
+  //     idx: 6,
+  //   },
+  // ];
 
   // route.params.newSpot is an Object received from EditSpotScreen containing
   // information for a new Spot to be added. So far it contains title: "a title"
@@ -234,22 +240,16 @@ export default function SavedScreen({ navigation, route }) {
   // Handle received newSpot information
   useEffect(() => {
     if (route.params?.newSpot) {
-      addSpot(route.params.newSpot);
+      dispatch(addSpot(route.params.newSpot));
     }
   }, [route.params?.newSpot]);
 
   // Handle updated information on an existing spot
   useEffect(() => {
     if (route.params?.editSpot) {
-      editSpot(route.params.editSpot);
+      dispatch(editSpot(route.params.editSpot));
     }
   }, [route.params?.editSpot]);
-
-  const [spotArr, setSpotArr] = useState(
-    initArr.map((spot) => {
-      return { ...spot };
-    })
-  );
 
   // Generate ID for the Spots list.
   // Can delete after backend is ready
@@ -302,73 +302,27 @@ export default function SavedScreen({ navigation, route }) {
     navigation.navigate("EditSpot");
   };
 
-  // Action to add spot
-  // TODO: need to account for time later
-  const addSpot = (newSpot) => {
-    setSpotArr([
-      ...spotArr,
-      {
-        title: newSpot.title,
-        loc: newSpot.loc,
-        fav: false,
-        timeArr: newSpot.timeArr,
-        idx: spotArr.length,
-      },
-    ]);
-  };
-
-  // Function to remove a spot
-  const removeSpot = (idx) => {
-    let tmpArr = spotArr.filter((spot) => spot.idx !== idx);
-    for (let i = idx; i < tmpArr.length; ++i) {
-      tmpArr[i].idx = i;
-    }
-    setSpotArr(tmpArr);
-  };
-
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, loc, timeArr }) => {
+  const toEditSpot = ({ idx, title, address, timeArr }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
         origSpot: {
           idx: idx,
           title: title,
-          loc: loc,
+          address: address,
           timeArr: timeArr,
         },
       },
     });
   };
 
-  // Function to edit a spot
-  // TODO: need to add time as a parameter
-  const editSpot = ({ idx, title, loc, timeArr }) => {
-    let tmpSpots = [...spotArr];
-    let target = { ...tmpSpots[idx] };
-    target.title = title;
-    target.loc = loc;
-    target.timeArr = timeArr.map((t) => ({ ...t }));
-    tmpSpots[idx] = target;
-    setSpotArr(tmpSpots);
-  };
-
-  // Function to set a spot favourite or not
-  // favQ: boolean, favourite or not
-  const flipFav = (idx, favQ) => {
-    let tmpSpots = [...spotArr];
-    let target = { ...tmpSpots[idx] };
-    target.fav = favQ;
-    tmpSpots[idx] = target;
-    setSpotArr(tmpSpots);
-  };
-
   const filterSearch = (spot) => {
     return (
       spot.title.toLowerCase().includes(query.toLowerCase()) ||
-      spot.loc.toLowerCase().includes(query.toLowerCase())
+      spot.address.toLowerCase().includes(query.toLowerCase())
     );
   };
 
@@ -485,53 +439,65 @@ export default function SavedScreen({ navigation, route }) {
           >
             {query === ""
               ? showFav
-                ? spotArr
+                ? spots
                     .filter((spot) => spot.fav)
                     .map((spot, i) => {
                       return (
                         <Spot
                           key={generateID(spot, i)}
                           rmIdx={spot.idx}
-                          rmFunc={removeSpot}
+                          rmFunc={() => {
+                            dispatch(removeSpot(spot.idx));
+                          }}
                           editFunc={toEditSpot}
-                          editFav={flipFav}
+                          editFav={() => {
+                            dispatch(toggleFav(spot.idx));
+                          }}
                           style={styles.spot}
                           title={spot.title}
-                          loc={spot.loc}
+                          address={spot.address}
                           time={connectTimeStr(spot.timeArr)}
                           fav={spot.fav}
                           timeArr={spot.timeArr}
                         ></Spot>
                       );
                     })
-                : spotArr.map((spot, i) => (
+                : spots.map((spot, i) => (
                     <Spot
                       key={generateID(spot, i)}
                       rmIdx={spot.idx}
-                      rmFunc={removeSpot}
+                      rmFunc={() => {
+                        dispatch(removeSpot(spot.idx));
+                      }}
                       editFunc={toEditSpot}
-                      editFav={flipFav}
+                      editFav={() => {
+                        dispatch(toggleFav(spot.idx));
+                      }}
                       style={styles.spot}
                       title={spot.title}
-                      loc={spot.loc}
+                      address={spot.address}
                       time={connectTimeStr(spot.timeArr)}
                       fav={spot.fav}
                       timeArr={spot.timeArr}
                     ></Spot>
                   ))
-              : spotArr
+              : spots
                   .filter((spot) => filterSearch(spot))
                   .map((spot, i) => {
                     return (
                       <Spot
                         key={generateID(spot, i)}
                         rmIdx={spot.idx}
-                        rmFunc={removeSpot}
+                        rmFunc={() => {
+                          dispatch(removeSpot(spot.idx));
+                        }}
                         editFunc={toEditSpot}
-                        editFav={flipFav}
+                        editFav={() => {
+                          dispatch(toggleFav(spot.idx));
+                        }}
                         style={styles.spot}
                         title={spot.title}
-                        loc={spot.loc}
+                        address={spot.address}
                         time={connectTimeStr(spot.timeArr)}
                         fav={spot.fav}
                         timeArr={spot.timeArr}
@@ -606,8 +572,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.green_theme,
   },
-  // Location of the spot
-  spotLoc: {
+  // addressation of the spot
+  spotAddress: {
     fontWeight: "600",
     fontSize: 15,
     color: COLORS.green_theme,
@@ -635,3 +601,21 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+
+const mapStateToProps = (state) => {
+  const { spots } = state.spots;
+  return { spots };
+};
+
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addSpot,
+      removeSpot,
+      editSpot,
+      toggleFav,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(SavedScreen);

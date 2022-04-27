@@ -11,28 +11,34 @@ import EditSpot from "./screens/EditSpotScreen";
 import LoginScreen from "./screens/LoginScreen";
 import { MenuProvider } from "react-native-popup-menu";
 
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import spotReducer from "./redux/SpotReducer";
+
+// ...
 const Stack = createNativeStackNavigator();
-
-
+const store = createStore(spotReducer);
 
 export default function App() {
   return (
-    <MenuProvider>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Welcome"
-            screenOptions={{ headerShown: false }}
-          >
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Tabs" component={Tabs} />
-            <Stack.Screen name="Saved" component={Saved} />
-            <Stack.Screen name="EditSpot" component={EditSpot} />
-          </Stack.Navigator>
-        </NavigationContainer>
-        <StatusBar />
-      </SafeAreaProvider>
-    </MenuProvider>
+    <Provider store={store}>
+      <MenuProvider>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              initialRouteName="Welcome"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Tabs" component={Tabs} />
+              <Stack.Screen name="Saved" component={Saved} />
+              <Stack.Screen name="EditSpot" component={EditSpot} />
+            </Stack.Navigator>
+          </NavigationContainer>
+          <StatusBar />
+        </SafeAreaProvider>
+      </MenuProvider>
+    </Provider>
   );
 }
