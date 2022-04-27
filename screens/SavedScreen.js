@@ -174,6 +174,7 @@ function SavedScreen({ navigation, route, spots }) {
     },
   ];
 
+  // todo delete this
   // const initArr = [
   //   {
   //     title: "Vanderbilt",
@@ -239,7 +240,7 @@ function SavedScreen({ navigation, route, spots }) {
   // Handle received newSpot information
   useEffect(() => {
     if (route.params?.newSpot) {
-      // addSpot(route.params.newSpot);
+      // addSpot(route.params.newSpot); todo delete
       dispatch(addSpot(route.params.newSpot));
     }
   }, [route.params?.newSpot]);
@@ -251,15 +252,15 @@ function SavedScreen({ navigation, route, spots }) {
     }
   }, [route.params?.editSpot]);
 
-  const [spotArr, setSpotArr] = useState(
-    // initArr.map((spot) => {
-    //   return { ...spot };
-    // })
+  // const [spotArr, setSpotArr] = useState(
+  //   // initArr.map((spot) => {
+  //   //   return { ...spot };
+  //   // })
 
-    spots.map((spot) => {
-      return { ...spot };
-    })
-  );
+  //   spots.map((spot) => {
+  //     return { ...spot };
+  //   })
+  // );
 
   // Generate ID for the Spots list.
   // Can delete after backend is ready
@@ -495,7 +496,7 @@ function SavedScreen({ navigation, route, spots }) {
           >
             {query === ""
               ? showFav
-                ? spotArr
+                ? spots
                     .filter((spot) => spot.fav)
                     .map((spot, i) => {
                       return (
@@ -514,7 +515,7 @@ function SavedScreen({ navigation, route, spots }) {
                         ></Spot>
                       );
                     })
-                : spotArr.map((spot, i) => (
+                : spots.map((spot, i) => (
                     <Spot
                       key={generateID(spot, i)}
                       rmIdx={spot.idx}
@@ -529,7 +530,7 @@ function SavedScreen({ navigation, route, spots }) {
                       timeArr={spot.timeArr}
                     ></Spot>
                   ))
-              : spotArr
+              : spots
                   .filter((spot) => filterSearch(spot))
                   .map((spot, i) => {
                     return (

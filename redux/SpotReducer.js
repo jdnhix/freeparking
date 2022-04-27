@@ -52,14 +52,13 @@ const INITIAL_STATE = {
 const spotReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "ADD_SPOT":
-      const spots = state.spots;
-
+      const spots = [...state.spots];
       spots.push(action.payload);
 
-      const newState = { spots };
-
-      console.log(newState);
-      return newState;
+      return {
+        ...state,
+        spots,
+      };
 
     default:
       return state;
