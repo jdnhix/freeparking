@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableHighlightBase,
-} from "react-native";
+import { View, StyleSheet, Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 import MapModal from "../components/MapModal";

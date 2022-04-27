@@ -1,15 +1,22 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import * as React from "react";
+import { Text, StyleSheet, SafeAreaView, TouchableOpacity } from "react-native";
 import { COLORS } from "../components/Colors";
 
 export default function Button(props) {
-    return (
-        <SafeAreaView>
-            <TouchableOpacity activeOpacity={.8} style={[styles.button, { height: props.height ? props.height : styles.button.height }]} onPressOut={props.callback}>
-                <Text style={styles.text}>{props.title}</Text>
-            </TouchableOpacity>
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={[
+          styles.button,
+          { height: props.height ? props.height : styles.button.height },
+        ]}
+        onPressOut={props.callback}
+      >
+        <Text style={styles.text}>{props.title}</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

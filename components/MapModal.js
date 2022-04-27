@@ -1,16 +1,7 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  useEffect,
-} from "react-native";
-import Position from "react-native/Libraries/Components/Touchable/Position";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "../components/Colors";
 import { createOpenLink } from "react-native-open-maps";
-import { shadow } from "react-native-paper";
 
 export default function MapModal(props) {
   const toRoute = createOpenLink({ query: props.address });
