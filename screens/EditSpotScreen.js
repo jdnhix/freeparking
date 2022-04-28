@@ -16,7 +16,7 @@ import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
 import { LogBox } from "react-native";
-import apiKey from "../components/Key";
+import { apiKey } from "../components/Key";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -65,6 +65,9 @@ export default function EditSpotScreen({ route, navigation }) {
       ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
       : []
   );
+
+  const [lat, setLat] = useState(0);
+  const [long, setLong] = useState(0);
 
   // Toggle to set modal visible or not
   const [modalVisible, setModalVisible] = useState(false);
@@ -144,6 +147,8 @@ export default function EditSpotScreen({ route, navigation }) {
             address: data.address,
             timeArr: timeArr,
             fav: false,
+            lat: lat,
+            long: long,
           },
         },
       });
@@ -153,10 +158,12 @@ export default function EditSpotScreen({ route, navigation }) {
   // testing geolocation functionality
   const getLocation = async () => {
     console.log("retrieivng current address");
+    setValue("address", "Finding current address...");
     let status = await Location.requestForegroundPermissionsAsync();
-    let coords = await Location.getCurrentPositionAsync();
+    let { coords } = await Location.getCurrentPositionAsync();
+
     fetch(
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+      "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
         coords.latitude +
         "," +
         coords.longitude +
@@ -167,9 +174,15 @@ export default function EditSpotScreen({ route, navigation }) {
       .then((responseJson) => {
         if (responseJson.status != "OK") {
           console.log("there was an issue calculating the current address");
+          console.log(responseJson);
           setFailedGeolocation(true);
         } else {
           setFailedGeolocation(false);
+
+          // if the user decides to use their current position as the address, update lat and long appropriately
+          setLat(coords.latitude);
+          setLong(coords.longitude);
+
           const address = responseJson.results[0].formatted_address;
           console.log(address);
           setValue("address", address);

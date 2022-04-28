@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { apiKey } from "../components/Key";
 
 const defTimeArr = [
   {
@@ -55,6 +56,34 @@ const spotReducer = (state = INITIAL_STATE, action) => {
     case "ADD_SPOT":
       let newSpot = action.payload;
       newSpot.idx = spots.length;
+
+      if (!newSpot.lat || !newSpot.long) {
+        console.log("no lat/long present...");
+
+        const addressArr = newSpot.address.split(" ");
+        const addressStr = addressArr.join("+");
+
+        fetch(
+          "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+            addressStr +
+            "&components=country:US" +
+            "&key=" +
+            apiKey
+        )
+          .then((response) => response.json())
+          .then((responseJson) => {
+            if (responseJson.status != "OK") {
+              console.log("there was an issue calculating the lat/long");
+              console.log(responseJson);
+            } else {
+              console.log("calculated lat/long");
+              const coords = responseJson.results[0].geometry.location;
+              newSpot.lat = coords.lat;
+              newSpot.long = coords.lng;
+            }
+          });
+      }
+
       spots.push(action.payload);
 
       return {
