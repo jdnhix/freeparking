@@ -48,6 +48,8 @@ function Spot(props) {
       title: props.title,
       address: props.address,
       timeArr: props.timeArr.map((t) => ({ ...t })),
+      lat: props.lat,
+      long: props.long,
     });
   };
 
@@ -174,59 +176,6 @@ function SavedScreen({ navigation, route, spots }) {
     },
   ];
 
-  // todo delete this
-  // const initArr = [
-  //   {
-  //     title: "Vanderbilt",
-  //     loc: "2301 Vanderbilt Place",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 0,
-  //   },
-  //   {
-  //     title: "Vandy",
-  //     loc: "2301 Vanderbilt Place",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 1,
-  //   },
-  //   {
-  //     title: "Target1",
-  //     loc: "White bridge",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 2,
-  //   },
-  //   {
-  //     title: "Target2",
-  //     loc: "White bridge",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 3,
-  //   },
-  //   {
-  //     title: "Target3",
-  //     loc: "White bridge",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 4,
-  //   },
-  //   {
-  //     title: "Target4",
-  //     loc: "White bridge",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 5,
-  //   },
-  //   {
-  //     title: "Target5",
-  //     loc: "White bridge",
-  //     fav: false,
-  //     timeArr: defTimeArr.map((time) => ({ ...time })),
-  //     idx: 6,
-  //   },
-  // ];
-
   // route.params.newSpot is an Object received from EditSpotScreen containing
   // information for a new Spot to be added. So far it contains title: "a title"
   // and loc: "location". Will need to add time in some format later
@@ -305,7 +254,7 @@ function SavedScreen({ navigation, route, spots }) {
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, address, timeArr }) => {
+  const toEditSpot = ({ idx, title, address, timeArr, lat, long }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
@@ -314,6 +263,8 @@ function SavedScreen({ navigation, route, spots }) {
           title: title,
           address: address,
           timeArr: timeArr,
+          lat: lat,
+          long: long,
         },
       },
     });
@@ -454,6 +405,8 @@ function SavedScreen({ navigation, route, spots }) {
                             dispatch(toggleFav(spot.idx));
                           }}
                           style={styles.spot}
+                          lat={spot.lat}
+                          long={spot.long}
                           title={spot.title}
                           address={spot.address}
                           time={connectTimeStr(spot.timeArr)}

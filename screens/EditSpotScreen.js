@@ -65,9 +65,12 @@ export default function EditSpotScreen({ route, navigation }) {
       ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
       : []
   );
-
-  const [lat, setLat] = useState(0);
-  const [long, setLong] = useState(0);
+  const [lat, setLat] = useState(
+    route.params?.origSpot ? route.params.origSpot.lat : ""
+  );
+  const [long, setLong] = useState(
+    route.params?.origSpot ? route.params.origSpot.long : ""
+  );
 
   // Toggle to set modal visible or not
   const [modalVisible, setModalVisible] = useState(false);
@@ -95,6 +98,7 @@ export default function EditSpotScreen({ route, navigation }) {
 
   // Status indicating whether geolocation failed or not
   const [failedGeolocation, setFailedGeolocation] = React.useState(false);
+  const [manualAddressChange, setManualAddressChange] = React.useState(false);
 
   // Go back to the saved spots page.
   // Going to "Tabs" not "Saved" since it will be without the bottom bar
@@ -134,6 +138,8 @@ export default function EditSpotScreen({ route, navigation }) {
             title: data.title,
             address: data.address,
             timeArr: timeArr,
+            lat: lat,
+            long: long,
           },
         },
       });
@@ -175,6 +181,7 @@ export default function EditSpotScreen({ route, navigation }) {
         if (responseJson.status != "OK") {
           console.log("there was an issue calculating the current address");
           console.log(responseJson);
+          setValue("address", "");
           setFailedGeolocation(true);
         } else {
           setFailedGeolocation(false);

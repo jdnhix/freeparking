@@ -100,7 +100,33 @@ const spotReducer = (state = INITIAL_STATE, action) => {
       };
 
     case "EDIT_SPOT":
-      spots[action.payload.idx] = action.payload;
+      const edittedSpot = action.payload;
+
+      const addressArr = edittedSpot.address.split(" ");
+      const addressStr = addressArr.join("+");
+
+      fetch(
+        "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+          addressStr +
+          "&components=country:US" +
+          "&key=" +
+          apiKey
+      )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.status != "OK") {
+            console.log("there was an issue calculating the lat/long");
+            console.log(responseJson);
+          } else {
+            console.log("calculated lat/long");
+            const coords = responseJson.results[0].geometry.location;
+            edittedSpot.lat = coords.lat;
+            edittedSpot.long = coords.lng;
+            console.log(edittedSpot);
+          }
+        });
+
+      spots[action.payload.idx] = edittedSpot;
 
       return {
         ...state,
