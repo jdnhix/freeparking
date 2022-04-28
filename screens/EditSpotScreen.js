@@ -123,12 +123,15 @@ export default function EditSpotScreen({ route, navigation }) {
     defaultValues: {
       title: route.params?.origSpot ? route.params.origSpot.title : "",
       loc: route.params?.origSpot ? route.params.origSpot.loc : "",
+      snapshot: route.params?.origSpot ? route.params.origSpot.snapshot : null,
     },
   });
 
   const onSubmit = (data) => {
     // Editing spot
-    // Alert.alert("DEBUG", JSON.stringify(data.snapshot));
+    if (!!errors.snapshot) {
+      data.snapshot = errors.snapshot;
+    }
     if (route.params?.origSpot) {
       navigation.navigate("Tabs", {
         screen: "Saved",
@@ -138,7 +141,7 @@ export default function EditSpotScreen({ route, navigation }) {
             title: data.title,
             loc: data.loc,
             timeArr: timeArr,
-            snapshot: route.params.origSpot.snapshot,
+            snapshot: data.snapshot,
           },
         },
       });
@@ -147,7 +150,7 @@ export default function EditSpotScreen({ route, navigation }) {
       navigation.navigate("Tabs", {
         screen: "Saved",
         params: {
-          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr, snapshot: route.params.origSpot.snapshot, },
+          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr, snapshot: data.snapshot, },
         },
       });
     }
@@ -250,7 +253,6 @@ export default function EditSpotScreen({ route, navigation }) {
 
   const takePhoto = async () => {
     if (cameraRef) {
-      console.log("taking picture");
       try {
         let photo = await cameraRef.current.takePictureAsync({
           allowEditing: true,
@@ -489,7 +491,7 @@ export default function EditSpotScreen({ route, navigation }) {
                 onPress={async ()=> {
                     const r = await takePhoto();
                     if (!r.cancelled) {
-                      route.params.origSpot.snapshot = r.uri;
+                      errors.snapshot = r.uri;
                     }
                     setShowCamera(false);
                   }}

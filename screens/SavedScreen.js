@@ -319,7 +319,13 @@ export default function SavedScreen({ navigation, route }) {
 
   // navigate to EditSpotScreen for adding a Spot
   const toAddSpot = () => {
-    navigation.navigate("EditSpot");
+    navigation.navigate({
+      name: "EditSpot",
+      params:{
+        origSpots: {
+          snapshot: null,
+        }
+      }});
   };
 
   // Action to add spot
