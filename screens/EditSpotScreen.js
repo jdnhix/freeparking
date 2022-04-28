@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useRef, } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Camera } from "expo-camera";
 
 import {
@@ -18,6 +18,7 @@ import {
   Entypo,
   Ionicons,
   MaterialIcons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import { useForm, Controller, set } from "react-hook-form";
@@ -150,7 +151,12 @@ export default function EditSpotScreen({ route, navigation }) {
       navigation.navigate("Tabs", {
         screen: "Saved",
         params: {
-          newSpot: { title: data.title, loc: data.loc, timeArr: timeArr, snapshot: data.snapshot, },
+          newSpot: {
+            title: data.title,
+            loc: data.loc,
+            timeArr: timeArr,
+            snapshot: data.snapshot,
+          },
         },
       });
     }
@@ -264,58 +270,82 @@ export default function EditSpotScreen({ route, navigation }) {
         console.log(e);
       }
     }
-  }
+  };
 
   return (
     // Make keyboard disappear when clicked in blank spot
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       {!showCamera ? (
-          <View
-            style={{
-              flex: 1,
-              // backgroundColor: modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)", //todo this background shift is a little janky right now
-            }}
-          >
-            {/* The top two icons */}
-            <View style={styles.topBar}>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  marginLeft: "6%",
-                }}
-                activeOpacity={0.8}
-                onPressOut={toSaved}
-              >
-                <View>
-                  <AntDesign
-                    name="arrowleft"
-                    size={50}
-                    color={COLORS.red_theme}
-                  />
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignItems: "flex-end",
-                  justifyContent: "center",
-                  marginRight: "7%",
-                }}
-                activeOpacity={0.8}
-                onPressOut={() => {
-                  toCamera();
-                }}
-              >
-                <View>
-                  <Feather name="camera" size={40} color={COLORS.green_theme} />
-                </View>
-              </TouchableOpacity>
-            </View>
+        <View
+          style={{
+            flex: 1,
+            // backgroundColor: modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)", //todo this background shift is a little janky right now
+          }}
+        >
+          {/* The top two icons */}
+          <View style={styles.topBar}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                alignItems: "flex-start",
+                justifyContent: "center",
+                marginLeft: "6%",
+              }}
+              activeOpacity={0.8}
+              onPressOut={toSaved}
+            >
+              <View>
+                <AntDesign
+                  name="arrowleft"
+                  size={50}
+                  color={COLORS.red_theme}
+                />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                alignItems: "flex-end",
+                justifyContent: "center",
+                marginRight: "7%",
+              }}
+              activeOpacity={0.8}
+              onPressOut={() => {
+                toCamera();
+              }}
+            >
+              <View>
+                <Feather name="camera" size={40} color={COLORS.green_theme} />
+              </View>
+            </TouchableOpacity>
+          </View>
 
-            {/* The form with two input */}
-            <View style={styles.form}>
+          {/* The form with two input */}
+          <View style={styles.form}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                pattern: /[a-zA-Z0-9,. ]/,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder="Spot Name"
+                />
+              )}
+              name="title"
+            />
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <Controller
                 control={control}
                 rules={{
@@ -328,82 +358,58 @@ export default function EditSpotScreen({ route, navigation }) {
                     onBlur={onBlur}
                     onChangeText={onChange}
                     value={value}
-                    placeholder="Spot Name"
+                    placeholder="Spot Address"
                   />
                 )}
-                name="title"
+                name="loc"
               />
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
+              <TouchableOpacity
+                activeOpacity={0.4}
+                style={styles.gps}
+                onPress={() => getLocation()}
               >
-                <Controller
-                  control={control}
-                  rules={{
-                    required: true,
-                    pattern: /[a-zA-Z0-9,. ]/,
-                  }}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      style={styles.input}
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                      placeholder="Spot Address"
-                    />
-                  )}
-                  name="loc"
+                <MaterialIcons
+                  name="gps-fixed"
+                  size={24}
+                  color={COLORS.green_theme}
                 />
-
-                <TouchableOpacity
-                  activeOpacity={0.4}
-                  style={styles.gps}
-                  onPress={() => getLocation()}
-                >
-                  <MaterialIcons
-                    name="gps-fixed"
-                    size={24}
-                    color={COLORS.green_theme}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              {((errors.title && errors.title.type === "required") ||
-                (errors.loc && errors.loc.type === "required")) && (
-                <Text style={styles.errorMsg}>Both fields are required.</Text>
-              )}
-              {((errors.title && errors.title.type === "pattern") ||
-                (errors.loc && errors.loc.type === "pattern")) && (
-                <Text style={styles.errorMsg}>
-                  Format error: alphanumeric and comma only.
-                </Text>
-              )}
-              {failedGeolocation && (
-                <Text style={styles.errorMsg}>
-                  Failed to geolocate, please manually type address.
-                </Text>
-              )}
+              </TouchableOpacity>
             </View>
 
-            <View style={styles.timeAvailView}>
-              <Text style={{ fontSize: 20, marginBottom: 10 }}>
-                Availability:
+            {((errors.title && errors.title.type === "required") ||
+              (errors.loc && errors.loc.type === "required")) && (
+              <Text style={styles.errorMsg}>Both fields are required.</Text>
+            )}
+            {((errors.title && errors.title.type === "pattern") ||
+              (errors.loc && errors.loc.type === "pattern")) && (
+              <Text style={styles.errorMsg}>
+                Format error: alphanumeric and comma only.
               </Text>
+            )}
+            {failedGeolocation && (
+              <Text style={styles.errorMsg}>
+                Failed to geolocate, please manually type address.
+              </Text>
+            )}
+          </View>
 
-              {timeArr.map((time, i) => (
-                <AvailDisplay
-                  key={generateID(time, i)}
-                  text={time.string}
-                  arrIdx={time.idx}
-                  removeTime={removeTime}
-                  editTime={editTime}
-                />
-              ))}
+          <View style={styles.timeAvailView}>
+            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+              Availability:
+            </Text>
 
-              {/* <View
+            {timeArr.map((time, i) => (
+              <AvailDisplay
+                key={generateID(time, i)}
+                text={time.string}
+                arrIdx={time.idx}
+                removeTime={removeTime}
+                editTime={editTime}
+              />
+            ))}
+
+            {/* <View
             style={styles.scrollContainer}
             onLayout={(event) => {
               const { x, y, width, height } = event.nativeEvent.layout;
@@ -430,39 +436,39 @@ export default function EditSpotScreen({ route, navigation }) {
             </ScrollView>
           </View> */}
 
-              <TouchableOpacity
-                onPress={() => {
-                  setModalVisible(true);
-                  setEditIdx(-1);
-                  setModalInit({ ...emptyModal });
-                }}
-              >
-                <Text style={styles.timeText}>+ Add Time Slot</Text>
-              </TouchableOpacity>
-            </View>
-
             <TouchableOpacity
-              style={styles.saveBtn}
-              onPressOut={handleSubmit(onSubmit)}
+              onPress={() => {
+                setModalVisible(true);
+                setEditIdx(-1);
+                setModalInit({ ...emptyModal });
+              }}
             >
-              <Text style={styles.saveBtnTxt}>Save</Text>
+              <Text style={styles.timeText}>+ Add Time Slot</Text>
             </TouchableOpacity>
-
-            <Modal
-              visible={modalVisible}
-              animationType={"fade"}
-              // transparent={true}
-              hasBackdrop={true}
-              backdropOpacity={10}
-              backdropColor={"rgba(255, 0, 0, 0.8)"}
-            >
-              <TimeModal
-                closeModal={closeModal}
-                onSave={onSave}
-                modalInit={modalInit}
-              />
-            </Modal>
           </View>
+
+          <TouchableOpacity
+            style={styles.saveBtn}
+            onPressOut={handleSubmit(onSubmit)}
+          >
+            <Text style={styles.saveBtnTxt}>Save</Text>
+          </TouchableOpacity>
+
+          <Modal
+            visible={modalVisible}
+            animationType={"fade"}
+            // transparent={true}
+            hasBackdrop={true}
+            backdropOpacity={10}
+            backdropColor={"rgba(255, 0, 0, 0.8)"}
+          >
+            <TimeModal
+              closeModal={closeModal}
+              onSave={onSave}
+              modalInit={modalInit}
+            />
+          </Modal>
+        </View>
       ) : (
         <View>
           <View style={styles.container}>
@@ -478,87 +484,100 @@ export default function EditSpotScreen({ route, navigation }) {
                     );
                   }}
                 >
-                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}> Flip </Text>
+                  <Text
+                    style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
+                  >
+                    {" "}
+                    Flip{" "}
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignItems: "flex-end",
-                  marginTop: '165%',
-                  alignItems: 'center',
-                }}
-                activeOpacity={0.8}
-                onPress={async ()=> {
-                    const r = await takePhoto();
-                    if (!r.cancelled) {
-                      errors.snapshot = r.uri;
-                    }
-                    setShowCamera(false);
-                  }}
+                <View style={styles.cameraView}>
+                  <TouchableOpacity
+                    style={styles.cameraButton}
+                    activeOpacity={0.8}
+                    onPress={async () => {
+                      const r = await takePhoto();
+                      if (!r.cancelled) {
+                        errors.snapshot = r.uri;
+                      }
+                      setShowCamera(false);
+                    }}
                   >
-                <View>
-                  <Feather name="camera" size={55} color={COLORS.green_theme} />
+                    <View st>
+                      <Feather
+                        name="camera"
+                        size={55}
+                        color={COLORS.green_theme}
+                      />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-                <TouchableOpacity style={styles.close}
-                  onPress={async ()=> {
+
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={async () => {
                     setShowCamera(false);
                   }}
+                >
+                  <Text
+                    style={{ color: "white", fontWeight: "bold", fontSize: 18 }}
                   >
-                  <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}> Close </Text>
+                    {" "}
+                    Close{" "}
+                  </Text>
                 </TouchableOpacity>
               </View>
             </Camera>
           </View>
         </View>
       )}
-     </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  camera:{
+  camera: {
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
 
   text: {
     top: "20%",
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 
-  buttonContainer:{
+  buttonContainer: {
     flex: 1,
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
+    backgroundColor: "transparent",
+    flexDirection: "row",
     margin: 20,
     paddingBottom: 20,
   },
 
-  button:{
+  button: {
     flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
 
-  flip:{
+  flip: {
     flex: 1,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     top: 20,
     right: 5,
-    alignItems: 'center',
-    position: 'absolute',
+    alignItems: "center",
+    position: "absolute",
   },
 
-  close:{
+  close: {
     flex: 1,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     top: 20,
     left: 5,
-    alignItems: 'center',
-    position: 'absolute',
+    alignItems: "center",
+    position: "absolute",
   },
 
   topBar: {
@@ -648,5 +667,18 @@ const styles = StyleSheet.create({
   gps: {
     position: "absolute",
     left: "60%",
+  },
+  cameraView: {
+    flex: 1,
+    alignItems: "center",
+  },
+  cameraButton: {
+    backgroundColor: "white",
+    width: 90,
+    height: 90,
+    top: "83%",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 50,
   },
 });
