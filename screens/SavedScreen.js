@@ -44,8 +44,6 @@ function Spot(props) {
   // when "edit" in dropdown menu is selected
   const editSpot = () => {
     const editFunc = props.editFunc;
-    console.log(props.lat);
-    console.log(props.long);
     editFunc({
       idx: props.rmIdx,
       title: props.title,
