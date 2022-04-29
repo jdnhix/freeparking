@@ -26,12 +26,11 @@ import * as Location from "expo-location";
 import TimeModal from "../components/TimeModal";
 import Modal from "react-native-modal";
 import { LogBox } from "react-native";
+import apiKey from "../components/Key";
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
-
-const apiKey = "AIzaSyCqq5RXV3d-zyaEmCzQTNq1jlkggmZhLeI"; //TODO: DELETE THIS ASAP
 
 // Display the time availability (does not contain any actual
 // code to edit the spot and stuff. That is in the EditSpotScreen)
@@ -75,6 +74,7 @@ export default function EditSpotScreen({ route, navigation }) {
     end: new Date(0, 0, 0),
   };
 
+  // Array of objects representing different time slots
   const [timeArr, setTimeArr] = useState(
     route.params?.origSpot
       ? route.params.origSpot.timeArr.map((t) => ({ ...t }))
@@ -98,9 +98,13 @@ export default function EditSpotScreen({ route, navigation }) {
     setEditIdx(-1);
   };
 
+  // A temporary hack to assign unique IDs in the map function
+  // Can be replaced with object _id when the backend is connected
   const generateID = (time, i) => {
     return `${time.start.toString()}_${new Date().getTime()}_${i}`;
   };
+
+  // Status indicating whether geolocation failed or not
   const [failedGeolocation, setFailedGeolocation] = React.useState(false);
 
   // Go back to the saved spots page.
@@ -123,7 +127,7 @@ export default function EditSpotScreen({ route, navigation }) {
   } = useForm({
     defaultValues: {
       title: route.params?.origSpot ? route.params.origSpot.title : "",
-      loc: route.params?.origSpot ? route.params.origSpot.loc : "",
+      address: route.params?.origSpot ? route.params.origSpot.address : "",
       snapshot: route.params?.origSpot ? route.params.origSpot.snapshot : null,
     },
   });
@@ -140,7 +144,7 @@ export default function EditSpotScreen({ route, navigation }) {
           editSpot: {
             idx: route.params.origSpot.idx,
             title: data.title,
-            loc: data.loc,
+            address: data.address,
             timeArr: timeArr,
             snapshot: data.snapshot,
           },
@@ -153,7 +157,7 @@ export default function EditSpotScreen({ route, navigation }) {
         params: {
           newSpot: {
             title: data.title,
-            loc: data.loc,
+            address: data.address,
             timeArr: timeArr,
             snapshot: data.snapshot,
           },
@@ -162,35 +166,29 @@ export default function EditSpotScreen({ route, navigation }) {
     }
   };
 
-  // testing geolocation functionality, ignore this for now - Jaden
+  // testing geolocation functionality
   const getLocation = async () => {
     console.log("retrieivng current address");
-    let status = await Location.requestForegroundPermissionsAsync(); //use status for debugging
+    let status = await Location.requestForegroundPermissionsAsync();
     let coords = await Location.getCurrentPositionAsync();
-
-    //todo change these coords below back when done testing
-    // 36.174465 +
-    // "," +
-    // -86.76796 +
-
     fetch(
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        36.174465 +
+      "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+        coords.latitude +
         "," +
-        -86.76796 +
+        coords.longitude +
         "&key=" +
         apiKey
     )
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.status != "OK") {
-          console.error("there was an issue calculating the current address"); //todo maybe make this a log instead
+          console.log("there was an issue calculating the current address");
           setFailedGeolocation(true);
         } else {
           setFailedGeolocation(false);
           const address = responseJson.results[0].formatted_address;
           console.log(address);
-          setValue("loc", address);
+          setValue("address", address);
         }
       });
   };
@@ -222,7 +220,7 @@ export default function EditSpotScreen({ route, navigation }) {
     setModalVisible(false);
   };
 
-  // For the remove "x" in the current screen
+  // For the remove "x" button in the current screen
   const removeTime = (idx) => {
     let tmpArr = timeArr.filter((time) => time.idx !== idx);
     for (let i = idx; i < tmpArr.length; ++i) {
@@ -231,6 +229,7 @@ export default function EditSpotScreen({ route, navigation }) {
     setTimeArr(tmpArr);
   };
 
+  // For the "edit" button
   const editTime = (idx) => {
     setEditIdx(idx);
     setModalVisible(true);
@@ -279,7 +278,6 @@ export default function EditSpotScreen({ route, navigation }) {
         <View
           style={{
             flex: 1,
-            // backgroundColor: modalVisible ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0)", //todo this background shift is a little janky right now
           }}
         >
           {/* The top two icons */}
@@ -361,7 +359,7 @@ export default function EditSpotScreen({ route, navigation }) {
                     placeholder="Spot Address"
                   />
                 )}
-                name="loc"
+                name="address"
               />
 
               <TouchableOpacity
@@ -377,6 +375,7 @@ export default function EditSpotScreen({ route, navigation }) {
               </TouchableOpacity>
             </View>
 
+            {/* Error messages when the input of name/loc is not formatted correctly */}
             {((errors.title && errors.title.type === "required") ||
               (errors.loc && errors.loc.type === "required")) && (
               <Text style={styles.errorMsg}>Both fields are required.</Text>
@@ -409,33 +408,6 @@ export default function EditSpotScreen({ route, navigation }) {
               />
             ))}
 
-            {/* <View
-            style={styles.scrollContainer}
-            onLayout={(event) => {
-              const { x, y, width, height } = event.nativeEvent.layout;
-              if (height / screenHeight > scrollThreshold) {
-                setScroll(true);
-              } else {
-                setScroll(true);
-              }
-            }}
-          >
-            <ScrollView
-              scrollEnabled={scroll}
-              contentContainerStyle={styles.scrollSec}
-              style={{ backgroundColor: "red" }}
-            >
-              {timeArr.map((time, i) => (
-                <AvailDisplay
-                  key={generateID(time, i)}
-                  text={time.string}
-                  arrIdx={time.idx}
-                  removeTime={removeTime}
-                />
-              ))}
-            </ScrollView>
-          </View> */}
-
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(true);
@@ -457,7 +429,6 @@ export default function EditSpotScreen({ route, navigation }) {
           <Modal
             visible={modalVisible}
             animationType={"fade"}
-            // transparent={true}
             hasBackdrop={true}
             backdropOpacity={10}
             backdropColor={"rgba(255, 0, 0, 0.8)"}
