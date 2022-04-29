@@ -28,6 +28,7 @@ const INITIAL_STATE = {
       timeArr: defTimeArr.map((time) => ({ ...time })),
       fav: false,
       idx: 0,
+      snapshot: null,
     },
     {
       lat: 36.13085,
@@ -37,6 +38,7 @@ const INITIAL_STATE = {
       fav: false,
       timeArr: defTimeArr.map((time) => ({ ...time })),
       idx: 1,
+      snapshot: null,
     },
     {
       lat: 36.14645,
@@ -46,6 +48,7 @@ const INITIAL_STATE = {
       timeArr: defTimeArr.map((time) => ({ ...time })),
       fav: false,
       idx: 2,
+      snapshot: null, //todo add snapshot here
     },
   ],
 };

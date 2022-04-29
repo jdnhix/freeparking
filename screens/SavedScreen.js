@@ -8,8 +8,9 @@ import {
   ScrollView,
   Dimensions,
   Platform,
+  Image,
 } from "react-native";
-import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Feather, AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS } from "../components/Colors";
 import {
   Menu,
@@ -49,16 +50,24 @@ function Spot(props) {
       idx: props.rmIdx,
       title: props.title,
       address: props.address,
+      snapshot: props.snapshot,
       timeArr: props.timeArr.map((t) => ({ ...t })),
       lat: props.lat,
       long: props.long,
     });
   };
 
-  //when "remove" in dropdown menu is selected
+  // when "remove" in dropdown menu is selected
   const removeSpot = () => {
     const rmFunc = props.rmFunc;
     rmFunc();
+  };
+
+  const showSnapshot = () => {
+    const snapFunc = props.snapFunc;
+    snapFunc({
+      snapshot: props.snapshot,
+    });
   };
 
   const editFav = props.editFav;
@@ -146,8 +155,18 @@ function Spot(props) {
             />
           </MenuTrigger>
           <MenuOptions customStyles={menuStyles}>
-            <MenuOption text="Edit" onSelect={editSpot} />
-            <MenuOption text="Remove" onSelect={removeSpot} />
+            {!!props.snapshot ? (
+              <>
+                <MenuOption text="Edit" onSelect={editSpot} />
+                <MenuOption text="Remove" onSelect={removeSpot} />
+                <MenuOption text="Snapshot" onSelect={showSnapshot} />
+              </>
+            ) : (
+              <>
+                <MenuOption text="Edit" onSelect={editSpot} />
+                <MenuOption text="Remove" onSelect={removeSpot} />
+              </>
+            )}
           </MenuOptions>
         </Menu>
       </View>
@@ -158,7 +177,7 @@ function Spot(props) {
 function SavedScreen({ navigation, route, spots }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
-
+  const [image, setImage] = useState(null);
   const dispatch = useDispatch();
 
   const defTimeArr = [
@@ -204,6 +223,7 @@ function SavedScreen({ navigation, route, spots }) {
 
   // Generate ID for the Spots list.
   // Can delete after backend is ready
+  // todo i think we can delete this
   const generateID = (spot, i) => {
     return `${spot.title}_${new Date().getTime()}_${i}`;
   };
@@ -250,13 +270,28 @@ function SavedScreen({ navigation, route, spots }) {
 
   // navigate to EditSpotScreen for adding a Spot
   const toAddSpot = () => {
-    navigation.navigate("EditSpot");
+    navigation.navigate({
+      name: "EditSpot",
+      params: {
+        origSpots: {
+          snapshot: null,
+        },
+      },
+    });
   };
 
   // Go to EditSpot page to edit a spot
   // TODO: need to add time as parameter later
   // idx: index in the current spotArr
-  const toEditSpot = ({ idx, title, address, timeArr, lat, long }) => {
+  const toEditSpot = ({
+    idx,
+    title,
+    address,
+    timeArr,
+    lat,
+    long,
+    snapshot,
+  }) => {
     navigation.navigate({
       name: "EditSpot",
       params: {
@@ -267,9 +302,14 @@ function SavedScreen({ navigation, route, spots }) {
           timeArr: timeArr,
           lat: lat,
           long: long,
+          snapshot: snapshot,
         },
       },
     });
+  };
+
+  const showSnapshot = ({ snapshot }) => {
+    setImage(snapshot);
   };
 
   const filterSearch = (spot) => {
@@ -296,106 +336,139 @@ function SavedScreen({ navigation, route, spots }) {
 
   return (
     <View style={{ flex: 1 }}>
-      {showSearch ? (
-        <SearchBar
-          ref={search}
-          containerStyle={styles.searchBar}
-          lightTheme={true}
-          platform={Platform.OS}
-          showCancel={true}
-          cancelButtonTitle="Cancel"
-          onCancel={toggleSearch}
-          inputStyle={styles.searchBarInput}
-          placeholder="Type title/address..."
-          onChangeText={updateQuery}
-          value={query}
-        />
-      ) : (
-        <View style={styles.topBar}>
-          <View
-            style={{
-              flex: 1,
-              alignItems: "flex-start",
-              justifyContent: "center",
-              marginLeft: "4%",
-            }}
-          >
-            <Menu>
-              <MenuTrigger>
-                <Ionicons
-                  name="ios-menu"
-                  size={40}
-                  color={COLORS.green_theme}
-                />
-              </MenuTrigger>
-              <MenuOptions customStyles={menuStyles}>
-                {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
+      {!!!image ? (
+        <>
+          {showSearch ? (
+            <SearchBar
+              ref={search}
+              containerStyle={styles.searchBar}
+              lightTheme={true}
+              platform={Platform.OS}
+              showCancel={true}
+              cancelButtonTitle="Cancel"
+              onCancel={toggleSearch}
+              inputStyle={styles.searchBarInput}
+              placeholder="Type title/address..."
+              onChangeText={updateQuery}
+              value={query}
+            />
+          ) : (
+            <View style={styles.topBar}>
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  marginLeft: "4%",
+                }}
+              >
+                <Menu>
+                  <MenuTrigger>
+                    <Ionicons
+                      name="ios-menu"
+                      size={40}
+                      color={COLORS.green_theme}
+                    />
+                  </MenuTrigger>
+                  <MenuOptions customStyles={menuStyles}>
+                    {/* <MenuOption text="Sort (title) A-Z" onSelect={toMenu} />
               <MenuOption text="Sort (title) Z-A" onSelect={toMenu} /> */}
-                <MenuOption
-                  text="Show Favorite"
-                  onSelect={() => {
-                    setShowFav(true);
-                  }}
-                />
-                <MenuOption
-                  text="Show All"
-                  onSelect={() => {
-                    setShowFav(false);
-                  }}
-                />
-              </MenuOptions>
-            </Menu>
-          </View>
+                    <MenuOption
+                      text="Show Favorite"
+                      onSelect={() => {
+                        setShowFav(true);
+                      }}
+                    />
+                    <MenuOption
+                      text="Show All"
+                      onSelect={() => {
+                        setShowFav(false);
+                      }}
+                    />
+                  </MenuOptions>
+                </Menu>
+              </View>
 
-          <View
-            style={{ flex: 2, alignItems: "center", justifyContent: "center" }}
-          >
-            <Text style={styles.pageTitle}>Saved Spots</Text>
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPressOut={toggleSearch}
-            style={{
-              flex: 1,
-              alignItems: "flex-end",
-              justifyContent: "center",
-              marginRight: "5%",
-            }}
-          >
-            <View>
-              <FontAwesome name="search" size={30} color={COLORS.green_theme} />
+              <View
+                style={{
+                  flex: 2,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={styles.pageTitle}>Saved Spots</Text>
+              </View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPressOut={toggleSearch}
+                style={{
+                  flex: 1,
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                  marginRight: "5%",
+                }}
+              >
+                <View>
+                  <FontAwesome
+                    name="search"
+                    size={30}
+                    color={COLORS.green_theme}
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <View style={{ flex: 1 }}>
-        <View
-          style={[
-            styles.container,
-            {
-              flexDirection: "column",
-            },
-          ]}
-          onLayout={(event) => {
-            const { x, y, width, height } = event.nativeEvent.layout;
-            if (height / screenHeight > scrollThreshold) {
-              setScroll(true);
-            } else {
-              setScroll(false);
-            }
-          }}
-        >
-          <ScrollView
-            scrollEnabled={scroll}
-            contentContainerStyle={styles.scrollSec}
-          >
-            {query === ""
-              ? showFav
-                ? spots
-                    .filter((spot) => spot.fav)
-                    .map((spot, i) => {
-                      return (
+          )}
+          <View style={{ flex: 1 }}>
+            <View
+              style={[
+                styles.container,
+                {
+                  flexDirection: "column",
+                },
+              ]}
+              onLayout={(event) => {
+                const { x, y, width, height } = event.nativeEvent.layout;
+                if (height / screenHeight > scrollThreshold) {
+                  setScroll(true);
+                } else {
+                  setScroll(false);
+                }
+              }}
+            >
+              <ScrollView
+                scrollEnabled={scroll}
+                contentContainerStyle={styles.scrollSec}
+              >
+                {query === ""
+                  ? showFav
+                    ? spots
+                        .filter((spot) => spot.fav)
+                        .map((spot, i) => {
+                          return (
+                            <Spot
+                              key={generateID(spot, i)}
+                              rmIdx={spot.idx}
+                              rmFunc={() => {
+                                dispatch(removeSpot(spot.idx));
+                              }}
+                              editFunc={toEditSpot}
+                              editFav={() => {
+                                dispatch(toggleFav(spot.idx));
+                              }}
+                              style={styles.spot}
+                              lat={spot.lat}
+                              long={spot.long}
+                              title={spot.title}
+                              address={spot.address}
+                              snapshot={spot.snapshot}
+                              snapFunc={showSnapshot}
+                              time={connectTimeStr(spot.timeArr)}
+                              fav={spot.fav}
+                              timeArr={spot.timeArr}
+                            ></Spot>
+                          );
+                        })
+                    : spots.map((spot, i) => (
                         <Spot
                           key={generateID(spot, i)}
                           rmIdx={spot.idx}
@@ -411,70 +484,78 @@ function SavedScreen({ navigation, route, spots }) {
                           long={spot.long}
                           title={spot.title}
                           address={spot.address}
+                          snapshot={spot.snapshot}
+                          snapFunc={showSnapshot}
                           time={connectTimeStr(spot.timeArr)}
                           fav={spot.fav}
                           timeArr={spot.timeArr}
                         ></Spot>
-                      );
-                    })
-                : spots.map((spot, i) => (
-                    <Spot
-                      key={generateID(spot, i)}
-                      rmIdx={spot.idx}
-                      rmFunc={() => {
-                        dispatch(removeSpot(spot.idx));
-                      }}
-                      editFunc={toEditSpot}
-                      editFav={() => {
-                        dispatch(toggleFav(spot.idx));
-                      }}
-                      style={styles.spot}
-                      lat={spot.lat}
-                      long={spot.long}
-                      title={spot.title}
-                      address={spot.address}
-                      time={connectTimeStr(spot.timeArr)}
-                      fav={spot.fav}
-                      timeArr={spot.timeArr}
-                    ></Spot>
-                  ))
-              : spots
-                  .filter((spot) => filterSearch(spot))
-                  .map((spot, i) => {
-                    return (
-                      <Spot
-                        key={generateID(spot, i)}
-                        rmIdx={spot.idx}
-                        rmFunc={() => {
-                          dispatch(removeSpot(spot.idx));
-                        }}
-                        editFunc={toEditSpot}
-                        editFav={() => {
-                          dispatch(toggleFav(spot.idx));
-                        }}
-                        style={styles.spot}
-                        title={spot.title}
-                        address={spot.address}
-                        lat={spot.lat}
-                        long={spot.long}
-                        time={connectTimeStr(spot.timeArr)}
-                        fav={spot.fav}
-                        timeArr={spot.timeArr}
-                      ></Spot>
-                    );
-                  })}
-          </ScrollView>
-        </View>
-      </View>
+                      ))
+                  : spots
+                      .filter((spot) => filterSearch(spot))
+                      .map((spot, i) => {
+                        return (
+                          <Spot
+                            key={generateID(spot, i)}
+                            rmIdx={spot.idx}
+                            rmFunc={() => {
+                              dispatch(removeSpot(spot.idx));
+                            }}
+                            editFunc={toEditSpot}
+                            editFav={() => {
+                              dispatch(toggleFav(spot.idx));
+                            }}
+                            style={styles.spot}
+                            lat={spot.lat}
+                            long={spot.long}
+                            title={spot.title}
+                            address={spot.address}
+                            snapshot={spot.snapshot}
+                            snapFunc={showSnapshot}
+                            time={connectTimeStr(spot.timeArr)}
+                            fav={spot.fav}
+                            timeArr={spot.timeArr}
+                          ></Spot>
+                        );
+                      })}
+              </ScrollView>
+            </View>
+          </View>
 
-      <TouchableOpacity style={styles.addBtn} onPressOut={toAddSpot}>
-        <Text style={styles.addBtnTxt}>Add Spot</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.addBtn} onPressOut={toAddSpot}>
+            <Text style={styles.addBtnTxt}>Add Spot</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <View style={styles.container}>
+            <TouchableOpacity
+              onPress={async () => {
+                setImage(null);
+              }}
+            >
+              <Image source={{ uri: image }} style={styles.snapshot} />
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  snapshot: {
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  close: {
+    top: 0,
+    left: 0,
+    width: "20%",
+    height: "20%",
+  },
   container: {
     paddingTop: 0,
   },
