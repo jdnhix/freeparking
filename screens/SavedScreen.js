@@ -43,6 +43,8 @@ function Spot(props) {
   // when "edit" in dropdown menu is selected
   const editSpot = () => {
     const editFunc = props.editFunc;
+    console.log(props.lat);
+    console.log(props.long);
     editFunc({
       idx: props.rmIdx,
       title: props.title,
@@ -427,6 +429,8 @@ function SavedScreen({ navigation, route, spots }) {
                         dispatch(toggleFav(spot.idx));
                       }}
                       style={styles.spot}
+                      lat={spot.lat}
+                      long={spot.long}
                       title={spot.title}
                       address={spot.address}
                       time={connectTimeStr(spot.timeArr)}
@@ -451,6 +455,8 @@ function SavedScreen({ navigation, route, spots }) {
                         style={styles.spot}
                         title={spot.title}
                         address={spot.address}
+                        lat={spot.lat}
+                        long={spot.long}
                         time={connectTimeStr(spot.timeArr)}
                         fav={spot.fav}
                         timeArr={spot.timeArr}
