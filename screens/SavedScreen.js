@@ -170,7 +170,7 @@ function Spot(props) {
   );
 }
 
-function SavedScreen({ navigation, route }) {
+function SavedScreen({ navigation, route, spots }) {
   const screenHeight = Dimensions.get("window").height;
   const scrollThreshold = 0.75; // when the spots take up x% of the screen, scoll is enabled
   const [image, setImage] = useState(null);
